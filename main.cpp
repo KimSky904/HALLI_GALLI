@@ -1,13 +1,16 @@
 #include<iostream>
-//#include "fruitCard.h" //카드
 #include<string>
 #include<ctime>
 #include<cstdlib>
 #include<string>
 #include<conio.h>
 #include<Windows.h>
-#include <time.h>	
+#include<time.h>	
 #include<list>
+#include "fruitCard.h" //카드
+#include "drawCard.h"
+#include "game.h"
+#include "player.h"
 using namespace std;
 #define RED         (FOREGROUND_RED | FOREGROUND_INTENSITY)
 #define BLUE        (FOREGROUND_BLUE | FOREGROUND_INTENSITY)
@@ -16,44 +19,8 @@ using namespace std;
 #define YELLOW      (RED | GREEN)
 #define WHITE       (RED | GREEN | BLUE)
 
-//전체 카드 (총 80장)
-int cards[4][5] = { 4, };
-//사용자 공통 객체
-class Player {
-    //.플레이 가능 여부
-    bool isPlayAvailable;
-    //.카드 개수
-    int cardCount;
-    //.가지고 있는 카드 리스트 (누적) - 
-    list<int> cardList;
-public:
-    //생성자 - 20개의 카드 랜덤 할당
-    Player() {
-        for (int i = 0; i < 20; i++) {
-            cardCount++;
-            int randCardX=0;
-            int randCardY=0;
-            while (true) {
-                //동일카드 2개를 모두 사용했을 경우 다시 랜덤값 생성
-                randCardX = rand() % 4;
-                randCardY = rand() % 5;
-                if (cards[randCardX][randCardY] >= 1) break;
-            }
-            cards[randCardX][randCardY]--;
-            //cardList.push_back(randCardX, randCardY);
-        }
-    }
-    //필요한 메소드 - 카드 사용
-    int addCard() {
-        srand(time(NULL));
-        int cardNum;
-        cardNum = rand() % 10;
-        return cardNum;
-    }
-};
-
-
-
+//카드
+Card cards[CARDCOUNT] = {};
 //콘솔 세팅
 void SetConsoleView()
 {
@@ -75,7 +42,6 @@ int GetKeyValue()
     }
     return 0;
 }
-
 //색상지정
 void PrintString(HANDLE hStdOut, WORD Attribute)
 {
@@ -304,6 +270,37 @@ void DrawInfoScreen() {
 
 }
 
+
+//[게임진행] 카드분배
+void setInitCard(Player &p1, Player& p2, Player& p3, Player& p4) {
+    srand((unsigned int)time(NULL));
+    //과일별,개수별 카드 객체 생성 => 문제 : 카드 수는 28*4, 랜덤으로 분배되도록 바꿔야함(중복없이)
+    int cnt = 0;
+    for (int i = 1; i <= 4; i++) {
+        for (int j = 1; j <= 5; j++) {
+            cards[cnt] = Card(i, j);
+            cnt++;
+        }
+    }
+
+    //각 플레이어에게 카드 분배
+    for (int i = 0; i < CARDCOUNT/4; i++) {
+        p1.pushBack(cards[i]);
+    }
+    for (int i = CARDCOUNT / 4; i < CARDCOUNT/2; i++) {
+        p2.pushBack(cards[i]);
+    }
+    for (int i = CARDCOUNT / 2; i < CARDCOUNT * (3/4); i++) {
+        p3.pushBack(cards[i]);
+    }
+    for (int i = CARDCOUNT * (3 / 4); i < CARDCOUNT; i++) {
+        p4.pushBack(cards[i]);
+    }
+}
+
+
+
+
 //메뉴선택
 int ReadyGame()
 {
@@ -346,40 +343,40 @@ int GameKey()
 void StartGame()
 {
     DrawStartGame();
-    //각 사용자 객체 생성
-    Player user;
-    Player com1,com2,com3;
-
-    //카드 나올때마다 배열값 -1
-    //(전역으로수정)int cards[4][5] = { 2, };
-
-
-
     int keyValue = GameKey();
 
+    //각 사용자 객체 생성
+    Player user(1);
+    Player com1(2), com2(3), com3(4);
+    //각 사용자 카드 분배
+    setInitCard(user, com1, com2, com3);
+    int turn = 1;
+    
 
-
-    switch (keyValue)
-    {
-        //종치기
-        case 1 : 
-            break;
-        //카드 내기
-        case 2:
-            break;
-        //게임 종료
-        case 0:
-            return;
-        default:
-            break;
-    }
+   /* while (true) {
+        
 
 
 
 
 
+        turn++;
+    }*/
 
-
+    //switch (keyValue) {
+    //    //종치기
+    //case 1:
+    //    break;
+    //    //카드 내기
+    //case 2:
+    //    break;
+    //    //게임 종료
+    //case 0:
+    //    return;
+    //default:
+    //    break;
+    //}
+    
 
     while (true) {
         if (GetKeyValue() == 27)

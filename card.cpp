@@ -1,17 +1,16 @@
-class Card
-{
-	char type;
-	int number;
-public:
-	Card() {}
-	Card(char type, int num) {
-		this->type = type;
-		this->number = number;
-	}
-	char getType() {
-		return type;
-	}
-	int getNumber() {
-		return number;
-	}
-};
+#include "card.h"
+
+Card::Card() {
+	this->type = 'e';
+	this->num = 0;
+}
+Card::Card(int type, int num) {
+	this->type = type;
+	this->num = num;
+}
+int Card::getType() {
+	return type;
+}
+int Card::getNumber() {
+	return num;
+}

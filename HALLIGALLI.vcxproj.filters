@@ -18,18 +18,27 @@
     <ClCompile Include="main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="class.cpp">
+    <ClCompile Include="player.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="player.cpp">
+    <ClCompile Include="drawCard.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="fruitCard.h">
+    <ClInclude Include="card.cpp">
       <Filter>소스 파일</Filter>
     </ClInclude>
-    <ClInclude Include="card.cpp">
+    <ClInclude Include="card.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="drawCard.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="game.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
   </ItemGroup>

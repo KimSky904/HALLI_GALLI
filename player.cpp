@@ -1,33 +1,49 @@
-class Player {
-	//플레이순서
-	int playOrder;
-	//카드 개수
-	int cardCount;
-	//플레이 가능 여부
-	bool isAvailPlay;
-public:
-	Player() {}
-	Player(int order) {
-		this->playOrder = order;
+#include "player.h"
+//사용자 번호
+Player::Player(int num) { 
+	playerNum = num; 
+}
+//뒤집은 카드스택의 가장 위 카드 반환
+Card Player::getFrontTopCard() {
+	if (front.empty()) return Card();
+	return front.top();
+}
+//뒤집지 않은 카드스택의 가장 위 카드 반환
+Card Player::getBackTopCard() {
+	if (back.empty()) return Card();
+	return back.top();
+}
+//뒤집은/뒤집지 않은 카드의 숫자 반환
+int Player::getFrontCount() {
+	return front.size();
+}
+int Player::getBackCount() {
+	return back.size();
+}
+//카드 추가
+void Player::pushFront(const Card& c) {
+	front.push(c);
+}
+void Player::pushBack(const Card& c) {
+	back.push(c);
+}
+//카드 잃음
+void Player::popFront() {
+	front.pop();
+}
+void Player::popBack() {
+	back.pop();
+}
+//back -> front 카드 뒤집음
+int Player::open() {
+	if (back.empty()) {
+		return -1;
 	}
-	//카드 분배받기
-	void initCard() {
-		cardCount = 28;
-	}
-	//카드 내기
-	void putCard() {
-		cardCount--;
-	}
-	//카드 얻기
-	void getCard() {
-		cardCount++;
-	}
-	//여분 카드 확인
-	void setAvailPlay() {
-		if (cardCount > 0)
-			this->isAvailPlay = true;
-		else
-			this->isAvailPlay = false;
-	}
+	pushFront(getBackTopCard());
+	popBack();
+	return 0;
+}
 
-};
+int Player::getPlayerNum() {
+	return playerNum;
+}
