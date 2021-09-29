@@ -139,16 +139,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="drawCard.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="player.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="card.cpp" />
-    <ClInclude Include="card.h" />
-    <ClInclude Include="drawCard.h" />
-    <ClInclude Include="game.h" />
-    <ClInclude Include="player.h" />
+    <ClCompile Include="cardTest.cpp" />
+    <ClCompile Include="playGame.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="카드종류.txt" />

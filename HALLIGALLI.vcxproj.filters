@@ -15,32 +15,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="playGame.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="player.cpp">
+    <ClCompile Include="cardTest.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="drawCard.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="card.cpp">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="card.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="player.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="drawCard.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="game.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="카드종류.txt">

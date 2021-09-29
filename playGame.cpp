@@ -7,8 +7,7 @@
 #include<Windows.h>
 #include<time.h>	
 #include<list>
-#include "drawCard.h"
-#include "game.h"
+#include <stack>
 using namespace std;
 #define RED         (FOREGROUND_RED | FOREGROUND_INTENSITY)
 #define BLUE        (FOREGROUND_BLUE | FOREGROUND_INTENSITY)
@@ -16,6 +15,215 @@ using namespace std;
 #define GREEN       (FOREGROUND_GREEN | FOREGROUND_INTENSITY)
 #define YELLOW      (RED | GREEN)
 #define WHITE       (RED | GREEN | BLUE)
+#define CARDCOUNT 28*4
+
+
+class Card {
+    int type;
+    int num;
+public:
+    Card() {
+        this->type = 'e';
+        this->num = 0;
+    }
+    Card(int type, int num) {
+        this->type = type;
+        this->num = num;
+    }
+    int getType() {
+        return type;
+    }
+    int getNumber() {
+        return num;
+    }
+};
+class Player {
+    //낸 카드
+    stack<Card> front;
+    //내지 않은 카드
+    stack<Card> back;
+    //플레이어 번호
+    int playerNum;
+public:
+    int getPlayerNum() {
+        return playerNum;
+    }
+    //초반 카드 수 지정
+    Player(int num) {
+        playerNum = num;
+    }
+    //뒤집은 카드스택의 가장 위 카드 반환
+    Card getFrontTopCard() {
+        if (front.empty()) return Card();
+        return front.top();
+    }
+    //뒤집지 않은 카드스택의 가장 위 카드 반환
+    Card getBackTopCard() {
+        if (back.empty()) return Card();
+        return back.top();
+    }
+    //뒤집은/뒤집지 않은 카드의 숫자 반환
+    int getFrontCount() {
+        return front.size();
+    }
+    int getBackCount() {
+        return back.size();
+    }
+    //카드 추가
+    void pushBack(const Card& card) {
+        front.push(card);
+    }
+    void pushFront(const Card& card) {
+        back.push(card);
+    }
+    //카드 잃음ㄴ
+    void popBack() {
+        front.pop();
+    }
+    void popFront() {
+        back.pop();
+    }
+    //back -> front 카드 뒤집음
+    int open() {
+        if (back.empty()) {
+            return -1;
+        }
+        pushFront(getBackTopCard());
+        popBack();
+        return 0;
+    }
+};
+
+
+//빈 카드
+void emptyCardPrint() {
+    cout << "                                               "
+        << "┏━━━━━━━━━━━━━━┓" << endl;
+    for (int i = 0; i < 7; ++i)
+        cout << "                                               "
+        << "┃           ┃" << endl;
+
+    cout << "                                               "
+        << "┗━━━━━━━━━━━━━━┛" << endl;
+}
+
+//앞에 있는 카드 냄
+void frontCardPrint(Card card) {
+    //카드 타입
+    int type = card.getType();
+    char fruit = 'e';
+    switch (type) {
+    case 1: fruit = '!'; break;
+    case 2: fruit = '@'; break;
+    case 3: fruit = '#'; break;
+    case 4: fruit = '$'; break;
+    }
+
+    switch (card.getNumber()) {
+    case 1:
+        cout << "                                               "
+            << "┏━━━━━━━━━━━━━━┓" << endl;
+        cout << "                                               "
+            << "┃           ┃" << endl;
+        cout << "                                               "
+            << "┃           ┃" << endl;
+        cout << "                                               "
+            << "┃           ┃" << endl;
+        cout << "                                               "
+            << "┃     " << fruit << "     ┃" << endl;
+        cout << "                                               "
+            << "┃           ┃" << endl;
+        cout << "                                               "
+            << "┃           ┃" << endl;
+        cout << "                                               "
+            << "┃           ┃" << endl;
+        cout << "                                               "
+            << "┗━━━━━━━━━━━━━━┛" << endl;
+        break;
+    case 2:
+        cout << "                                               "
+            << "┏━━━━━━━━━━━━━━┓" << endl;
+        cout << "                                               "
+            << "┃           ┃" << endl;
+        cout << "                                               "
+            << "┃           ┃" << endl;
+        cout << "                                               "
+            << "┃     " << fruit << "     ┃" << endl;
+        cout << "                                               "
+            << "┃           ┃" << endl;
+        cout << "                                               "
+            << "┃     " << fruit << "     ┃" << endl;
+        cout << "                                               "
+            << "┃           ┃" << endl;
+        cout << "                                               "
+            << "┃           ┃" << endl;
+        cout << "                                               "
+            << "┗━━━━━━━━━━━━━━┛" << endl;
+        break;
+    case 3:
+        cout << "                                               "
+            << "┏━━━━━━━━━━━━━━┓" << endl;
+        cout << "                                               "
+            << "┃           ┃" << endl;
+        cout << "                                               "
+            << "┃           ┃" << endl;
+        cout << "                                               "
+            << "┃     " << fruit << "     ┃" << endl;
+        cout << "                                               "
+            << "┃           ┃" << endl;
+        cout << "                                               "
+            << "┃   " << fruit << "   " << fruit << "   ┃" << endl;
+        cout << "                                               "
+            << "┃           ┃" << endl;
+        cout << "                                               "
+            << "┃           ┃" << endl;
+        cout << "                                               "
+            << "┗━━━━━━━━━━━━━━┛" << endl;
+        break;
+    case 4:
+        cout << "                                               "
+            << "┏━━━━━━━━━━━━━━┓" << endl;
+        cout << "                                               "
+            << "┃           ┃" << endl;
+        cout << "                                               "
+            << "┃   " << fruit << "   " << fruit << "   ┃" << endl;
+        cout << "                                               "
+            << "┃           ┃" << endl;
+        cout << "                                               "
+            << "┃           ┃" << endl;
+        cout << "                                               "
+            << "┃           ┃" << endl;
+        cout << "                                               "
+            << "┃   " << fruit << "   " << fruit << "   ┃" << endl;
+        cout << "                                               "
+            << "┃           ┃" << endl;
+        cout << "                                               "
+            << "┗━━━━━━━━━━━━━━┛" << endl;
+        break;
+    case 5:
+        cout << "                                               "
+            << "┏━━━━━━━━━━━━━━┓" << endl;
+        cout << "                                               "
+            << "┃           ┃" << endl;
+        cout << "                                               "
+            << "┃   " << fruit << "   " << fruit << "   ┃" << endl;
+        cout << "                                               "
+            << "┃           ┃" << endl;
+        cout << "                                               "
+            << "┃     " << fruit << "     ┃" << endl;
+        cout << "                                               "
+            << "┃           ┃" << endl;
+        cout << "                                               "
+            << "┃   " << fruit << "   " << fruit << "   ┃" << endl;
+        cout << "                                               "
+            << "┃           ┃" << endl;
+        cout << "                                               "
+            << "┗━━━━━━━━━━━━━━┛" << endl;
+        break;
+    default:
+        emptyCardPrint();
+    }
+}
 
 
 //콘솔 세팅
@@ -87,8 +295,8 @@ void gotoxy(int x, int y)
 //keyboard 입력값 반환함
 int GetKeyValue()
 {
-    if (_kbhit() != 0) { 
-        return _getch();   
+    if (_kbhit() != 0) {
+        return _getch();
     }
     return 0;
 }
@@ -97,7 +305,6 @@ void PrintString(HANDLE hStdOut, WORD Attribute)
 {
     SetConsoleTextAttribute(hStdOut, Attribute);
 }
-
 //화면로딩 draw
 void DrawLoading() {
 
@@ -127,7 +334,7 @@ void DrawIntro()
 
     PrintString(hStdOut, GREEN);
     gotoxy(30, 20);
-    cout << "◎"; 
+    cout << "◎";
     gotoxy(29, 21);
     cout << "/∥";
     PrintString(hStdOut, RED);
@@ -165,7 +372,7 @@ void DrawStartGame()
     gotoxy(0, 7);
     cout << "▨━━━━━━━━━━━━━━▨";
     gotoxy(0, 8);
-    cout << "보유 카드 수 : "<<" 장";
+    cout << "보유 카드 수 : " << " 장";
     gotoxy(0, 9);
     cout << "판에 놓인 카드 수 : " << " 장";
 
@@ -322,25 +529,20 @@ void DrawInfoScreen() {
 
 
 //[게임진행] 카드분배
-void setInitCard(Player &p1, Player& p2, Player& p3, Player& p4) {
+void setInitCard(Player& p1, Player& p2, Player& p3, Player& p4) {
     srand((unsigned int)time(NULL));
-    //과일별,개수별 카드 객체 생성 => 문제 : 카드 수는 28*4, 랜덤으로 분배되도록 바꿔야함(중복없이)
-    int cnt = 0;
-    for (int i = 0; i < 5; i++) {
-        for (int j = 0; j < 4; j++) {
-            cards[cnt] = Card(i, j);
-            cnt++;
-        }
-    }
-
+    
+ 
+    
+    
     //각 플레이어에게 카드 분배
-    for (int i = 0; i < CARDCOUNT/4; i++) {
+    for (int i = 0; i < CARDCOUNT / 4; i++) {
         p1.pushBack(cards[i]);
     }
-    for (int i = CARDCOUNT / 4; i < CARDCOUNT/2; i++) {
+    for (int i = CARDCOUNT / 4; i < CARDCOUNT / 2; i++) {
         p2.pushBack(cards[i]);
     }
-    for (int i = CARDCOUNT / 2; i < CARDCOUNT * (3/4); i++) {
+    for (int i = CARDCOUNT / 2; i < CARDCOUNT * (3 / 4); i++) {
         p3.pushBack(cards[i]);
     }
     for (int i = CARDCOUNT * (3 / 4); i < CARDCOUNT; i++) {
@@ -355,7 +557,7 @@ void setInitCard(Player &p1, Player& p2, Player& p3, Player& p4) {
 int ReadyGame()
 {
     //시작화면 그리기
-    DrawIntro();    
+    DrawIntro();
     while (true) {
         //키값 받아오기
         int key = GetKeyValue();
@@ -401,32 +603,32 @@ void StartGame()
     //각 사용자 카드 분배
     setInitCard(user, com1, com2, com3);
     int turn = 1;
-    
 
-   /* while (true) {
-        
 
+    /* while (true) {
 
 
 
 
-        turn++;
-    }*/
 
-    //switch (keyValue) {
-    //    //종치기
-    //case 1:
-    //    break;
-    //    //카드 내기
-    //case 2:
-    //    break;
-    //    //게임 종료
-    //case 0:
-    //    return;
-    //default:
-    //    break;
-    //}
-    
+
+         turn++;
+     }*/
+
+     //switch (keyValue) {
+     //    //종치기
+     //case 1:
+     //    break;
+     //    //카드 내기
+     //case 2:
+     //    break;
+     //    //게임 종료
+     //case 0:
+     //    return;
+     //default:
+     //    break;
+     //}
+
 
     while (true) {
         if (GetKeyValue() == 27)
@@ -453,8 +655,8 @@ int main(void)
         if (menuValue == 1) {       //rule
             ShowInfo();
         }
-        else if (menuValue==2) {    //start
-            StartGame();      
+        else if (menuValue == 2) {    //start
+            StartGame();
         }
         else {
             exit(1);

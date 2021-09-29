@@ -1,3 +1,5 @@
+#pragma once
+using namespace std;
 class Card{
 	int type;
 	int num;

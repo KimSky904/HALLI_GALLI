@@ -1,7 +1,11 @@
 #include "player.h"
+#include "card.h"
 //사용자 번호
 Player::Player(int num) { 
 	playerNum = num; 
+}
+int Player::getPlayerNum() {
+	return playerNum;
 }
 //뒤집은 카드스택의 가장 위 카드 반환
 Card Player::getFrontTopCard() {
@@ -42,8 +46,4 @@ int Player::open() {
 	pushFront(getBackTopCard());
 	popBack();
 	return 0;
-}
-
-int Player::getPlayerNum() {
-	return playerNum;
 }

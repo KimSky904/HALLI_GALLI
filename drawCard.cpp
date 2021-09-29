@@ -1,15 +1,26 @@
 ﻿#include "drawCard.h"
 #include <iostream>
 
-void openedPrint(Card card) {
+using namespace std;
+void emptyCardPrint() {
+    cout << "                                               "
+        << "┏━━━━━━━━━━━━━━┓" << endl;
+    for (int i = 0; i < 7; ++i)
+        cout << "                                               "
+        << "┃           ┃" << endl;
+
+    cout << "                                               "
+        << "┗━━━━━━━━━━━━━━┛" << endl;
+}
+void frontCardPrint(Card card) {
     //카드 타입
     int type = card.getType();
     char fruit = 'e';
     switch (type) {
-        case 1: fruit = '🍎'; break;
-        case 2: fruit = '🍌'; break;
-        case 3: fruit = '🍐'; break;
-        case 4: fruit = '🍒'; break;
+        case 1: fruit = '!'; break; 
+        case 2: fruit = '@'; break; 
+        case 3: fruit = '#'; break;     
+        case 4: fruit = '$'; break; 
     }
 
     switch (card.getNumber()) {
@@ -65,7 +76,7 @@ void openedPrint(Card card) {
             cout << "                                               "
                 << "┃           ┃" << endl;
             cout << "                                               "
-                << "│   " << fruit << "   " << fruit << "   │" << endl;
+                << "┃   " << fruit << "   " << fruit << "   ┃" << endl;
             cout << "                                               "
                 << "┃           ┃" << endl;
             cout << "                                               "
@@ -79,7 +90,7 @@ void openedPrint(Card card) {
             cout << "                                               "
                 << "┃           ┃" << endl;
             cout << "                                               "
-                << "│   " << fruit << "   " << fruit << "   │" << endl;
+                << "┃   " << fruit << "   " << fruit << "   ┃" << endl;
             cout << "                                               "
                 << "┃           ┃" << endl;
             cout << "                                               "
@@ -87,7 +98,7 @@ void openedPrint(Card card) {
             cout << "                                               "
                 << "┃           ┃" << endl;
             cout << "                                               "
-                << "│   " << fruit << "   " << fruit << "   │" << endl;
+                << "┃   " << fruit << "   " << fruit << "   ┃" << endl;
             cout << "                                               "
                 << "┃           ┃" << endl;
             cout << "                                               "
@@ -99,7 +110,7 @@ void openedPrint(Card card) {
             cout << "                                               "
                 << "┃           ┃" << endl;
             cout << "                                               "
-                << "│   " << fruit << "   " << fruit << "   │" << endl;
+                << "┃   " << fruit << "   " << fruit << "   ┃" << endl;
             cout << "                                               "
                 << "┃           ┃" << endl;
             cout << "                                               "
@@ -107,25 +118,14 @@ void openedPrint(Card card) {
             cout << "                                               "
                 << "┃           ┃" << endl;
             cout << "                                               "
-                << "│   " << fruit << "   " << fruit << "   │" << endl;
+                << "┃   " << fruit << "   " << fruit << "   ┃" << endl;
             cout << "                                               "
                 << "┃           ┃" << endl;
             cout << "                                               "
                 << "┗━━━━━━━━━━━━━━┛" << endl;
             break;
         default:
-            emptyPrint();
+            emptyCardPrint();
     }
 }
 
-
-void emptyPrint() {
-    cout << "                                               "
-        << "┌───────────┐" << endl;
-    for (int i = 0; i < 7; ++i)
-        cout << "                                               "
-        << "│           │" << endl;
-
-    cout << "                                               "
-        << "└───────────┘" << endl;
-}
