@@ -215,8 +215,14 @@ void getAllFrontCard(Player& winner,Player& looser1, Player& looser2, Player& lo
 //[종을 잘못쳤을 경우] back 카드를 모든 사용자의 back에 한장씩 줌
 void missRinging(Player& p1, Player& p2, Player& p3, Player& p4) {
     cout << "종을 잘못쳤으므로 카드를 나누어줍니다." << endl;
+    //플레이 가능한 인원 수 세기
+    int cnt = 0;
+    if (p1.getAvailable()) cnt++;
+    if (p2.getAvailable()) cnt++;
+    if (p3.getAvailable()) cnt++;
+    if (p4.getAvailable()) cnt++;
     //back 카드가 없을 경우,부족한 경우 탈락
-    if (p1.backIsEmpty() || p1.getBackCount() < 3) {
+    if (p1.backIsEmpty() || p1.getBackCount() < cnt-1) {
         cout << "상대에게 줄 카드가 부족하여 탈락되었습니다." << endl;
         p1.setNoneAvailable();
         return;
@@ -294,7 +300,24 @@ int main() {
     int input = 0;
     int turn = -1;
     while(true) {
-        if (!user.getAvailable() || !p1.getAvailable() || !p2.getAvailable() || !p3.getAvailable()) break;
+        // (1:1:1:1) 한명의 플레이어만 남았을 경우
+        if ((int)user.getAvailable() + (int)p1.getAvailable() + (int)p2.getAvailable() + (int)p3.getAvailable() == 1) {
+            if (user.getAvailable()) {
+                cout << "승자는 Player1 입니다." << endl;
+            } 
+            else if (p1.getAvailable()) {
+                cout << "승자는 Player2 입니다." << endl;
+            }
+            else if (p2.getAvailable()) {
+                cout << "승자는 Player3 입니다." << endl;
+            }
+            else if (p3.getAvailable()) {
+                cout << "승자는 Player4 입니다." << endl;
+            }
+            
+            break;
+        }
+
         turn++;
         if (turn % 4 == 0) {
             if (!user.getAvailable()) {
