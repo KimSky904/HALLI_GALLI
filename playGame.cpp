@@ -635,19 +635,31 @@ void getAllFrontCard(Player& winner, Player& looser1, Player& looser2, Player& l
 //[판별] 종 잘못쳤을 경우 - 각 player에게 카드 한장씩 back에 넘김
 void missRinging(Player& p1, Player& p2, Player& p3, Player& p4) {
     cout << "종을 잘못쳤으므로 카드를 나누어줍니다." << endl;
+    //플레이 가능한 인원 수 세기
+    int cnt = 0;
+    if (p1.getAvailable()) cnt++;
+    if (p2.getAvailable()) cnt++;
+    if (p3.getAvailable()) cnt++;
+    if (p4.getAvailable()) cnt++;
     //back 카드가 없을 경우,부족한 경우 탈락
-    if (p1.backIsEmpty() || p1.getBackCount() < 3) {
+    if (p1.backIsEmpty() || p1.getBackCount() < cnt - 1) {
         cout << "상대에게 줄 카드가 부족하여 탈락되었습니다." << endl;
         p1.setNoneAvailable();
         return;
     }
-    //카드 나눠주기
-    p2.pushBack(p1.getBackTopCard());
-    p1.popBack();
-    p3.pushBack(p1.getBackTopCard());
-    p1.popBack();
-    p4.pushBack(p1.getBackTopCard());
-    p1.popBack();
+    //게임플레이 가능한 인원 카드 나눠주기
+    if (p2.getAvailable()) {
+        p2.pushBack(p1.getBackTopCard());
+        p1.popBack();
+    }
+    if (p3.getAvailable()) {
+        p3.pushBack(p1.getBackTopCard());
+        p1.popBack();
+    }
+    if (p4.getAvailable()) {
+        p4.pushBack(p1.getBackTopCard());
+        p1.popBack();
+    }
     //카드를 준 후에 카드가 없을 경우 탈락
     if (p1.backIsEmpty()) {
         cout << "카드를 주고 남은 카드가 없어 탈락되었습니다." << endl;
@@ -664,6 +676,19 @@ void printTableInfo(Player& user, Player& p1, Player& p2, Player& p3) {
     p1.getFrontTopCard().getInfo(); cout << ", ";
     p2.getFrontTopCard().getInfo(); cout << ", ";
     p3.getFrontTopCard().getInfo();
+    cout << "]" << endl;
+}
+//[출력] 사용자 카드 정보
+void printBackInfo(Player& user, Player& p1, Player& p2, Player& p3) {
+    cout << "현재 사용자 카드 [";
+    if (user.getBackCount() != 0) { user.getBackTopCard().getInfo(); cout << ", "; }
+    else { cout << "[ 0 , 0 ], "; }
+    if (p1.getBackCount() != 0) { p1.getBackTopCard().getInfo(); cout << ", "; }
+    else { cout << "[ 0 , 0 ], "; }
+    if (p2.getBackCount() != 0) { p2.getBackTopCard().getInfo(); cout << ", "; }
+    else { cout << "[ 0 , 0 ], "; }
+    if (p3.getBackCount() != 0) { p3.getBackTopCard().getInfo(); }
+    else { cout << "[ 0 , 0 ]"; }
     cout << "]" << endl;
 }
 
@@ -714,103 +739,154 @@ void StartGame()
     //카드 랜덤배치,사용자에게 카드 분배
     setInitCard(user, p1, p2, p3);
     //반복
-    int turn = 0;
+    int input = 0;
+    int turn = -1;
     while (true) {
-        int keyValue = GameKey();
+        // (1:1:1:1) 한명의 플레이어만 남았을 경우
+        if ((int)user.getAvailable() + (int)p1.getAvailable() + (int)p2.getAvailable() + (int)p3.getAvailable() == 1) {
+            if (user.getAvailable()) {
+                cout << "승자는 Player1 입니다." << endl;
+            }
+            else if (p1.getAvailable()) {
+                cout << "승자는 Player2 입니다." << endl;
+            }
+            else if (p2.getAvailable()) {
+                cout << "승자는 Player3 입니다." << endl;
+            }
+            else if (p3.getAvailable()) {
+                cout << "승자는 Player4 입니다." << endl;
+            }
 
+            break;
+        }
+
+        turn++;
         if (turn % 4 == 0) {
-            cout << "[ " << user.getPlayerNum() << "번 차례 ]" << endl;
-            user.open();
-            printTableInfo(user, p1, p2, p3);
-            if (keyValue == 1) {
-                cout << "종을 쳤습니다." << endl;
-                //과일 5개일때 쳤을 경우
-                if (checkFiveCard(user, p1, p2, p3)) {
-                    //테이블 위의 카드 모두 가져감
-                    getAllFrontCard(user, p1, p2, p3);
-                }
-                //잘못 쳤을 경우
-                else {
-                    missRinging(user, p1, p2, p3);
-                }
+            if (!user.getAvailable()) {
+                cout << "[ 1번은 탈락되어 skip되었습니다. ]" << endl;
+                continue;
             }
             else {
-                cout << "종을 치지 않았습니다. 다음 턴으로 넘어갑니다." << endl;
+                cout << "[ " << user.getPlayerNum() << "번 차례 ]" << endl;
+                if (user.open() == -1) continue;
+                printTableInfo(user, p1, p2, p3);
+                printBackInfo(user, p1, p2, p3);
+                cout << "테이블 카드 개수 : " << user.getFrontCount() << endl;
+                cout << "사용자 카드 개수 : " << user.getBackCount() << endl;
+                cin >> input;
+                if (input == 1) {
+                    cout << "종을 쳤습니다." << endl;
+                    //과일 5개일때 쳤을 경우
+                    if (checkFiveCard(user, p1, p2, p3)) {
+                        //테이블 위의 카드 모두 가져감
+                        getAllFrontCard(user, p1, p2, p3);
+                    }
+                    //잘못 쳤을 경우
+                    else {
+                        missRinging(user, p1, p2, p3);
+                    }
+                }
+                else {
+                    cout << "종을 치지 않았습니다. 다음 턴으로 넘어갑니다." << endl;
+                }
             }
-
         }
         else if (turn % 4 == 1) {
-            cout << "[ " << p1.getPlayerNum() << "번 차례 ]" << endl;
-            p1.open();
-            printTableInfo(user, p1, p2, p3);
-            if (keyValue == 1) {
-                cout << "종을 쳤습니다." << endl;
-                //과일 5개일때 쳤을 경우
-                if (checkFiveCard(p1, user, p2, p3)) {
-                    //테이블 위의 카드 모두 가져감
-                    getAllFrontCard(p1, user, p2, p3);
-                }
-                //잘못 쳤을 경우
-                else {
-                    missRinging(p1, user, p2, p3);
-                }
+            if (!p1.getAvailable()) {
+                cout << "[ 2번은 탈락되어 skip되었습니다. ]" << endl;
+                continue;
             }
             else {
-                cout << "종을 치지 않았습니다. 다음 턴으로 넘어갑니다." << endl;
+                cout << "[ " << p1.getPlayerNum() << "번 차례 ]" << endl;
+                if (p1.open() == -1) continue;
+                printTableInfo(user, p1, p2, p3);
+                printBackInfo(user, p1, p2, p3);
+                cout << "테이블 카드 개수 : " << p1.getFrontCount() << endl;
+                cout << "사용자 카드 개수 : " << p1.getBackCount() << endl;
+                cin >> input;
+                if (input == 1) {
+                    cout << "종을 쳤습니다." << endl;
+                    //과일 5개일때 쳤을 경우
+                    if (checkFiveCard(p1, user, p2, p3)) {
+                        //테이블 위의 카드 모두 가져감
+                        getAllFrontCard(p1, user, p2, p3);
+                    }
+                    //잘못 쳤을 경우
+                    else {
+                        missRinging(p1, user, p2, p3);
+                    }
+                }
+                else {
+                    cout << "종을 치지 않았습니다. 다음 턴으로 넘어갑니다." << endl;
+                }
             }
         }
         else if (turn % 4 == 2) {
-            cout << "[ " << p2.getPlayerNum() << "번 차례 ]" << endl;
-            p2.open();
-            printTableInfo(user, p1, p2, p3);
-            if (keyValue == 1) {
-                cout << "종을 쳤습니다." << endl;
-                //과일 5개일때 쳤을 경우
-                if (checkFiveCard(p2, user, p1, p3)) {
-                    //테이블 위의 카드 모두 가져감
-                    getAllFrontCard(p2, user, p1, p3);
-                }
-                //잘못 쳤을 경우
-                else {
-                    missRinging(p2, user, p1, p3);
-                }
+            if (!p2.getAvailable()) {
+                cout << "[ 3번은 탈락되어 skip되었습니다. ]" << endl;
+                continue;
             }
             else {
-                cout << "종을 치지 않았습니다. 다음 턴으로 넘어갑니다." << endl;
+                cout << "[ " << p2.getPlayerNum() << "번 차례 ]" << endl;
+                if (p2.open() == -1) continue;
+                printTableInfo(user, p1, p2, p3);
+                printBackInfo(user, p1, p2, p3);
+                cout << "테이블 카드 개수 : " << p2.getFrontCount() << endl;
+                cout << "사용자 카드 개수 : " << p2.getBackCount() << endl;
+                cin >> input;
+                if (input == 1) {
+                    cout << "종을 쳤습니다." << endl;
+                    //과일 5개일때 쳤을 경우
+                    if (checkFiveCard(p2, user, p1, p3)) {
+                        //테이블 위의 카드 모두 가져감
+                        getAllFrontCard(p2, user, p1, p3);
+                    }
+                    //잘못 쳤을 경우
+                    else {
+                        missRinging(p2, user, p1, p3);
+                    }
+                }
+                else {
+                    cout << "종을 치지 않았습니다. 다음 턴으로 넘어갑니다." << endl;
+                }
             }
         }
         else if (turn % 4 == 3) {
-            cout << "[ " << p3.getPlayerNum() << "번 차례 ]" << endl;
-            p3.open();
-            printTableInfo(user, p1, p2, p3);
-            if (keyValue == 1) {
-                cout << "종을 쳤습니다." << endl;
-                //과일 5개일때 쳤을 경우
-                if (checkFiveCard(p3, p1, p2, user)) {
-                    //테이블 위의 카드 모두 가져감
-                    getAllFrontCard(p3, p1, p2, user);
-                }
-                //잘못 쳤을 경우
-                else {
-                    //각 인원에게 카드 하나씩 줌, 카드수 부족할 시 탈락
-                    missRinging(p3, p1, p2, user);
-                }
+            if (!p3.getAvailable()) {
+                cout << "[ 4번은 탈락되어 skip되었습니다. ]" << endl;
+                continue;
             }
             else {
-                cout << "종을 치지 않았습니다. 다음 턴으로 넘어갑니다." << endl;
+                cout << "[ " << p3.getPlayerNum() << "번 차례 ]" << endl;
+                if (p3.open() == -1) continue;
+                printTableInfo(user, p1, p2, p3);
+                printBackInfo(user, p1, p2, p3);
+                cout << "테이블 카드 개수 : " << p3.getFrontCount() << endl;
+                cout << "사용자 카드 개수 : " << p3.getBackCount() << endl;
+                cin >> input;
+                if (input == 1) {
+
+                    cout << "종을 쳤습니다." << endl;
+                    //과일 5개일때 쳤을 경우
+                    if (checkFiveCard(p3, p1, p2, user)) {
+                        //테이블 위의 카드 모두 가져감
+                        getAllFrontCard(p3, p1, p2, user);
+                    }
+                    //잘못 쳤을 경우
+                    else {
+                        //각 인원에게 카드 하나씩 줌, 카드수 부족할 시 탈락
+                        missRinging(p3, p1, p2, user);
+                    }
+                }
+                else {
+                    cout << "종을 치지 않았습니다. 다음 턴으로 넘어갑니다." << endl;
+                }
             }
         }
         cout << "==========================================================" << endl;
-
-
-        if (GetKeyValue() == 27)
-            break;
-        turn++;
+        //게임 나가기 (강제종료)
+        if (GetKeyValue() == 27) break;    
     }
-
-
-
-
 
 
     while (true) {
