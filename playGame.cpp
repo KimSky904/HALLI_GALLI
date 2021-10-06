@@ -78,6 +78,7 @@ public:
     //초반 카드 수 지정
     Player(int num) {
         playerNum = num;
+        available = true;
     }
     //뒤집은 카드스택의 가장 위 카드 반환
     Card getFrontTopCard() {
@@ -367,20 +368,23 @@ void DrawIntro()
 
 
     PrintString(hStdOut, GREEN);
-    gotoxy(30, 20);
+    gotoxy(26, 18);
     cout << "◎";
-    gotoxy(29, 21);
+    gotoxy(25, 19);
     cout << "/∥";
     PrintString(hStdOut, RED);
-    gotoxy(28, 22);
-    cout << "▨▨▨";
-    gotoxy(27, 23);
-    cout << "▨▨▨▨";
-    gotoxy(27, 24);
-    cout << "▨▨▨▨▨▨▨";
-    gotoxy(28, 25);
-    cout << "▨▨▨▨";
-
+    gotoxy(24, 20);
+    cout << "▨▨            ▨▨";
+    gotoxy(23, 21);
+    cout << "▨▨▨▨        ▨▨▨▨";
+    gotoxy(22, 22);
+    cout << "▨▨▨▨▨▨    ▨▨▨▨▨▨";
+    gotoxy(22, 23);
+    cout << "▨▨▨▨▨▨    ▨▨▨▨▨▨";
+    gotoxy(23, 24);
+    cout << "▨▨▨▨        ▨▨▨▨";
+    gotoxy(24, 25);
+    cout << "▨▨            ▨▨";
 
     PrintString(hStdOut, WHITE);
     gotoxy(24, 28);
@@ -634,7 +638,7 @@ void getAllFrontCard(Player& winner, Player& looser1, Player& looser2, Player& l
 }
 //[판별] 종 잘못쳤을 경우 - 각 player에게 카드 한장씩 back에 넘김
 void missRinging(Player& p1, Player& p2, Player& p3, Player& p4) {
-    cout << "종을 잘못쳤으므로 카드를 나누어줍니다." << endl;
+    //cout << "종을 잘못쳤으므로 카드를 나누어줍니다." << endl;
     //플레이 가능한 인원 수 세기
     int cnt = 0;
     if (p1.getAvailable()) cnt++;
@@ -643,7 +647,7 @@ void missRinging(Player& p1, Player& p2, Player& p3, Player& p4) {
     if (p4.getAvailable()) cnt++;
     //back 카드가 없을 경우,부족한 경우 탈락
     if (p1.backIsEmpty() || p1.getBackCount() < cnt - 1) {
-        cout << "상대에게 줄 카드가 부족하여 탈락되었습니다." << endl;
+        //cout << "상대에게 줄 카드가 부족하여 탈락되었습니다." << endl;
         p1.setNoneAvailable();
         return;
     }
@@ -662,7 +666,7 @@ void missRinging(Player& p1, Player& p2, Player& p3, Player& p4) {
     }
     //카드를 준 후에 카드가 없을 경우 탈락
     if (p1.backIsEmpty()) {
-        cout << "카드를 주고 남은 카드가 없어 탈락되었습니다." << endl;
+       // cout << "카드를 주고 남은 카드가 없어 탈락되었습니다." << endl;
         p1.setNoneAvailable();
     }
     return;
@@ -730,6 +734,29 @@ int GameKey()
     }
     return 0;
 }
+
+void printPlayersCardInfo(Player &p1,Player &p2,Player &p3,Player &p4) {
+    gotoxy(0, 8);
+    cout << "보유 카드 수 : " << p1.getBackCount() <<" 장";
+    gotoxy(0, 9);
+    cout << "판에 놓인 카드 수 : " << p1.getFrontCount() << " 장";
+
+    gotoxy(48, 8);
+    cout << "보유 카드 수 : " << p2.getBackCount() << " 장";
+    gotoxy(48, 9);
+    cout << "판에 놓인 카드 수 : " << p2.getFrontCount() << " 장";
+
+    gotoxy(0, 30);
+    cout << "보유 카드 수 : " << p3.getBackCount() << " 장";
+    gotoxy(0, 31);
+    cout << "판에 놓인 카드 수 : " << p3.getFrontCount() << " 장";
+
+    gotoxy(48, 30);
+    cout << "보유 카드 수 : " << p4.getBackCount() << " 장";
+    gotoxy(48, 31);
+    cout << "판에 놓인 카드 수 : " << p4.getFrontCount() << " 장";
+}
+
 //게임 시작
 void StartGame()
 {
@@ -762,128 +789,163 @@ void StartGame()
 
         turn++;
         if (turn % 4 == 0) {
+            printPlayersCardInfo(user, p1, p2, p3);
             if (!user.getAvailable()) {
-                cout << "[ 1번은 탈락되어 skip되었습니다. ]" << endl;
+                gotoxy(23, 7);
+                cout << "                                       ";
+                gotoxy(23, 7);
+                cout << "[ 1번은 탈락되어 skip되었습니다. ]";
                 continue;
             }
             else {
-                cout << "[ " << user.getPlayerNum() << "번 차례 ]" << endl;
+                gotoxy(23, 7);
+                cout << "                                                      ";
+                gotoxy(23, 7);
+                cout << "    [ " << user.getPlayerNum() << "번 차례 ]";
                 if (user.open() == -1) continue;
-                printTableInfo(user, p1, p2, p3);
-                printBackInfo(user, p1, p2, p3);
-                cout << "테이블 카드 개수 : " << user.getFrontCount() << endl;
-                cout << "사용자 카드 개수 : " << user.getBackCount() << endl;
+                //printTableInfo(user, p1, p2, p3);
+                //printBackInfo(user, p1, p2, p3);
+                //cout << "테이블 카드 개수 : " << user.getFrontCount() << endl;
+                //cout << "사용자 카드 개수 : " << user.getBackCount() << endl;
+                gotoxy(26, 8);
                 cin >> input;
                 if (input == 1) {
-                    cout << "종을 쳤습니다." << endl;
+                    gotoxy(24, 9);
+                    cout << "[ 1번 player : 종을 쳤습니다 ]";
                     //과일 5개일때 쳤을 경우
                     if (checkFiveCard(user, p1, p2, p3)) {
                         //테이블 위의 카드 모두 가져감
                         getAllFrontCard(user, p1, p2, p3);
+                        printPlayersCardInfo(user, p1, p2, p3);
                     }
                     //잘못 쳤을 경우
                     else {
                         missRinging(user, p1, p2, p3);
+                        printPlayersCardInfo(user, p1, p2, p3);
                     }
                 }
                 else {
-                    cout << "종을 치지 않았습니다. 다음 턴으로 넘어갑니다." << endl;
+                    gotoxy(15, 9);
+                    cout << "[ 1번 player : 종을 치지 않았습니다. 다음 턴으로 넘어갑니다. ]";
                 }
             }
         }
         else if (turn % 4 == 1) {
+            printPlayersCardInfo(user, p1, p2, p3);
             if (!p1.getAvailable()) {
-                cout << "[ 2번은 탈락되어 skip되었습니다. ]" << endl;
+                gotoxy(23, 7);
+                cout << "[ 2번은 탈락되어 skip되었습니다. ]";
                 continue;
             }
             else {
-                cout << "[ " << p1.getPlayerNum() << "번 차례 ]" << endl;
+                gotoxy(26, 7);
+                cout << "[ " << p1.getPlayerNum() << "번 차례 ]";
                 if (p1.open() == -1) continue;
-                printTableInfo(user, p1, p2, p3);
-                printBackInfo(user, p1, p2, p3);
-                cout << "테이블 카드 개수 : " << p1.getFrontCount() << endl;
-                cout << "사용자 카드 개수 : " << p1.getBackCount() << endl;
+                //printTableInfo(user, p1, p2, p3);
+                //printBackInfo(user, p1, p2, p3);
+                //cout << "테이블 카드 개수 : " << p1.getFrontCount() << endl;
+                //cout << "사용자 카드 개수 : " << p1.getBackCount() << endl;
+                gotoxy(26, 8);
                 cin >> input;
                 if (input == 1) {
-                    cout << "종을 쳤습니다." << endl;
+                    gotoxy(24, 9);
+                    cout << "[ 2번 player : 종을 쳤습니다 ]";
                     //과일 5개일때 쳤을 경우
                     if (checkFiveCard(p1, user, p2, p3)) {
                         //테이블 위의 카드 모두 가져감
                         getAllFrontCard(p1, user, p2, p3);
+                        printPlayersCardInfo(user, p1, p2, p3);
                     }
                     //잘못 쳤을 경우
                     else {
                         missRinging(p1, user, p2, p3);
+                        printPlayersCardInfo(user, p1, p2, p3);
                     }
                 }
                 else {
-                    cout << "종을 치지 않았습니다. 다음 턴으로 넘어갑니다." << endl;
+                    gotoxy(15, 9);
+                    cout << "[ 2번 player : 종을 치지 않았습니다. 다음 턴으로 넘어갑니다. ]";
                 }
             }
         }
         else if (turn % 4 == 2) {
+            printPlayersCardInfo(user, p1, p2, p3);
             if (!p2.getAvailable()) {
-                cout << "[ 3번은 탈락되어 skip되었습니다. ]" << endl;
+                gotoxy(23, 7);
+                cout << "[ 3번은 탈락되어 skip되었습니다. ]";
                 continue;
             }
             else {
-                cout << "[ " << p2.getPlayerNum() << "번 차례 ]" << endl;
+                gotoxy(26, 7);
+                cout << "[ " << p2.getPlayerNum() << "번 차례 ]";
                 if (p2.open() == -1) continue;
-                printTableInfo(user, p1, p2, p3);
-                printBackInfo(user, p1, p2, p3);
-                cout << "테이블 카드 개수 : " << p2.getFrontCount() << endl;
-                cout << "사용자 카드 개수 : " << p2.getBackCount() << endl;
+                //printTableInfo(user, p1, p2, p3);
+                //printBackInfo(user, p1, p2, p3);
+                //cout << "테이블 카드 개수 : " << p2.getFrontCount() << endl;
+                //cout << "사용자 카드 개수 : " << p2.getBackCount() << endl;
+                gotoxy(26, 8);
                 cin >> input;
                 if (input == 1) {
-                    cout << "종을 쳤습니다." << endl;
+                    gotoxy(24, 9);
+                    cout << "[ 3번 player : 종을 쳤습니다 ]";
                     //과일 5개일때 쳤을 경우
                     if (checkFiveCard(p2, user, p1, p3)) {
                         //테이블 위의 카드 모두 가져감
                         getAllFrontCard(p2, user, p1, p3);
+                        printPlayersCardInfo(user, p1, p2, p3);
                     }
                     //잘못 쳤을 경우
                     else {
                         missRinging(p2, user, p1, p3);
+                        printPlayersCardInfo(user, p1, p2, p3);
                     }
                 }
                 else {
-                    cout << "종을 치지 않았습니다. 다음 턴으로 넘어갑니다." << endl;
+                    gotoxy(15, 9);
+                    cout << "[ 3번 player : 종을 치지 않았습니다. 다음 턴으로 넘어갑니다. ]";
                 }
             }
         }
         else if (turn % 4 == 3) {
+            printPlayersCardInfo(user, p1, p2, p3);
             if (!p3.getAvailable()) {
-                cout << "[ 4번은 탈락되어 skip되었습니다. ]" << endl;
+                gotoxy(23, 7);
+                cout << "[ 4번은 탈락되어 skip되었습니다. ]";
                 continue;
             }
             else {
-                cout << "[ " << p3.getPlayerNum() << "번 차례 ]" << endl;
+                gotoxy(26, 7);
+                cout << "[ " << p3.getPlayerNum() << "번 차례 ]";
                 if (p3.open() == -1) continue;
-                printTableInfo(user, p1, p2, p3);
-                printBackInfo(user, p1, p2, p3);
-                cout << "테이블 카드 개수 : " << p3.getFrontCount() << endl;
-                cout << "사용자 카드 개수 : " << p3.getBackCount() << endl;
+                //printTableInfo(user, p1, p2, p3);
+                //printBackInfo(user, p1, p2, p3);
+                //cout << "테이블 카드 개수 : " << p3.getFrontCount() << endl;
+                //cout << "사용자 카드 개수 : " << p3.getBackCount() << endl;
+                gotoxy(26, 8);
                 cin >> input;
                 if (input == 1) {
-
-                    cout << "종을 쳤습니다." << endl;
+                    gotoxy(24, 9);
+                    cout << "[ 4번 player : 종을 쳤습니다 ]";
                     //과일 5개일때 쳤을 경우
                     if (checkFiveCard(p3, p1, p2, user)) {
                         //테이블 위의 카드 모두 가져감
                         getAllFrontCard(p3, p1, p2, user);
+                        printPlayersCardInfo(user, p1, p2, p3);
                     }
                     //잘못 쳤을 경우
                     else {
                         //각 인원에게 카드 하나씩 줌, 카드수 부족할 시 탈락
                         missRinging(p3, p1, p2, user);
+                        printPlayersCardInfo(user, p1, p2, p3);
                     }
                 }
                 else {
-                    cout << "종을 치지 않았습니다. 다음 턴으로 넘어갑니다." << endl;
+                    gotoxy(15, 9);
+                    cout << "[ 4번 player : 종을 치지 않았습니다. 다음 턴으로 넘어갑니다. ]";
                 }
             }
         }
-        cout << "==========================================================" << endl;
+        //  cout << "==========================================================" << endl;
         //게임 나가기 (강제종료)
         if (GetKeyValue() == 27) break;    
     }

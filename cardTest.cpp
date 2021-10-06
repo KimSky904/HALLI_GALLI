@@ -1,4 +1,4 @@
-#include<stack>
+ï»¿#include<stack>
 #include<iostream>	
 using namespace std;
 #define CARDCOUNT 20*4
@@ -20,33 +20,33 @@ public:
     int getNumber() {
         return num;
     }
-    //Ãâ·Â
+    //ì¶œë ¥
     void getInfo() {
         cout <<"[ " << type << " , "<<num << " ]";
     }
 };
 class Player {
-    //³½ Ä«µå
+    //ë‚¸ ì¹´ë“œ
     stack<Card> front;
-    //³»Áö ¾ÊÀº Ä«µå
+    //ë‚´ì§€ ì•Šì€ ì¹´ë“œ
     stack<Card> back;
-    //ÇÃ·¹ÀÌ¾î ¹øÈ£
+    //í”Œë ˆì´ì–´ ë²ˆí˜¸
     int playerNum;
-    //ÇÃ·¹ÀÌ °¡´É ¿©ºÎ
+    //í”Œë ˆì´ ê°€ëŠ¥ ì—¬ë¶€
     bool available;
 public:
-    //Å»¶ôÃ³¸®
+    //íƒˆë½ì²˜ë¦¬
     void setNoneAvailable() {
         available = false;
-        cout << playerNum << "¹ø »ç¿ëÀÚ°¡ Å»¶ôµÇ¾ú½À´Ï´Ù." << endl;
-        //³²Àº Ä«µå Á¦°Å
+        cout << playerNum << "ë²ˆ ì‚¬ìš©ìê°€ íƒˆë½ë˜ì—ˆìŠµë‹ˆë‹¤." << endl;
+        //ë‚¨ì€ ì¹´ë“œ ì œê±°
         while (!front.empty()) front.pop();
         while (!back.empty()) back.pop();
     }
     bool getAvailable() {
         return available;
     }
-    //Ãâ·Â
+    //ì¶œë ¥
     void getInfo() {
         cout << "[ " << playerNum<<" ]" << endl;
         cout << "front [";
@@ -63,44 +63,44 @@ public:
     int getPlayerNum() {
         return playerNum;
     }
-    //ÃÊ¹İ Ä«µå ¼ö ÁöÁ¤
+    //ì´ˆë°˜ ì¹´ë“œ ìˆ˜ ì§€ì •
     Player(int num) {
         playerNum = num;
         available = true;
     }
-    //µÚÁıÀº Ä«µå½ºÅÃÀÇ °¡Àå À§ Ä«µå ¹İÈ¯
+    //ë’¤ì§‘ì€ ì¹´ë“œìŠ¤íƒì˜ ê°€ì¥ ìœ„ ì¹´ë“œ ë°˜í™˜
     Card getFrontTopCard() {
         if (front.empty()) return Card();
         return front.top();
     }
-    //µÚÁıÁö ¾ÊÀº Ä«µå½ºÅÃÀÇ °¡Àå À§ Ä«µå ¹İÈ¯
+    //ë’¤ì§‘ì§€ ì•Šì€ ì¹´ë“œìŠ¤íƒì˜ ê°€ì¥ ìœ„ ì¹´ë“œ ë°˜í™˜
     Card getBackTopCard() {
         //if (back.empty()) return Card();
         return back.top();
     }
-    //µÚÁıÀº/µÚÁıÁö ¾ÊÀº Ä«µåÀÇ ¼ıÀÚ ¹İÈ¯
+    //ë’¤ì§‘ì€/ë’¤ì§‘ì§€ ì•Šì€ ì¹´ë“œì˜ ìˆ«ì ë°˜í™˜
     int getFrontCount() {
         return front.size();
     }
     int getBackCount() {
         return back.size();
     }
-    //Ä«µå Ãß°¡
+    //ì¹´ë“œ ì¶”ê°€
     void pushBack(const Card& card) {
-        //cout << "pushµÊ, "<< getBackCount() << endl;
+        //cout << "pushë¨, "<< getBackCount() << endl;
         back.push(card);
     }
     void pushFront(const Card& card) {
         front.push(card);
     }
-    //Ä«µå ÀÒÀ½¤¤
+    //ì¹´ë“œ ìƒìŒã„´
     void popBack() {
         back.pop();
     }
     void popFront() {
         front.pop();
     }
-    //back -> front Ä«µå µÚÁıÀ½
+    //back -> front ì¹´ë“œ ë’¤ì§‘ìŒ
     int open() {
         if (back.empty()) {
             setNoneAvailable();
@@ -117,24 +117,24 @@ public:
         return front.empty();
     }
 };
-//Ä«µå
-Card cards[CARDCOUNT] = { //°úÀÏº° Ä«µå 20Àå (1:6,2:5,3:4,4:3,5:2)
-    //»ç°ú
+//ì¹´ë“œ
+Card cards[CARDCOUNT] = { //ê³¼ì¼ë³„ ì¹´ë“œ 20ì¥ (1:6,2:5,3:4,4:3,5:2)
+    //ì‚¬ê³¼
     Card(1,1),Card(1,1),Card(1,1),Card(1,1),Card(1,1),
     Card(1,1),Card(1,2),Card(1,2),Card(1,2),Card(1,2),
     Card(1,2),Card(1,3),Card(1,3),Card(1,3),Card(1,3),
     Card(1,4),Card(1,4),Card(1,4),Card(1,5),Card(1,5),
-    //¹Ù³ª³ª
+    //ë°”ë‚˜ë‚˜
     Card(2,1),Card(2,1),Card(2,1),Card(2,1),Card(2,1),
     Card(2,1),Card(2,2),Card(2,2),Card(2,2),Card(2,2),
     Card(2,2),Card(2,3),Card(2,3),Card(2,3),Card(2,3),
     Card(2,4),Card(2,4),Card(2,4),Card(2,5),Card(2,5),
-    //¹è
+    //ë°°
     Card(3,1),Card(3,1),Card(3,1),Card(3,1),Card(3,1),
     Card(3,1),Card(3,2),Card(3,2),Card(3,2),Card(3,2),
     Card(3,2),Card(3,3),Card(3,3),Card(3,3),Card(3,3),
     Card(3,4),Card(3,4),Card(3,4),Card(3,5),Card(3,5),
-    //Ã¼¸®
+    //ì²´ë¦¬
     Card(4,1),Card(4,1),Card(4,1),Card(4,1),Card(4,1),
     Card(4,1),Card(4,2),Card(4,2),Card(4,2),Card(4,2),
     Card(4,2),Card(4,3),Card(4,3),Card(4,3),Card(4,3),
@@ -147,17 +147,17 @@ void swap(Card* A, Card* B)
     *A = *B;
     *B = temp;
 }
-void randomCard(Card* card){   // ¿©±â¼­ ÁÖ¸ñ ÇØ¾ß ÇÒ ÇÔ¼ö.
-    int i;  // ¹İº¹¹®¿¡ ¾²ÀÏ º¯¼ö
+void randomCard(Card* card){   // ì—¬ê¸°ì„œ ì£¼ëª© í•´ì•¼ í•  í•¨ìˆ˜.
+    int i;  // ë°˜ë³µë¬¸ì— ì“°ì¼ ë³€ìˆ˜
     for (i = 0; i < CARDCOUNT; i++)
     {
-        // ÇöÀç À§Ä¡ÀÇ Ä«µå¿Í ÇöÀç À§Ä¡ÀÇ ´ÙÀ½À§Ä¡¿¡¼­ ·£´ıÇÏ°Ô »ÌÀº Ä«µå¸¦ ¹Ù²Û´Ù.
+        // í˜„ì¬ ìœ„ì¹˜ì˜ ì¹´ë“œì™€ í˜„ì¬ ìœ„ì¹˜ì˜ ë‹¤ìŒìœ„ì¹˜ì—ì„œ ëœë¤í•˜ê²Œ ë½‘ì€ ì¹´ë“œë¥¼ ë°”ê¾¼ë‹¤.
         swap(&card[i], &card[(rand() % (CARDCOUNT - i)) + i]);
     }
 }
 void setInitCard(Player& p1, Player& p2, Player& p3, Player& p4) {
     randomCard(cards);
-    //°¢ ÇÃ·¹ÀÌ¾î¿¡°Ô Ä«µå ºĞ¹è
+    //ê° í”Œë ˆì´ì–´ì—ê²Œ ì¹´ë“œ ë¶„ë°°
     for (int i = 0; i < 20; i++) {
         p1.pushBack(cards[i]);
     }
@@ -171,9 +171,9 @@ void setInitCard(Player& p1, Player& p2, Player& p3, Player& p4) {
         p4.pushBack(cards[i]);
     }
 }
-//°úÀÏ 5°³ ¼¼´Â ¸Ş¼Òµå
+//ê³¼ì¼ 5ê°œ ì„¸ëŠ” ë©”ì†Œë“œ
 bool checkFiveCard(Player& user,Player& p1,Player& p2,Player& p3) {
-    //°¢ °úÀÏ¿¡ ´ëÇÑ °³¼ö ¹è¿­
+    //ê° ê³¼ì¼ì— ëŒ€í•œ ê°œìˆ˜ ë°°ì—´
     int fruitCount[] = {0,0,0,0};
     fruitCount[user.getFrontTopCard().getType() - 1]+= user.getFrontTopCard().getNumber();
     fruitCount[p1.getFrontTopCard().getType() - 1] += p1.getFrontTopCard().getNumber();
@@ -185,16 +185,16 @@ bool checkFiveCard(Player& user,Player& p1,Player& p2,Player& p3) {
     }
     return false;
 }
-//[Á¾À» ÃÆÀ» °æ¿ì] front Ä«µå¸¦ ¸ğµÎ ½ÂÀÚÀÇ backÀ¸·Î ÀÌµ¿ (=> ÀÌµ¿Çß´Âµ¥ Å×ÀÌºí¿¡ ¿©ÀüÈ÷ ³²¾ÆÀÖ´Â°Í ÇØ°á)
+//[ì¢…ì„ ì³¤ì„ ê²½ìš°] front ì¹´ë“œë¥¼ ëª¨ë‘ ìŠ¹ìì˜ backìœ¼ë¡œ ì´ë™ (=> ì´ë™í–ˆëŠ”ë° í…Œì´ë¸”ì— ì—¬ì „íˆ ë‚¨ì•„ìˆëŠ”ê²ƒ í•´ê²°)
 void getAllFrontCard(Player& winner,Player& looser1, Player& looser2, Player& looser3) {
-    cout << "Á¾À» ÃÆ½À´Ï´Ù. Å×ÀÌºíÀÇ Ä«µå¸¦ ¾ò½À´Ï´Ù." << endl;
-    //ÀÚ½ÅÀÌ ³½ Ä«µå È¸¼ö
+    cout << "ì¢…ì„ ì³¤ìŠµë‹ˆë‹¤. í…Œì´ë¸”ì˜ ì¹´ë“œë¥¼ ì–»ìŠµë‹ˆë‹¤." << endl;
+    //ìì‹ ì´ ë‚¸ ì¹´ë“œ íšŒìˆ˜
     int cnt1 = winner.getFrontCount();
     for (int i = 0; i < cnt1; i++) {
         winner.pushBack(winner.getFrontTopCard());
         winner.popFront();
     }
-    //³ª¸ÓÁö »ç¿ëÀÚ Ä«µå È¸¼ö
+    //ë‚˜ë¨¸ì§€ ì‚¬ìš©ì ì¹´ë“œ íšŒìˆ˜
     int cnt2 = looser1.getFrontCount();
     for (int i = 0; i < cnt2; i++) {
         winner.pushBack(looser1.getFrontTopCard());
@@ -212,22 +212,22 @@ void getAllFrontCard(Player& winner,Player& looser1, Player& looser2, Player& lo
     }
 }
 
-//[Á¾À» Àß¸øÃÆÀ» °æ¿ì] back Ä«µå¸¦ ¸ğµç »ç¿ëÀÚÀÇ back¿¡ ÇÑÀå¾¿ ÁÜ
+//[ì¢…ì„ ì˜ëª»ì³¤ì„ ê²½ìš°] back ì¹´ë“œë¥¼ ëª¨ë“  ì‚¬ìš©ìì˜ backì— í•œì¥ì”© ì¤Œ
 void missRinging(Player& p1, Player& p2, Player& p3, Player& p4) {
-    cout << "Á¾À» Àß¸øÃÆÀ¸¹Ç·Î Ä«µå¸¦ ³ª´©¾îÁİ´Ï´Ù." << endl;
-    //ÇÃ·¹ÀÌ °¡´ÉÇÑ ÀÎ¿ø ¼ö ¼¼±â
+    cout << "ì¢…ì„ ì˜ëª»ì³¤ìœ¼ë¯€ë¡œ ì¹´ë“œë¥¼ ë‚˜ëˆ„ì–´ì¤ë‹ˆë‹¤." << endl;
+    //í”Œë ˆì´ ê°€ëŠ¥í•œ ì¸ì› ìˆ˜ ì„¸ê¸°
     int cnt = 0;
     if (p1.getAvailable()) cnt++;
     if (p2.getAvailable()) cnt++;
     if (p3.getAvailable()) cnt++;
     if (p4.getAvailable()) cnt++;
-    //back Ä«µå°¡ ¾øÀ» °æ¿ì,ºÎÁ·ÇÑ °æ¿ì Å»¶ô
+    //back ì¹´ë“œê°€ ì—†ì„ ê²½ìš°,ë¶€ì¡±í•œ ê²½ìš° íƒˆë½
     if (p1.backIsEmpty() || p1.getBackCount() < cnt-1) {
-        cout << "»ó´ë¿¡°Ô ÁÙ Ä«µå°¡ ºÎÁ·ÇÏ¿© Å»¶ôµÇ¾ú½À´Ï´Ù." << endl;
+        cout << "ìƒëŒ€ì—ê²Œ ì¤„ ì¹´ë“œê°€ ë¶€ì¡±í•˜ì—¬ íƒˆë½ë˜ì—ˆìŠµë‹ˆë‹¤." << endl;
         p1.setNoneAvailable();
         return;
     }
-    //°ÔÀÓÇÃ·¹ÀÌ °¡´ÉÇÑ ÀÎ¿ø Ä«µå ³ª´²ÁÖ±â
+    //ê²Œì„í”Œë ˆì´ ê°€ëŠ¥í•œ ì¸ì› ì¹´ë“œ ë‚˜ëˆ ì£¼ê¸°
     if (p2.getAvailable()) {
         p2.pushBack(p1.getBackTopCard());
         p1.popBack();
@@ -241,16 +241,16 @@ void missRinging(Player& p1, Player& p2, Player& p3, Player& p4) {
         p1.popBack();
     }
 
-    //Ä«µå¸¦ ÁØ ÈÄ¿¡ Ä«µå°¡ ¾øÀ» °æ¿ì Å»¶ô
+    //ì¹´ë“œë¥¼ ì¤€ í›„ì— ì¹´ë“œê°€ ì—†ì„ ê²½ìš° íƒˆë½
     if (p1.backIsEmpty()) {
-        cout << "Ä«µå¸¦ ÁÖ°í ³²Àº Ä«µå°¡ ¾ø¾î Å»¶ôµÇ¾ú½À´Ï´Ù." << endl;
+        cout << "ì¹´ë“œë¥¼ ì£¼ê³  ë‚¨ì€ ì¹´ë“œê°€ ì—†ì–´ íƒˆë½ë˜ì—ˆìŠµë‹ˆë‹¤." << endl;
         p1.setNoneAvailable();
     }
     return;
 }
 
 void printTableInfo(Player& user,Player& p1,Player& p2,Player& p3) {
-    cout << "ÇöÀç Å×ÀÌºí Ä«µå [";
+    cout << "í˜„ì¬ í…Œì´ë¸” ì¹´ë“œ [";
     user.getFrontTopCard().getInfo(); cout << ", ";
     p1.getFrontTopCard().getInfo(); cout << ", ";
     p2.getFrontTopCard().getInfo(); cout << ", ";
@@ -258,7 +258,7 @@ void printTableInfo(Player& user,Player& p1,Player& p2,Player& p3) {
     cout << "]" << endl;
 }
 void printBackInfo(Player& user, Player& p1, Player& p2, Player& p3) {
-    cout << "ÇöÀç »ç¿ëÀÚ Ä«µå [";
+    cout << "í˜„ì¬ ì‚¬ìš©ì ì¹´ë“œ [";
     if (user.getBackCount() != 0){ user.getBackTopCard().getInfo(); cout << ", "; }
     else { cout << "[ 0 , 0 ], ";  }
     if (p1.getBackCount() != 0) { p1.getBackTopCard().getInfo(); cout << ", "; }
@@ -271,11 +271,11 @@ void printBackInfo(Player& user, Player& p1, Player& p2, Player& p3) {
 }
 
 int main() {
-    //»ç¿ëÀÚ »ı¼º
+    //ì‚¬ìš©ì ìƒì„±
     Player user(1), p1(2), p2(3), p3(4);
-    //Ä«µå ·£´ı¹èÄ¡,»ç¿ëÀÚ¿¡°Ô Ä«µå ºĞ¹è
+    //ì¹´ë“œ ëœë¤ë°°ì¹˜,ì‚¬ìš©ìì—ê²Œ ì¹´ë“œ ë¶„ë°°
     setInitCard(user, p1, p2, p3);
-    //³ª´²Áø Ä«µå È®ÀÎ
+    //ë‚˜ëˆ ì§„ ì¹´ë“œ í™•ì¸
     //cout << "==========user==========" << endl;
     //for (int i = 0; i < 10 ; i++) {
     //    user.getBackTopCard().getInfo();
@@ -296,23 +296,23 @@ int main() {
     //    p3.getBackTopCard().getInfo();
     //    p3.popBack();
     //}
-    //¼ø¼­ µ¹¾Æ°¡¸ç Ä«µå ¾ÕÀ¸·Î ³¿ (back -> front)
+    //ìˆœì„œ ëŒì•„ê°€ë©° ì¹´ë“œ ì•ìœ¼ë¡œ ëƒ„ (back -> front)
     int input = 0;
     int turn = -1;
     while(true) {
-        // (1:1:1:1) ÇÑ¸íÀÇ ÇÃ·¹ÀÌ¾î¸¸ ³²¾ÒÀ» °æ¿ì
+        // (1:1:1:1) í•œëª…ì˜ í”Œë ˆì´ì–´ë§Œ ë‚¨ì•˜ì„ ê²½ìš°
         if ((int)user.getAvailable() + (int)p1.getAvailable() + (int)p2.getAvailable() + (int)p3.getAvailable() == 1) {
             if (user.getAvailable()) {
-                cout << "½ÂÀÚ´Â Player1 ÀÔ´Ï´Ù." << endl;
+                cout << "ìŠ¹ìëŠ” Player1 ì…ë‹ˆë‹¤." << endl;
             } 
             else if (p1.getAvailable()) {
-                cout << "½ÂÀÚ´Â Player2 ÀÔ´Ï´Ù." << endl;
+                cout << "ìŠ¹ìëŠ” Player2 ì…ë‹ˆë‹¤." << endl;
             }
             else if (p2.getAvailable()) {
-                cout << "½ÂÀÚ´Â Player3 ÀÔ´Ï´Ù." << endl;
+                cout << "ìŠ¹ìëŠ” Player3 ì…ë‹ˆë‹¤." << endl;
             }
             else if (p3.getAvailable()) {
-                cout << "½ÂÀÚ´Â Player4 ÀÔ´Ï´Ù." << endl;
+                cout << "ìŠ¹ìëŠ” Player4 ì…ë‹ˆë‹¤." << endl;
             }
             
             break;
@@ -321,122 +321,122 @@ int main() {
         turn++;
         if (turn % 4 == 0) {
             if (!user.getAvailable()) {
-                cout << "[ 1¹øÀº Å»¶ôµÇ¾î skipµÇ¾ú½À´Ï´Ù. ]" << endl;
+                cout << "[ 1ë²ˆì€ íƒˆë½ë˜ì–´ skipë˜ì—ˆìŠµë‹ˆë‹¤. ]" << endl;
                 continue;
             }
             else {
-                cout << "[ " << user.getPlayerNum() << "¹ø Â÷·Ê ]" << endl;
+                cout << "[ " << user.getPlayerNum() << "ë²ˆ ì°¨ë¡€ ]" << endl;
                 if(user.open()==-1) continue;
                 printTableInfo(user, p1, p2, p3);
                 printBackInfo(user, p1, p2, p3);
-                cout << "Å×ÀÌºí Ä«µå °³¼ö : " << user.getFrontCount() << endl;
-                cout << "»ç¿ëÀÚ Ä«µå °³¼ö : " << user.getBackCount() << endl;
+                cout << "í…Œì´ë¸” ì¹´ë“œ ê°œìˆ˜ : " << user.getFrontCount() << endl;
+                cout << "ì‚¬ìš©ì ì¹´ë“œ ê°œìˆ˜ : " << user.getBackCount() << endl;
                 cin >> input;
                 if (input == 1) {
-                    cout << "Á¾À» ÃÆ½À´Ï´Ù." << endl;
-                    //°úÀÏ 5°³ÀÏ¶§ ÃÆÀ» °æ¿ì
+                    cout << "ì¢…ì„ ì³¤ìŠµë‹ˆë‹¤." << endl;
+                    //ê³¼ì¼ 5ê°œì¼ë•Œ ì³¤ì„ ê²½ìš°
                     if (checkFiveCard(user, p1, p2, p3)) {
-                        //Å×ÀÌºí À§ÀÇ Ä«µå ¸ğµÎ °¡Á®°¨
+                        //í…Œì´ë¸” ìœ„ì˜ ì¹´ë“œ ëª¨ë‘ ê°€ì ¸ê°
                         getAllFrontCard(user, p1, p2, p3);
                     }
-                    //Àß¸ø ÃÆÀ» °æ¿ì
+                    //ì˜ëª» ì³¤ì„ ê²½ìš°
                     else {
                         missRinging(user, p1, p2, p3);
                     }
                 }
                 else {
-                    cout << "Á¾À» Ä¡Áö ¾Ê¾Ò½À´Ï´Ù. ´ÙÀ½ ÅÏÀ¸·Î ³Ñ¾î°©´Ï´Ù." << endl;
+                    cout << "ì¢…ì„ ì¹˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤. ë‹¤ìŒ í„´ìœ¼ë¡œ ë„˜ì–´ê°‘ë‹ˆë‹¤." << endl;
                 }
             }
         }
         else if (turn % 4 == 1) {
             if (!p1.getAvailable()) {
-                cout << "[ 2¹øÀº Å»¶ôµÇ¾î skipµÇ¾ú½À´Ï´Ù. ]" << endl;
+                cout << "[ 2ë²ˆì€ íƒˆë½ë˜ì–´ skipë˜ì—ˆìŠµë‹ˆë‹¤. ]" << endl;
                 continue;
             }
             else {
-                cout << "[ " << p1.getPlayerNum() << "¹ø Â÷·Ê ]" << endl;
+                cout << "[ " << p1.getPlayerNum() << "ë²ˆ ì°¨ë¡€ ]" << endl;
                 if (p1.open() == -1) continue;
                 printTableInfo(user, p1, p2, p3);
                 printBackInfo(user, p1, p2, p3);
-                cout << "Å×ÀÌºí Ä«µå °³¼ö : " << p1.getFrontCount() << endl;
-                cout << "»ç¿ëÀÚ Ä«µå °³¼ö : " << p1.getBackCount() << endl;
+                cout << "í…Œì´ë¸” ì¹´ë“œ ê°œìˆ˜ : " << p1.getFrontCount() << endl;
+                cout << "ì‚¬ìš©ì ì¹´ë“œ ê°œìˆ˜ : " << p1.getBackCount() << endl;
                 cin >> input;
                 if (input == 1) {
-                    cout << "Á¾À» ÃÆ½À´Ï´Ù." << endl;
-                    //°úÀÏ 5°³ÀÏ¶§ ÃÆÀ» °æ¿ì
+                    cout << "ì¢…ì„ ì³¤ìŠµë‹ˆë‹¤." << endl;
+                    //ê³¼ì¼ 5ê°œì¼ë•Œ ì³¤ì„ ê²½ìš°
                     if (checkFiveCard(p1, user, p2, p3)) {
-                        //Å×ÀÌºí À§ÀÇ Ä«µå ¸ğµÎ °¡Á®°¨
+                        //í…Œì´ë¸” ìœ„ì˜ ì¹´ë“œ ëª¨ë‘ ê°€ì ¸ê°
                         getAllFrontCard(p1, user, p2, p3);
                     }
-                    //Àß¸ø ÃÆÀ» °æ¿ì
+                    //ì˜ëª» ì³¤ì„ ê²½ìš°
                     else {
                         missRinging(p1, user, p2, p3);
                     }
                 }
                 else {
-                    cout << "Á¾À» Ä¡Áö ¾Ê¾Ò½À´Ï´Ù. ´ÙÀ½ ÅÏÀ¸·Î ³Ñ¾î°©´Ï´Ù." << endl;
+                    cout << "ì¢…ì„ ì¹˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤. ë‹¤ìŒ í„´ìœ¼ë¡œ ë„˜ì–´ê°‘ë‹ˆë‹¤." << endl;
                 }
             }
         }
         else if (turn % 4 == 2) {
             if (!p2.getAvailable()) {
-                cout << "[ 3¹øÀº Å»¶ôµÇ¾î skipµÇ¾ú½À´Ï´Ù. ]" << endl;
+                cout << "[ 3ë²ˆì€ íƒˆë½ë˜ì–´ skipë˜ì—ˆìŠµë‹ˆë‹¤. ]" << endl;
                 continue;
             }
             else {
-                cout << "[ " << p2.getPlayerNum() << "¹ø Â÷·Ê ]" << endl;
+                cout << "[ " << p2.getPlayerNum() << "ë²ˆ ì°¨ë¡€ ]" << endl;
                 if (p2.open() == -1) continue;
                 printTableInfo(user, p1, p2, p3);
                 printBackInfo(user, p1, p2, p3);
-                cout << "Å×ÀÌºí Ä«µå °³¼ö : " << p2.getFrontCount() << endl;
-                cout << "»ç¿ëÀÚ Ä«µå °³¼ö : " << p2.getBackCount() << endl;
+                cout << "í…Œì´ë¸” ì¹´ë“œ ê°œìˆ˜ : " << p2.getFrontCount() << endl;
+                cout << "ì‚¬ìš©ì ì¹´ë“œ ê°œìˆ˜ : " << p2.getBackCount() << endl;
                 cin >> input;
                 if (input == 1) {
-                    cout << "Á¾À» ÃÆ½À´Ï´Ù." << endl;
-                    //°úÀÏ 5°³ÀÏ¶§ ÃÆÀ» °æ¿ì
+                    cout << "ì¢…ì„ ì³¤ìŠµë‹ˆë‹¤." << endl;
+                    //ê³¼ì¼ 5ê°œì¼ë•Œ ì³¤ì„ ê²½ìš°
                     if (checkFiveCard(p2, user, p1, p3)) {
-                        //Å×ÀÌºí À§ÀÇ Ä«µå ¸ğµÎ °¡Á®°¨
+                        //í…Œì´ë¸” ìœ„ì˜ ì¹´ë“œ ëª¨ë‘ ê°€ì ¸ê°
                         getAllFrontCard(p2, user, p1, p3);
                     }
-                    //Àß¸ø ÃÆÀ» °æ¿ì
+                    //ì˜ëª» ì³¤ì„ ê²½ìš°
                     else {
                         missRinging(p2, user, p1, p3);
                     }
                 }
                 else {
-                    cout << "Á¾À» Ä¡Áö ¾Ê¾Ò½À´Ï´Ù. ´ÙÀ½ ÅÏÀ¸·Î ³Ñ¾î°©´Ï´Ù." << endl;
+                    cout << "ì¢…ì„ ì¹˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤. ë‹¤ìŒ í„´ìœ¼ë¡œ ë„˜ì–´ê°‘ë‹ˆë‹¤." << endl;
                 }
             }
         }else if(turn %4 == 3){
             if (!p3.getAvailable()) {
-                cout << "[ 4¹øÀº Å»¶ôµÇ¾î skipµÇ¾ú½À´Ï´Ù. ]" << endl;
+                cout << "[ 4ë²ˆì€ íƒˆë½ë˜ì–´ skipë˜ì—ˆìŠµë‹ˆë‹¤. ]" << endl;
                 continue;
             }
             else {
-                cout << "[ " << p3.getPlayerNum() << "¹ø Â÷·Ê ]" << endl;
+                cout << "[ " << p3.getPlayerNum() << "ë²ˆ ì°¨ë¡€ ]" << endl;
                 if (p3.open() == -1) continue;
                 printTableInfo(user, p1, p2, p3);
                 printBackInfo(user, p1, p2, p3);
-                cout << "Å×ÀÌºí Ä«µå °³¼ö : " << p3.getFrontCount() << endl;
-                cout << "»ç¿ëÀÚ Ä«µå °³¼ö : " << p3.getBackCount() << endl;
+                cout << "í…Œì´ë¸” ì¹´ë“œ ê°œìˆ˜ : " << p3.getFrontCount() << endl;
+                cout << "ì‚¬ìš©ì ì¹´ë“œ ê°œìˆ˜ : " << p3.getBackCount() << endl;
                 cin >> input;
                 if (input == 1) {
 
-                    cout << "Á¾À» ÃÆ½À´Ï´Ù." << endl;
-                    //°úÀÏ 5°³ÀÏ¶§ ÃÆÀ» °æ¿ì
+                    cout << "ì¢…ì„ ì³¤ìŠµë‹ˆë‹¤." << endl;
+                    //ê³¼ì¼ 5ê°œì¼ë•Œ ì³¤ì„ ê²½ìš°
                     if (checkFiveCard(p3, p1, p2, user)) {
-                        //Å×ÀÌºí À§ÀÇ Ä«µå ¸ğµÎ °¡Á®°¨
+                        //í…Œì´ë¸” ìœ„ì˜ ì¹´ë“œ ëª¨ë‘ ê°€ì ¸ê°
                         getAllFrontCard(p3, p1, p2, user);
                     }
-                    //Àß¸ø ÃÆÀ» °æ¿ì
+                    //ì˜ëª» ì³¤ì„ ê²½ìš°
                     else {
-                        //°¢ ÀÎ¿ø¿¡°Ô Ä«µå ÇÏ³ª¾¿ ÁÜ, Ä«µå¼ö ºÎÁ·ÇÒ ½Ã Å»¶ô
+                        //ê° ì¸ì›ì—ê²Œ ì¹´ë“œ í•˜ë‚˜ì”© ì¤Œ, ì¹´ë“œìˆ˜ ë¶€ì¡±í•  ì‹œ íƒˆë½
                         missRinging(p3, p1, p2, user);
                     }
                 }
                 else {
-                    cout << "Á¾À» Ä¡Áö ¾Ê¾Ò½À´Ï´Ù. ´ÙÀ½ ÅÏÀ¸·Î ³Ñ¾î°©´Ï´Ù." << endl;
+                    cout << "ì¢…ì„ ì¹˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤. ë‹¤ìŒ í„´ìœ¼ë¡œ ë„˜ì–´ê°‘ë‹ˆë‹¤." << endl;
                 }
             }
         }

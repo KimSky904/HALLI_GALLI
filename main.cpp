@@ -7,7 +7,6 @@
 #include<Windows.h>
 #include<time.h>	
 #include<list>
-#include "drawCard.h"
 #include "game.h"
 using namespace std;
 #define RED         (FOREGROUND_RED | FOREGROUND_INTENSITY)

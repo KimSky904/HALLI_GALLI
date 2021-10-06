@@ -8,4 +8,5 @@ public:
 	Card(int type, int num);
 	int getType();
 	int getNumber();
+	void getInfo();
 };
