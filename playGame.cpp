@@ -369,29 +369,34 @@ void DrawIntro()
 
     PrintString(hStdOut, GREEN);
     gotoxy(26, 18);
-    cout << "◎";
-    gotoxy(25, 19);
-    cout << "/∥";
+    cout << "     ~,";
+    gotoxy(26, 19);
+    cout << "     ~-. ";
+    gotoxy(26, 20);
+    cout << "     .~- ~     ";
+    gotoxy(26, 21);
+    cout << "      --:   ";
     PrintString(hStdOut, RED);
-    gotoxy(24, 20);
-    cout << "▨▨            ▨▨";
-    gotoxy(23, 21);
-    cout << "▨▨▨▨        ▨▨▨▨";
-    gotoxy(22, 22);
-    cout << "▨▨▨▨▨▨    ▨▨▨▨▨▨";
-    gotoxy(22, 23);
-    cout << "▨▨▨▨▨▨    ▨▨▨▨▨▨";
-    gotoxy(23, 24);
-    cout << "▨▨▨▨        ▨▨▨▨";
-    gotoxy(24, 25);
-    cout << "▨▨            ▨▨";
+    gotoxy(25, 22);
+    cout << "     ▨▨▨▨";
+    gotoxy(25, 23);
+    cout << "    ▨▨▨▨▨";
+    gotoxy(25, 24);
+    cout << "   ▨▨▨▨▨▨";
+    gotoxy(25, 25);
+    cout << "   ▨▨▨▨▨▨";
+    gotoxy(25, 26);
+    cout << "    ▨▨▨▨▨ ";
+    gotoxy(25, 27);
+    cout << "     ▨▨▨▨ ";
+                         
 
     PrintString(hStdOut, WHITE);
-    gotoxy(24, 28);
+    gotoxy(24, 29);
     cout << "▶ Game Rule for 'r'";
-    gotoxy(24, 30);
+    gotoxy(24, 31);
     cout << "▶ Game Start for 's'";
-    gotoxy(24, 32);
+    gotoxy(24, 33);
     cout << "▶ Exit for 'e'";
 }
 //게임화면 draw
