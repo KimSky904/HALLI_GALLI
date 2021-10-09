@@ -30,6 +30,23 @@ for문으로 개수별 위치 조정, 위치를 나타내는 클래스, 카드 �
 20 : 체리 5
 
 
+                switch (playerNum)
+                {
+                case 1: gotoxy(5, 4); break;
+                case 2: gotoxy(51, 4); break;
+                case 3: gotoxy(5, 21); break;
+                case 4: gotoxy(51, 21); break;
+                }
+
+
+                frontCardPrint
+                gotoxy(10, 14);
+                gotoxy(20, 14);
+                gotoxy(30, 14);
+                gotoxy(40, 14);
+
+
+
 [추가하기]
 00번 차례 print메서드
 각 사용자 카드 gotoxy -> 카드에 맞춰 색깔 원 출력
@@ -88,7 +105,45 @@ for문으로 개수별 위치 조정, 위치를 나타내는 클래스, 카드 �
 
 
 
+ //카드 1
+    gotoxy(10, 14);
+    cout << "┌──────────────┐";
+    for (int i = 15; i < 25; i++) {
+        gotoxy(10, i);
+        cout << "│              │";
+    }
+    gotoxy(10, 25);
+    cout << "└──────────────┘";
 
+    //카드 2
+    gotoxy(20, 14);
+    cout << "┌──────────────┐";
+    for (int i = 15; i < 25; i++) {
+        gotoxy(20, i);
+        cout << "│              │";
+    }
+    gotoxy(20, 25);
+    cout << "└──────────────┘";
+
+    //카드 3
+    gotoxy(30, 14);
+    cout << "┌──────────────┐";
+    for (int i = 15; i < 25; i++) {
+        gotoxy(30, i);
+        cout << "│              │";
+    }
+    gotoxy(30, 25);
+    cout << "└──────────────┘";
+
+    //카드 4
+    gotoxy(40, 14);
+    cout << "┌──────────────┐";
+    for (int i = 15; i < 25; i++) {
+        gotoxy(40, i);
+        cout << "│              │";
+    }
+    gotoxy(40, 25);
+    cout << "└──────────────┘";
 
 
 

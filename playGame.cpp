@@ -117,7 +117,7 @@ public:
         if (back.empty()) {
             return -1;
         }
-        pushFront(getBackTopCard());
+        pushFront(getBackTopCard()); 
         popBack();
         return 0;
     }
@@ -144,116 +144,90 @@ void emptyCardPrint() {
 
 //앞에 있는 카드 냄
 void frontCardPrint(Card card) {
+    HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
     //카드 타입
     int type = card.getType();
     char fruit = 'e';
     switch (type) {
-    case 1: fruit = '!'; break;
-    case 2: fruit = '@'; break;
-    case 3: fruit = '#'; break;
-    case 4: fruit = '$'; break;
+    case 1: fruit = '●';
+        PrintString(hStdOut, RED);
+        break; //사과
+    case 2: fruit = '◆';
+        PrintString(hStdOut, YELLOW);
+        break; //바나나
+    case 3: fruit = '◀'; 
+        PrintString(hStdOut, GREEN);
+        break; //라임
+    case 4: fruit = '♥'; 
+        PrintString(hStdOut, RED);
+        break; //포도
     }
 
     switch (card.getNumber()) {
     case 1:
-        cout << "                                               "
-            << "┏━━━━━━━━━━━━━━┓" << endl;
-        cout << "                                               "
-            << "┃           ┃" << endl;
-        cout << "                                               "
-            << "┃           ┃" << endl;
-        cout << "                                               "
-            << "┃           ┃" << endl;
-        cout << "                                               "
-            << "┃     " << fruit << "     ┃" << endl;
-        cout << "                                               "
-            << "┃           ┃" << endl;
-        cout << "                                               "
-            << "┃           ┃" << endl;
-        cout << "                                               "
-            << "┃           ┃" << endl;
-        cout << "                                               "
-            << "┗━━━━━━━━━━━━━━┛" << endl;
+        cout << "┌──────────────┐" << endl;
+        cout << "│              │" << endl;
+        cout << "│              │" << endl;
+        cout << "│              │" << endl;
+        cout << "│              │" << endl;
+        cout << "│       "<< fruit <<"       │" << endl;
+        cout << "│              │" << endl;
+        cout << "│              │" << endl;
+        cout << "│              │" << endl;
+        cout << "│              │" << endl;
+        cout << "└──────────────┘" << endl;
         break;
     case 2:
-        cout << "                                               "
-            << "┏━━━━━━━━━━━━━━┓" << endl;
-        cout << "                                               "
-            << "┃           ┃" << endl;
-        cout << "                                               "
-            << "┃           ┃" << endl;
-        cout << "                                               "
-            << "┃     " << fruit << "     ┃" << endl;
-        cout << "                                               "
-            << "┃           ┃" << endl;
-        cout << "                                               "
-            << "┃     " << fruit << "     ┃" << endl;
-        cout << "                                               "
-            << "┃           ┃" << endl;
-        cout << "                                               "
-            << "┃           ┃" << endl;
-        cout << "                                               "
-            << "┗━━━━━━━━━━━━━━┛" << endl;
+        cout << "┌──────────────┐" << endl;
+        cout << "│              │" << endl;
+        cout << "│              │" << endl;
+        cout << "│              │" << endl;
+        cout << "│       " << fruit << "      │" << endl;
+        cout << "│              │" << endl;
+        cout << "│       " << fruit << "      │" << endl;
+        cout << "│              │" << endl;
+        cout << "│              │" << endl;
+        cout << "│              │" << endl;
+        cout << "└──────────────┘" << endl;
         break;
     case 3:
-        cout << "                                               "
-            << "┏━━━━━━━━━━━━━━┓" << endl;
-        cout << "                                               "
-            << "┃           ┃" << endl;
-        cout << "                                               "
-            << "┃           ┃" << endl;
-        cout << "                                               "
-            << "┃     " << fruit << "     ┃" << endl;
-        cout << "                                               "
-            << "┃           ┃" << endl;
-        cout << "                                               "
-            << "┃   " << fruit << "   " << fruit << "   ┃" << endl;
-        cout << "                                               "
-            << "┃           ┃" << endl;
-        cout << "                                               "
-            << "┃           ┃" << endl;
-        cout << "                                               "
-            << "┗━━━━━━━━━━━━━━┛" << endl;
+        cout << "┌──────────────┐" << endl;
+        cout << "│              │" << endl;
+        cout << "│              │" << endl;
+        cout << "│   "<<fruit<<"           │" << endl;
+        cout << "│              │" << endl;
+        cout << "│       " << fruit << "       │" << endl;
+        cout << "│              │" << endl;
+        cout << "│           "<<fruit<<"  │" << endl;
+        cout << "│              │" << endl;
+        cout << "│              │" << endl;
+        cout << "└──────────────┘" << endl;
         break;
     case 4:
-        cout << "                                               "
-            << "┏━━━━━━━━━━━━━━┓" << endl;
-        cout << "                                               "
-            << "┃           ┃" << endl;
-        cout << "                                               "
-            << "┃   " << fruit << "   " << fruit << "   ┃" << endl;
-        cout << "                                               "
-            << "┃           ┃" << endl;
-        cout << "                                               "
-            << "┃           ┃" << endl;
-        cout << "                                               "
-            << "┃           ┃" << endl;
-        cout << "                                               "
-            << "┃   " << fruit << "   " << fruit << "   ┃" << endl;
-        cout << "                                               "
-            << "┃           ┃" << endl;
-        cout << "                                               "
-            << "┗━━━━━━━━━━━━━━┛" << endl;
+        cout << "┌──────────────┐" << endl;
+        cout << "│              │" << endl;
+        cout << "│              │" << endl;
+        cout << "│              │" << endl;
+        cout << "│   " << fruit << "       " << fruit << "    │" << endl;
+        cout << "│              │" << endl;
+        cout << "│   " << fruit << "       " << fruit << "    │" << endl;
+        cout << "│              │" << endl;
+        cout << "│              │" << endl;
+        cout << "│              │" << endl;
+        cout << "└──────────────┘" << endl;
         break;
     case 5:
-        cout << "                                               "
-            << "┏━━━━━━━━━━━━━━┓" << endl;
-        cout << "                                               "
-            << "┃           ┃" << endl;
-        cout << "                                               "
-            << "┃   " << fruit << "   " << fruit << "   ┃" << endl;
-        cout << "                                               "
-            << "┃           ┃" << endl;
-        cout << "                                               "
-            << "┃     " << fruit << "     ┃" << endl;
-        cout << "                                               "
-            << "┃           ┃" << endl;
-        cout << "                                               "
-            << "┃   " << fruit << "   " << fruit << "   ┃" << endl;
-        cout << "                                               "
-            << "┃           ┃" << endl;
-        cout << "                                               "
-            << "┗━━━━━━━━━━━━━━┛" << endl;
+        cout << "┌──────────────┐" << endl;
+        cout << "│              │" << endl;
+        cout << "│              │" << endl;
+        cout << "│   " << fruit << "       " << fruit << "    │" << endl;
+        cout << "│              │" << endl;
+        cout << "│       " << fruit << "       │" << endl;
+        cout << "│              │" << endl;
+        cout << "│   " << fruit << "       " << fruit << "    │" << endl;
+        cout << "│              │" << endl;
+        cout << "│              │" << endl;
+        cout << "└──────────────┘" << endl;
         break;
     default:
         emptyCardPrint();
@@ -415,9 +389,9 @@ void DrawStartGame()
     gotoxy(0, 7);
     cout << "▨━━━━━━━━━━━━━━▨";
     gotoxy(0, 8);
-    cout << "보유 카드 수 : " << " 장";
+    cout << "보유 카드 수 : -";
     gotoxy(0, 9);
-    cout << "판에 놓인 카드 수 : " << " 장";
+    cout << "판에 놓인 카드 수 : -";
 
     //플레이어 2 (오른쪽 상단)
     gotoxy(51, 0);
@@ -429,15 +403,15 @@ void DrawStartGame()
     gotoxy(51, 7);
     cout << "▨━━━━━━━━━━━━━━▨";
     gotoxy(48, 8);
-    cout << "보유 카드 수 : " << " 장";
+    cout << "보유 카드 수 : -";
     gotoxy(48, 9);
-    cout << "판에 놓인 카드 수 : " << " 장";
+    cout << "판에 놓인 카드 수 : -";
 
     //플레이어 3 (왼쪽 하단)
     gotoxy(0, 30);
-    cout << "보유 카드 수 : " << " 장";
+    cout << "보유 카드 수 : -";
     gotoxy(0, 31);
-    cout << "판에 놓인 카드 수 : " << " 장";
+    cout << "판에 놓인 카드 수 : -";
     gotoxy(0, 32);
     cout << "▨━━━━━━━━━━━━━━▨";
     for (int i = 33; i < 40; i++) {
@@ -450,9 +424,9 @@ void DrawStartGame()
 
     //플레이어 4 (오른쪽 하단)
     gotoxy(48, 30);
-    cout << "보유 카드 수 : " << " 장";
+    cout << "보유 카드 수 : -";
     gotoxy(48, 31);
-    cout << "판에 놓인 카드 수 : " << " 장";
+    cout << "판에 놓인 카드 수 : -";
     gotoxy(51, 32);
     cout << "▨━━━━━━━━━━━━━━▨";
     for (int i = 33; i < 40; i++) {
@@ -617,7 +591,7 @@ bool checkFiveCard(Player& user, Player& p1, Player& p2, Player& p3) {
 }
 //[판별] 종쳤을 경우 - 모든 front를 승자의 back으로 이동
 void getAllFrontCard(Player& winner, Player& looser1, Player& looser2, Player& looser3) {
-    cout << "종을 쳤습니다. 테이블의 카드를 얻습니다." << endl;
+    cout << "[ "<<winner.getPlayerNum() <<"번 사용자가 테이블 위의 모든 카드를 획득합니다. ]" << endl;
     //자신이 낸 카드 회수
     int cnt1 = winner.getFrontCount();
     for (int i = 0; i < cnt1; i++) {
@@ -726,15 +700,15 @@ int GameKey()
 {
     while (true) {
         //키값 받아오기 (종치기 : 1, 카드 내기 : 2, 나가기 : 0)
-        int key = GetKeyValue();
-        if (key == '\n') {         //종치기 = 1 (enter)
+        int key = _getch();
+        if (key == 13) {         //종치기 = 1 (enter)
             return 1;
         }
-        else if (key == ' ') {    //카드 내기 = 2 (space)
+        else if (key == 32) {    //카드 내기 = 2 (space)
             return 2;
         }
-        else if (key == 'e' || key == 'E') {    //exit = 0 (esc)
-            break;
+        else if (key == 27) {    //exit = 0 (esc)
+            return 3;
         }
     }
     return 0;
@@ -742,24 +716,24 @@ int GameKey()
 
 void printPlayersCardInfo(Player &p1,Player &p2,Player &p3,Player &p4) {
     gotoxy(0, 8);
-    cout << "보유 카드 수 : " << p1.getBackCount() <<" 장";
+    cout << "보유 카드 수 : " << p1.getBackCount() << "  ";
     gotoxy(0, 9);
-    cout << "판에 놓인 카드 수 : " << p1.getFrontCount() << " 장";
+    cout << "판에 놓인 카드 수 : " << p1.getFrontCount() << "  ";
 
     gotoxy(48, 8);
-    cout << "보유 카드 수 : " << p2.getBackCount() << " 장";
+    cout << "보유 카드 수 : " << p2.getBackCount() << "  ";
     gotoxy(48, 9);
-    cout << "판에 놓인 카드 수 : " << p2.getFrontCount() << " 장";
+    cout << "판에 놓인 카드 수 : " << p2.getFrontCount() << "  ";
 
     gotoxy(0, 30);
-    cout << "보유 카드 수 : " << p3.getBackCount() << " 장";
+    cout << "보유 카드 수 : " << p3.getBackCount() << "  ";
     gotoxy(0, 31);
-    cout << "판에 놓인 카드 수 : " << p3.getFrontCount() << " 장";
+    cout << "판에 놓인 카드 수 : " << p3.getFrontCount() << "  ";
 
     gotoxy(48, 30);
-    cout << "보유 카드 수 : " << p4.getBackCount() << " 장";
+    cout << "보유 카드 수 : " << p4.getBackCount() << "  ";
     gotoxy(48, 31);
-    cout << "판에 놓인 카드 수 : " << p4.getFrontCount() << " 장";
+    cout << "판에 놓인 카드 수 : " << p4.getFrontCount() << "  ";
 }
 
 //게임 시작
@@ -796,25 +770,24 @@ void StartGame()
         if (turn % 4 == 0) {
             printPlayersCardInfo(user, p1, p2, p3);
             if (!user.getAvailable()) {
-                gotoxy(23, 7);
-                cout << "                                       ";
-                gotoxy(23, 7);
-                cout << "[ 1번은 탈락되어 skip되었습니다. ]";
                 continue;
             }
             else {
-                gotoxy(23, 7);
-                cout << "                                                      ";
-                gotoxy(23, 7);
-                cout << "    [ " << user.getPlayerNum() << "번 차례 ]";
+                gotoxy(26, 7);
+                cout << "                                         ";
+                gotoxy(26, 7);
+                cout << "[ " << user.getPlayerNum() << "번 차례 ]";
                 if (user.open() == -1) continue;
+                gotoxy(10, 14);
+                frontCardPrint(user.getFrontTopCard());
                 //printTableInfo(user, p1, p2, p3);
                 //printBackInfo(user, p1, p2, p3);
                 //cout << "테이블 카드 개수 : " << user.getFrontCount() << endl;
                 //cout << "사용자 카드 개수 : " << user.getBackCount() << endl;
-                gotoxy(26, 8);
-                cin >> input;
+                input = GameKey();
                 if (input == 1) {
+                    gotoxy(24, 9);
+                    cout << "                                                          ";
                     gotoxy(24, 9);
                     cout << "[ 1번 player : 종을 쳤습니다 ]";
                     //과일 5개일때 쳤을 경우
@@ -829,7 +802,9 @@ void StartGame()
                         printPlayersCardInfo(user, p1, p2, p3);
                     }
                 }
-                else {
+                else if(input==2){
+                    gotoxy(15, 9);
+                    cout << "                                                          ";
                     gotoxy(15, 9);
                     cout << "[ 1번 player : 종을 치지 않았습니다. 다음 턴으로 넘어갑니다. ]";
                 }
@@ -838,21 +813,24 @@ void StartGame()
         else if (turn % 4 == 1) {
             printPlayersCardInfo(user, p1, p2, p3);
             if (!p1.getAvailable()) {
-                gotoxy(23, 7);
-                cout << "[ 2번은 탈락되어 skip되었습니다. ]";
                 continue;
             }
             else {
                 gotoxy(26, 7);
+                cout << "                                         ";
+                gotoxy(26, 7);
                 cout << "[ " << p1.getPlayerNum() << "번 차례 ]";
                 if (p1.open() == -1) continue;
+                gotoxy(20, 14);
+                frontCardPrint(user.getFrontTopCard());
                 //printTableInfo(user, p1, p2, p3);
                 //printBackInfo(user, p1, p2, p3);
                 //cout << "테이블 카드 개수 : " << p1.getFrontCount() << endl;
                 //cout << "사용자 카드 개수 : " << p1.getBackCount() << endl;
-                gotoxy(26, 8);
-                cin >> input;
+                input = GameKey();
                 if (input == 1) {
+                    gotoxy(24, 9);
+                    cout << "                                                          ";
                     gotoxy(24, 9);
                     cout << "[ 2번 player : 종을 쳤습니다 ]";
                     //과일 5개일때 쳤을 경우
@@ -869,6 +847,8 @@ void StartGame()
                 }
                 else {
                     gotoxy(15, 9);
+                    cout << "                                                          ";
+                    gotoxy(15, 9);
                     cout << "[ 2번 player : 종을 치지 않았습니다. 다음 턴으로 넘어갑니다. ]";
                 }
             }
@@ -876,21 +856,24 @@ void StartGame()
         else if (turn % 4 == 2) {
             printPlayersCardInfo(user, p1, p2, p3);
             if (!p2.getAvailable()) {
-                gotoxy(23, 7);
-                cout << "[ 3번은 탈락되어 skip되었습니다. ]";
                 continue;
             }
             else {
                 gotoxy(26, 7);
+                cout << "                                         ";
+                gotoxy(26, 7);
                 cout << "[ " << p2.getPlayerNum() << "번 차례 ]";
                 if (p2.open() == -1) continue;
+                gotoxy(30, 14);
+                frontCardPrint(user.getFrontTopCard());
                 //printTableInfo(user, p1, p2, p3);
                 //printBackInfo(user, p1, p2, p3);
                 //cout << "테이블 카드 개수 : " << p2.getFrontCount() << endl;
                 //cout << "사용자 카드 개수 : " << p2.getBackCount() << endl;
-                gotoxy(26, 8);
-                cin >> input;
+                input = GameKey();
                 if (input == 1) {
+                    gotoxy(24, 9);
+                    cout << "                                                          ";
                     gotoxy(24, 9);
                     cout << "[ 3번 player : 종을 쳤습니다 ]";
                     //과일 5개일때 쳤을 경우
@@ -907,6 +890,8 @@ void StartGame()
                 }
                 else {
                     gotoxy(15, 9);
+                    cout << "                                                          ";
+                    gotoxy(15, 9);
                     cout << "[ 3번 player : 종을 치지 않았습니다. 다음 턴으로 넘어갑니다. ]";
                 }
             }
@@ -914,21 +899,24 @@ void StartGame()
         else if (turn % 4 == 3) {
             printPlayersCardInfo(user, p1, p2, p3);
             if (!p3.getAvailable()) {
-                gotoxy(23, 7);
-                cout << "[ 4번은 탈락되어 skip되었습니다. ]";
                 continue;
             }
             else {
                 gotoxy(26, 7);
+                cout << "                                         ";
+                gotoxy(26, 7);
                 cout << "[ " << p3.getPlayerNum() << "번 차례 ]";
                 if (p3.open() == -1) continue;
+                gotoxy(40, 14);
+                frontCardPrint(user.getFrontTopCard());
                 //printTableInfo(user, p1, p2, p3);
                 //printBackInfo(user, p1, p2, p3);
                 //cout << "테이블 카드 개수 : " << p3.getFrontCount() << endl;
                 //cout << "사용자 카드 개수 : " << p3.getBackCount() << endl;
-                gotoxy(26, 8);
-                cin >> input;
+                input = GameKey();
                 if (input == 1) {
+                    gotoxy(24, 9);
+                    cout << "                                                          ";
                     gotoxy(24, 9);
                     cout << "[ 4번 player : 종을 쳤습니다 ]";
                     //과일 5개일때 쳤을 경우
@@ -945,6 +933,8 @@ void StartGame()
                     }
                 }
                 else {
+                    gotoxy(15, 9);
+                    cout << "                                                          ";
                     gotoxy(15, 9);
                     cout << "[ 4번 player : 종을 치지 않았습니다. 다음 턴으로 넘어갑니다. ]";
                 }
