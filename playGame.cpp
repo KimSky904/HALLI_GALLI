@@ -170,90 +170,154 @@ void emptyCardPrint() {
 }
 
 //앞에 있는 카드 냄
-void frontCardPrint(Card card) {
+void frontCardPrint(Card card,Player player) {
     HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
     //카드 타입
     int type = card.getType();
     char fruit = 'e';
     switch (type) {
-    case 1: fruit = '@';
-        PrintString(hStdOut, RED);
-        break; //사과
-    case 2: fruit = '@';
-        PrintString(hStdOut, YELLOW);
-        break; //바나나
-    case 3: fruit = '@'; 
-        PrintString(hStdOut, GREEN);
-        break; //라임
-    case 4: fruit = '@'; 
-        PrintString(hStdOut, RED);
-        break; //포도
+        case 1: fruit = '@';
+            PrintString(hStdOut, RED);
+            break; //사과
+        case 2: fruit = '@';
+            PrintString(hStdOut, YELLOW);
+            break; //바나나
+        case 3: fruit = '@'; 
+            PrintString(hStdOut, GREEN);
+            break; //라임
+        case 4: fruit = '@'; 
+            PrintString(hStdOut, RED);
+            break; //포도
+    }
+    //카드 출력 위치
+    int x;
+    int y = 14;
+    switch (player.getPlayerNum()){
+        case 1: x = 10; break;
+        case 2 : x = 20; break;
+        case 3 : x = 30; break;
+        case 4 : x = 40; break;
     }
 
     switch (card.getNumber()) {
     case 1:
+        gotoxy(x, y);
         cout << "┌──────────────┐" << endl;
+        gotoxy(x, y + 1);
         cout << "│              │" << endl;
+        gotoxy(x, y + 2);
         cout << "│              │" << endl;
+        gotoxy(x, y + 3);
         cout << "│              │" << endl;
+        gotoxy(x, y + 4);
         cout << "│              │" << endl;
+        gotoxy(x, y + 5);
         cout << "│       "<< fruit <<"       │" << endl;
+        gotoxy(x, y + 6);
         cout << "│              │" << endl;
+        gotoxy(x, y + 7);
         cout << "│              │" << endl;
+        gotoxy(x, y + 8);
         cout << "│              │" << endl;
+        gotoxy(x, y + 9);
         cout << "│              │" << endl;
+        gotoxy(x, y + 10);
         cout << "└──────────────┘" << endl;
         break;
     case 2:
+        gotoxy(x, y);
         cout << "┌──────────────┐" << endl;
+        gotoxy(x, y + 1);
         cout << "│              │" << endl;
+        gotoxy(x, y + 2);
         cout << "│              │" << endl;
-        cout << "│              │" << endl;
+        gotoxy(x, y + 3);
         cout << "│       " << fruit << "      │" << endl;
+        gotoxy(x, y + 4);
         cout << "│              │" << endl;
+        gotoxy(x, y + 5);
+        cout << "│              │" << endl;
+        gotoxy(x, y + 6);
+        cout << "│              │" << endl;
+        gotoxy(x, y + 7);
         cout << "│       " << fruit << "      │" << endl;
+        gotoxy(x, y + 8);
         cout << "│              │" << endl;
+        gotoxy(x, y + 9);
         cout << "│              │" << endl;
-        cout << "│              │" << endl;
+        gotoxy(x, y + 10);
         cout << "└──────────────┘" << endl;
         break;
     case 3:
+        gotoxy(x, y);
         cout << "┌──────────────┐" << endl;
+        gotoxy(x, y + 1);
         cout << "│              │" << endl;
+        gotoxy(x, y + 2);
+        cout << "│   " << fruit << "           │" << endl;
+        gotoxy(x, y + 3);
         cout << "│              │" << endl;
-        cout << "│   "<<fruit<<"           │" << endl;
+        gotoxy(x, y + 4);
         cout << "│              │" << endl;
+        gotoxy(x, y + 5);
         cout << "│       " << fruit << "       │" << endl;
+        gotoxy(x, y + 6);
         cout << "│              │" << endl;
-        cout << "│           "<<fruit<<"  │" << endl;
+        gotoxy(x, y + 7);
         cout << "│              │" << endl;
+        gotoxy(x, y + 8);
+        cout << "│           " << fruit << "  │" << endl;
+        gotoxy(x, y + 9);
         cout << "│              │" << endl;
+        gotoxy(x, y + 10);
         cout << "└──────────────┘" << endl;
         break;
     case 4:
+        gotoxy(x, y);
         cout << "┌──────────────┐" << endl;
+        gotoxy(x, y + 1);
         cout << "│              │" << endl;
+        gotoxy(x, y + 2);
+        cout << "│    " << fruit << "     " << fruit << "     │" << endl;
+        gotoxy(x, y + 3);
         cout << "│              │" << endl;
+        gotoxy(x, y + 4);
         cout << "│              │" << endl;
-        cout << "│   " << fruit << "       " << fruit << "    │" << endl;
+        gotoxy(x, y + 5);
         cout << "│              │" << endl;
-        cout << "│   " << fruit << "       " << fruit << "    │" << endl;
+        gotoxy(x, y + 6);
         cout << "│              │" << endl;
+        gotoxy(x, y + 7);
         cout << "│              │" << endl;
+        gotoxy(x, y + 8);
+        cout << "│    " << fruit << "     " << fruit << "     │" << endl;
+        gotoxy(x, y + 9);
         cout << "│              │" << endl;
+        gotoxy(x, y + 10);
         cout << "└──────────────┘" << endl;
         break;
     case 5:
+        gotoxy(x, y);
         cout << "┌──────────────┐" << endl;
+        gotoxy(x, y + 1);
         cout << "│              │" << endl;
+        gotoxy(x, y + 2);
+        cout << "│    " << fruit << "     " << fruit << "     │" << endl;
+        gotoxy(x, y + 3);
         cout << "│              │" << endl;
-        cout << "│   " << fruit << "       " << fruit << "    │" << endl;
+        gotoxy(x, y + 4);
         cout << "│              │" << endl;
+        gotoxy(x, y + 5);
         cout << "│       " << fruit << "       │" << endl;
+        gotoxy(x, y + 6);
         cout << "│              │" << endl;
-        cout << "│   " << fruit << "       " << fruit << "    │" << endl;
+        gotoxy(x, y + 7);
         cout << "│              │" << endl;
+        gotoxy(x, y + 8);
+        cout << "│    " << fruit << "     " << fruit << "     │" << endl;
+        gotoxy(x, y + 9);
         cout << "│              │" << endl;
+        gotoxy(x, y + 10);
         cout << "└──────────────┘" << endl;
         break;
     default:
@@ -781,7 +845,7 @@ void StartGame()
                 cout << "[ " << user.getPlayerNum() << "번 차례 ]";
                 if (user.open() == -1) continue;
                 gotoxy(10, 14);
-                frontCardPrint(user.getFrontTopCard());
+                frontCardPrint(user.getFrontTopCard(),user);
                 //printTableInfo(user, p1, p2, p3);
                 //printBackInfo(user, p1, p2, p3);
                 //cout << "테이블 카드 개수 : " << user.getFrontCount() << endl;
@@ -824,7 +888,7 @@ void StartGame()
                 cout << "[ " << p1.getPlayerNum() << "번 차례 ]";
                 if (p1.open() == -1) continue;
                 gotoxy(20, 14);
-                frontCardPrint(user.getFrontTopCard());
+                frontCardPrint(user.getFrontTopCard(),p1);
                 //printTableInfo(user, p1, p2, p3);
                 //printBackInfo(user, p1, p2, p3);
                 //cout << "테이블 카드 개수 : " << p1.getFrontCount() << endl;
@@ -867,7 +931,7 @@ void StartGame()
                 cout << "[ " << p2.getPlayerNum() << "번 차례 ]";
                 if (p2.open() == -1) continue;
                 gotoxy(30, 14);
-                frontCardPrint(user.getFrontTopCard());
+                frontCardPrint(user.getFrontTopCard(),p2);
                 //printTableInfo(user, p1, p2, p3);
                 //printBackInfo(user, p1, p2, p3);
                 //cout << "테이블 카드 개수 : " << p2.getFrontCount() << endl;
@@ -910,7 +974,7 @@ void StartGame()
                 cout << "[ " << p3.getPlayerNum() << "번 차례 ]";
                 if (p3.open() == -1) continue;
                 gotoxy(40, 14);
-                frontCardPrint(user.getFrontTopCard());
+                frontCardPrint(user.getFrontTopCard(),p3);
                 //printTableInfo(user, p1, p2, p3);
                 //printBackInfo(user, p1, p2, p3);
                 //cout << "테이블 카드 개수 : " << p3.getFrontCount() << endl;
