@@ -17,6 +17,33 @@ using namespace std;
 #define WHITE       (RED | GREEN | BLUE)
 #define CARDCOUNT 20*4
 
+//콘솔 세팅
+void SetConsoleView()
+{
+    system("mode con cols=120 lines=41 | title Halli Galli");   //화면크기,게임이름
+}
+//커서이동 함수
+void gotoxy(int x, int y)
+{
+    COORD Pos;
+    Pos.X = 2 * x;
+    Pos.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos);
+}
+//keyboard 입력값 반환함
+int GetKeyValue()
+{
+    if (_kbhit() != 0) {
+        return _getch();
+    }
+    return 0;
+}
+//색상지정
+void PrintString(HANDLE hStdOut, WORD Attribute)
+{
+    SetConsoleTextAttribute(hStdOut, Attribute);
+}
+
 class Card {
     int type;
     int num;
@@ -149,16 +176,16 @@ void frontCardPrint(Card card) {
     int type = card.getType();
     char fruit = 'e';
     switch (type) {
-    case 1: fruit = '●';
+    case 1: fruit = '@';
         PrintString(hStdOut, RED);
         break; //사과
-    case 2: fruit = '◆';
+    case 2: fruit = '@';
         PrintString(hStdOut, YELLOW);
         break; //바나나
-    case 3: fruit = '◀'; 
+    case 3: fruit = '@'; 
         PrintString(hStdOut, GREEN);
         break; //라임
-    case 4: fruit = '♥'; 
+    case 4: fruit = '@'; 
         PrintString(hStdOut, RED);
         break; //포도
     }
@@ -288,32 +315,7 @@ Card cards[CARDCOUNT] = { //과일별 카드 20장 (1:6,2:5,3:4,4:3,5:2)
     Card(4,2),Card(4,3),Card(4,3),Card(4,3),Card(4,3),
     Card(4,4),Card(4,4),Card(4,4),Card(4,5),Card(4,5),
 };
-//콘솔 세팅
-void SetConsoleView()
-{
-    system("mode con cols=120 lines=41 | title Halli Galli");   //화면크기,게임이름
-}
-//커서이동 함수
-void gotoxy(int x, int y)
-{
-    COORD Pos;
-    Pos.X = 2 * x;
-    Pos.Y = y;
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos);
-}
-//keyboard 입력값 반환함
-int GetKeyValue()
-{
-    if (_kbhit() != 0) {
-        return _getch();
-    }
-    return 0;
-}
-//색상지정
-void PrintString(HANDLE hStdOut, WORD Attribute)
-{
-    SetConsoleTextAttribute(hStdOut, Attribute);
-}
+
 //화면로딩 draw
 void DrawLoading() {
 
