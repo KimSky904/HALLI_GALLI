@@ -14,6 +14,7 @@ using namespace std;
 #define PINK        (RED | BLUE)
 #define GREEN       (FOREGROUND_GREEN | FOREGROUND_INTENSITY)
 #define YELLOW      (RED | GREEN)
+#define PURPLE      (RED | BLUE | BLUE)
 #define WHITE       (RED | GREEN | BLUE)
 #define CARDCOUNT 20*4
 
@@ -158,15 +159,72 @@ public:
 
 
 //빈 카드
-void emptyCardPrint() {
-    cout << "                                               "
-        << "┏━━━━━━━━━━━━━━┓" << endl;
-    for (int i = 0; i < 7; ++i)
-        cout << "                                               "
-        << "┃           ┃" << endl;
-
-    cout << "                                               "
-        << "┗━━━━━━━━━━━━━━┛" << endl;
+void emptyCardPrint(Player player) {
+    //카드 출력 위치
+    int x;
+    int y = 14;
+    switch (player.getPlayerNum()) {
+    case 1: x = 10; break;
+    case 2: x = 20; break;
+    case 3: x = 30; break;
+    case 4: x = 40; break;
+    }
+    gotoxy(x,y);
+    cout << "┏━━━━━━━━━━━━━━┓";
+    for (int i = 0; i < 10; ++i) {
+        gotoxy(x, y+i);
+        cout << "┃           ┃";
+    }
+    gotoxy(x, y + 7);
+    cout << "┗━━━━━━━━━━━━━━┛" << endl;
+}
+//테이블 카드 출력 초기화
+void emptyCardPrint(Player one,Player two,Player three,Player four) {
+    //카드 출력 위치
+    int x;
+    int y = 14;
+    //1
+    x = 10;
+    gotoxy(x, y - 1);
+    cout << "mmm";
+    gotoxy(x, y);
+    cout << "┏━━━━━━━━━━━━━━┓";
+    for (int i = 0; i < 11; ++i) {
+        gotoxy(x, y + i+1);
+        cout << "┃              ┃";
+    }
+    gotoxy(x, y + 12);
+    cout << "┗━━━━━━━━━━━━━━┛" << endl;
+    //2
+    x = 20;
+    gotoxy(x, y);
+    cout << "┏━━━━━━━━━━━━━━┓";
+    for (int i = 0; i < 11; ++i) {
+        gotoxy(x, y + i + 1);
+        cout << "┃              ┃";
+    }
+    gotoxy(x, y + 12);
+    cout << "┗━━━━━━━━━━━━━━┛" << endl;
+    //3
+    x = 30;
+    gotoxy(x, y);
+    cout << "┏━━━━━━━━━━━━━━┓";
+    for (int i = 0; i < 11; ++i) {
+        gotoxy(x, y + i + 1);
+        cout << "┃              ┃";
+    }
+    gotoxy(x, y + 12);
+    cout << "┗━━━━━━━━━━━━━━┛" << endl;
+    //4
+    x = 40;
+    gotoxy(x, y);
+    cout << "┏━━━━━━━━━━━━━━┓";
+    for (int i = 0; i < 11; ++i) {
+        gotoxy(x, y + i + 1);
+        cout << "┃              ┃";
+    }
+    gotoxy(x, y + 12);
+    cout << "┗━━━━━━━━━━━━━━┛" << endl;
 }
 
 //앞에 있는 카드 냄
@@ -175,18 +233,23 @@ void frontCardPrint(Card card,Player player) {
     //카드 타입
     int type = card.getType();
     char fruit = 'e';
+    int Color = RED;
     switch (type) {
         case 1: fruit = '@';
-            PrintString(hStdOut, RED);
+            //PrintString(hStdOut, RED);
+            Color = RED;
             break; //사과
         case 2: fruit = '@';
-            PrintString(hStdOut, YELLOW);
+            //PrintString(hStdOut, YELLOW);
+            Color = YELLOW;
             break; //바나나
-        case 3: fruit = '@'; 
-            PrintString(hStdOut, GREEN);
+        case 3: fruit = '@';
+            //PrintString(hStdOut, GREEN);
+            Color = GREEN;
             break; //라임
-        case 4: fruit = '@'; 
-            PrintString(hStdOut, RED);
+        case 4: fruit = '@';
+            //PrintString(hStdOut, RED);
+            Color = PURPLE;
             break; //포도
     }
     //카드 출력 위치
@@ -214,7 +277,12 @@ void frontCardPrint(Card card,Player player) {
         gotoxy(x, y + 5);
         cout << "│              │" << endl;
         gotoxy(x, y + 6);
-        cout << "│       "<< fruit <<"       │" << endl;
+        PrintString(hStdOut, WHITE);
+        cout << "│       ";
+        PrintString(hStdOut, Color);
+        cout << fruit;
+        PrintString(hStdOut, WHITE);
+        cout << "      │" << endl;
         gotoxy(x, y + 7);
         cout << "│              │" << endl;
         gotoxy(x, y + 8);
@@ -236,7 +304,12 @@ void frontCardPrint(Card card,Player player) {
         gotoxy(x, y + 2);
         cout << "│              │" << endl;
         gotoxy(x, y + 3);
-        cout << "│       " << fruit << "      │" << endl;
+        PrintString(hStdOut, WHITE);
+        cout << "│       ";
+        PrintString(hStdOut, Color);
+        cout << fruit;
+        PrintString(hStdOut, WHITE);
+        cout << "      │" << endl;
         gotoxy(x, y + 4);
         cout << "│              │" << endl;
         gotoxy(x, y + 5);
@@ -248,7 +321,12 @@ void frontCardPrint(Card card,Player player) {
         gotoxy(x, y + 8);
         cout << "│              │" << endl;
         gotoxy(x, y + 9);
-        cout << "│       " << fruit << "      │" << endl;
+        PrintString(hStdOut, WHITE);
+        cout << "│       ";
+        PrintString(hStdOut, Color);
+        cout << fruit;
+        PrintString(hStdOut, WHITE);
+        cout << "      │" << endl;
         gotoxy(x, y + 10);
         cout << "│              │" << endl;
         gotoxy(x, y + 11);
@@ -264,19 +342,34 @@ void frontCardPrint(Card card,Player player) {
         gotoxy(x, y + 2);
         cout << "│              │" << endl;
         gotoxy(x, y + 3);
-        cout << "│   " << fruit << "           │" << endl;
+        PrintString(hStdOut, WHITE);
+        cout << "│    ";
+        PrintString(hStdOut, Color);
+        cout << fruit;
+        PrintString(hStdOut, WHITE);
+        cout << "         │" << endl;
         gotoxy(x, y + 4);
         cout << "│              │" << endl;
         gotoxy(x, y + 5);
         cout << "│              │" << endl;
         gotoxy(x, y + 6);
-        cout << "│       " << fruit << "       │" << endl;
+        PrintString(hStdOut, WHITE);
+        cout << "│       ";
+        PrintString(hStdOut, Color);
+        cout << fruit;
+        PrintString(hStdOut, WHITE);
+        cout << "      │" << endl;
         gotoxy(x, y + 7);
         cout << "│              │" << endl;
         gotoxy(x, y + 8);
         cout << "│              │" << endl;
         gotoxy(x, y + 9);
-        cout << "│           " << fruit << "  │" << endl;
+        PrintString(hStdOut, WHITE);
+        cout << "│          ";
+        PrintString(hStdOut, Color);
+        cout << fruit;
+        PrintString(hStdOut, WHITE);
+        cout << "   │" << endl;
         gotoxy(x, y + 10);
         cout << "│              │" << endl;
         gotoxy(x, y + 11);
@@ -292,7 +385,12 @@ void frontCardPrint(Card card,Player player) {
         gotoxy(x, y + 2);
         cout << "│              │" << endl;
         gotoxy(x, y + 3);
-        cout << "│    " << fruit << "     " << fruit << "     │" << endl;
+        PrintString(hStdOut, WHITE);    
+        cout << "│   ";
+        PrintString(hStdOut, Color);
+        cout << fruit << "     " << fruit;
+        PrintString(hStdOut, WHITE);
+        cout << "    │" << endl;
         gotoxy(x, y + 4);
         cout << "│              │" << endl;
         gotoxy(x, y + 5);
@@ -304,7 +402,12 @@ void frontCardPrint(Card card,Player player) {
         gotoxy(x, y + 8);
         cout << "│              │" << endl;
         gotoxy(x, y + 9);
-        cout << "│    " << fruit << "     " << fruit << "     │" << endl;
+        PrintString(hStdOut, WHITE);
+        cout << "│   ";
+        PrintString(hStdOut, Color);
+        cout << fruit << "     " << fruit;  
+        PrintString(hStdOut, WHITE);
+        cout << "    │" << endl;
         gotoxy(x, y + 10);
         cout << "│              │" << endl;
         gotoxy(x, y + 11);
@@ -320,19 +423,34 @@ void frontCardPrint(Card card,Player player) {
         gotoxy(x, y + 2);
         cout << "│              │" << endl;
         gotoxy(x, y + 3);
-        cout << "│    " << fruit << "     " << fruit << "     │" << endl;
+        PrintString(hStdOut, WHITE);
+        cout << "│   ";
+        PrintString(hStdOut, Color);
+        cout << fruit << "      " << fruit;
+        PrintString(hStdOut, WHITE);
+        cout << "   │" << endl;
         gotoxy(x, y + 4);
         cout << "│              │" << endl;
         gotoxy(x, y + 5);
         cout << "│              │" << endl;
         gotoxy(x, y + 6);
-        cout << "│       " << fruit << "       │" << endl;
+        PrintString(hStdOut, WHITE);
+        cout << "│       ";
+        PrintString(hStdOut, Color);
+        cout << fruit;
+        PrintString(hStdOut, WHITE);
+        cout << "      │" << endl;
         gotoxy(x, y + 7);
         cout << "│              │" << endl;
         gotoxy(x, y + 8);
         cout << "│              │" << endl;
         gotoxy(x, y + 9);
-        cout << "│    " << fruit << "     " << fruit << "     │" << endl;
+        PrintString(hStdOut, WHITE);
+        cout << "│   ";
+        PrintString(hStdOut, Color);
+        cout << fruit << "      " << fruit;
+        PrintString(hStdOut, WHITE);
+        cout << "   │" << endl;
         gotoxy(x, y + 10);
         cout << "│              │" << endl;
         gotoxy(x, y + 11);
@@ -340,8 +458,6 @@ void frontCardPrint(Card card,Player player) {
         gotoxy(x, y + 12);
         cout << "└──────────────┘" << endl;
         break;
-    default:
-        emptyCardPrint();
     }
 }
 
@@ -700,6 +816,8 @@ void getAllFrontCard(Player& winner, Player& looser1, Player& looser2, Player& l
         winner.pushBack(looser3.getFrontTopCard());
         looser3.popFront();
     }
+    //테이블 카드 초기화
+    emptyCardPrint(winner,looser1,looser2,looser3);
 }
 //[판별] 종 잘못쳤을 경우 - 각 player에게 카드 한장씩 back에 넘김
 void missRinging(Player& p1, Player& p2, Player& p3, Player& p4) {
@@ -908,7 +1026,7 @@ void StartGame()
                 cout << "[ " << p1.getPlayerNum() << "번 차례 ]";
                 if (p1.open() == -1) continue;
                 gotoxy(20, 14);
-                frontCardPrint(user.getFrontTopCard(),p1);
+                frontCardPrint(p1.getFrontTopCard(),p1);
                 //printTableInfo(user, p1, p2, p3);
                 //printBackInfo(user, p1, p2, p3);
                 //cout << "테이블 카드 개수 : " << p1.getFrontCount() << endl;
@@ -951,7 +1069,7 @@ void StartGame()
                 cout << "[ " << p2.getPlayerNum() << "번 차례 ]";
                 if (p2.open() == -1) continue;
                 gotoxy(30, 14);
-                frontCardPrint(user.getFrontTopCard(),p2);
+                frontCardPrint(p2.getFrontTopCard(),p2);
                 //printTableInfo(user, p1, p2, p3);
                 //printBackInfo(user, p1, p2, p3);
                 //cout << "테이블 카드 개수 : " << p2.getFrontCount() << endl;
@@ -994,7 +1112,7 @@ void StartGame()
                 cout << "[ " << p3.getPlayerNum() << "번 차례 ]";
                 if (p3.open() == -1) continue;
                 gotoxy(40, 14);
-                frontCardPrint(user.getFrontTopCard(),p3);
+                frontCardPrint(p3.getFrontTopCard(),p3);
                 //printTableInfo(user, p1, p2, p3);
                 //printBackInfo(user, p1, p2, p3);
                 //cout << "테이블 카드 개수 : " << p3.getFrontCount() << endl;
@@ -1046,6 +1164,16 @@ void ShowInfo()
             break;
     }
 }
+//게임 설정
+void GameSetting() {
+    DrawGameSetting();
+
+}
+void DrawGameSetting() {
+    HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    system("cls");
+    cout << "게임 플레이 설정 화면" << endl;
+}
 //메인
 int main(void)
 {
@@ -1058,7 +1186,8 @@ int main(void)
             ShowInfo();
         }
         else if (menuValue == 2) {    //start
-            StartGame();
+            GameSetting();
+            //StartGame();
         }
         else {
             exit(1);
