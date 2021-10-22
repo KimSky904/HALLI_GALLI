@@ -158,6 +158,39 @@ public:
 };
 
 
+
+
+
+//콘솔 세팅
+void SetConsoleView();
+//커서이동 함수
+void gotoxy(int x, int y);
+//keyboard 입력값 반환함
+int GetKeyValue();
+//색상지정
+void PrintString(HANDLE hStdOut, WORD Attribute);
+//화면로딩 draw
+void DrawLoading();
+//시작화면 draw
+void DrawIntro();
+//게임화면 draw
+void DrawStartGame();
+//설명화면 draw
+void DrawInfoScreen();
+//[게임진행] 카드분배
+void setInitCard(Player& p1, Player& p2, Player& p3, Player& p4);
+//메뉴선택
+int ReadyGame();
+//게임 진행 키
+int GameKey();
+//게임 시작
+void StartGame();
+//게임 설명
+void ShowInfo();
+//메인
+int main(void);
+
+
 //빈 카드
 void emptyCardPrint(Player player) {
     //카드 출력 위치
@@ -169,17 +202,17 @@ void emptyCardPrint(Player player) {
     case 3: x = 30; break;
     case 4: x = 40; break;
     }
-    gotoxy(x,y);
+    gotoxy(x, y);
     cout << "┏━━━━━━━━━━━━━━┓";
     for (int i = 0; i < 10; ++i) {
-        gotoxy(x, y+i);
+        gotoxy(x, y + i);
         cout << "┃           ┃";
     }
     gotoxy(x, y + 7);
     cout << "┗━━━━━━━━━━━━━━┛" << endl;
 }
 //테이블 카드 출력 초기화
-void emptyCardPrint(Player one,Player two,Player three,Player four) {
+void emptyCardPrint(Player one, Player two, Player three, Player four) {
     //카드 출력 위치
     int x;
     int y = 14;
@@ -190,7 +223,7 @@ void emptyCardPrint(Player one,Player two,Player three,Player four) {
     gotoxy(x, y);
     cout << "┏━━━━━━━━━━━━━━┓";
     for (int i = 0; i < 11; ++i) {
-        gotoxy(x, y + i+1);
+        gotoxy(x, y + i + 1);
         cout << "┃              ┃";
     }
     gotoxy(x, y + 12);
@@ -228,38 +261,38 @@ void emptyCardPrint(Player one,Player two,Player three,Player four) {
 }
 
 //앞에 있는 카드 냄
-void frontCardPrint(Card card,Player player) {
+void frontCardPrint(Card card, Player player) {
     HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
     //카드 타입
     int type = card.getType();
     char fruit = 'e';
     int Color = RED;
     switch (type) {
-        case 1: fruit = '@';
-            //PrintString(hStdOut, RED);
-            Color = RED;
-            break; //사과
-        case 2: fruit = '@';
-            //PrintString(hStdOut, YELLOW);
-            Color = YELLOW;
-            break; //바나나
-        case 3: fruit = '@';
-            //PrintString(hStdOut, GREEN);
-            Color = GREEN;
-            break; //라임
-        case 4: fruit = '@';
-            //PrintString(hStdOut, RED);
-            Color = PURPLE;
-            break; //포도
+    case 1: fruit = '@';
+        //PrintString(hStdOut, RED);
+        Color = RED;
+        break; //사과
+    case 2: fruit = '@';
+        //PrintString(hStdOut, YELLOW);
+        Color = YELLOW;
+        break; //바나나
+    case 3: fruit = '@';
+        //PrintString(hStdOut, GREEN);
+        Color = GREEN;
+        break; //라임
+    case 4: fruit = '@';
+        //PrintString(hStdOut, RED);
+        Color = PURPLE;
+        break; //포도
     }
     //카드 출력 위치
     int x;
     int y = 14;
-    switch (player.getPlayerNum()){
-        case 1: x = 10; break;
-        case 2 : x = 20; break;
-        case 3 : x = 30; break;
-        case 4 : x = 40; break;
+    switch (player.getPlayerNum()) {
+    case 1: x = 10; break;
+    case 2: x = 20; break;
+    case 3: x = 30; break;
+    case 4: x = 40; break;
     }
 
     switch (card.getNumber()) {
@@ -385,7 +418,7 @@ void frontCardPrint(Card card,Player player) {
         gotoxy(x, y + 2);
         cout << "│              │" << endl;
         gotoxy(x, y + 3);
-        PrintString(hStdOut, WHITE);    
+        PrintString(hStdOut, WHITE);
         cout << "│   ";
         PrintString(hStdOut, Color);
         cout << fruit << "     " << fruit;
@@ -405,7 +438,7 @@ void frontCardPrint(Card card,Player player) {
         PrintString(hStdOut, WHITE);
         cout << "│   ";
         PrintString(hStdOut, Color);
-        cout << fruit << "     " << fruit;  
+        cout << fruit << "     " << fruit;
         PrintString(hStdOut, WHITE);
         cout << "    │" << endl;
         gotoxy(x, y + 10);
@@ -460,37 +493,6 @@ void frontCardPrint(Card card,Player player) {
         break;
     }
 }
-
-
-//콘솔 세팅
-void SetConsoleView();
-//커서이동 함수
-void gotoxy(int x, int y);
-//keyboard 입력값 반환함
-int GetKeyValue();
-//색상지정
-void PrintString(HANDLE hStdOut, WORD Attribute);
-//화면로딩 draw
-void DrawLoading();
-//시작화면 draw
-void DrawIntro();
-//게임화면 draw
-void DrawStartGame();
-//설명화면 draw
-void DrawInfoScreen();
-//[게임진행] 카드분배
-void setInitCard(Player& p1, Player& p2, Player& p3, Player& p4);
-//메뉴선택
-int ReadyGame();
-//게임 진행 키
-int GameKey();
-//게임 시작
-void StartGame();
-//게임 설명
-void ShowInfo();
-//메인
-int main(void);
-
 
 //카드
 Card cards[CARDCOUNT] = { //과일별 카드 20장 (1:6,2:5,3:4,4:3,5:2)
