@@ -419,11 +419,11 @@ void frontCardPrint(Card card, Player player) {
         cout << "│              │" << endl;
         gotoxy(x, y + 3);
         PrintString(hStdOut, WHITE);
-        cout << "│   ";
+        cout << "│    ";
         PrintString(hStdOut, Color);
         cout << fruit << "     " << fruit;
         PrintString(hStdOut, WHITE);
-        cout << "    │" << endl;
+        cout << "   │" << endl;
         gotoxy(x, y + 4);
         cout << "│              │" << endl;
         gotoxy(x, y + 5);
@@ -436,11 +436,11 @@ void frontCardPrint(Card card, Player player) {
         cout << "│              │" << endl;
         gotoxy(x, y + 9);
         PrintString(hStdOut, WHITE);
-        cout << "│   ";
+        cout << "│    ";
         PrintString(hStdOut, Color);
         cout << fruit << "     " << fruit;
         PrintString(hStdOut, WHITE);
-        cout << "    │" << endl;
+        cout << "   │" << endl;
         gotoxy(x, y + 10);
         cout << "│              │" << endl;
         gotoxy(x, y + 11);
@@ -457,9 +457,9 @@ void frontCardPrint(Card card, Player player) {
         cout << "│              │" << endl;
         gotoxy(x, y + 3);
         PrintString(hStdOut, WHITE);
-        cout << "│   ";
+        cout << "│    ";
         PrintString(hStdOut, Color);
-        cout << fruit << "      " << fruit;
+        cout << fruit << "     " << fruit;
         PrintString(hStdOut, WHITE);
         cout << "   │" << endl;
         gotoxy(x, y + 4);
@@ -479,9 +479,9 @@ void frontCardPrint(Card card, Player player) {
         cout << "│              │" << endl;
         gotoxy(x, y + 9);
         PrintString(hStdOut, WHITE);
-        cout << "│   ";
+        cout << "│    ";
         PrintString(hStdOut, Color);
-        cout << fruit << "      " << fruit;
+        cout << fruit << "     " << fruit;
         PrintString(hStdOut, WHITE);
         cout << "   │" << endl;
         gotoxy(x, y + 10);
@@ -644,41 +644,41 @@ void DrawStartGame()
     //카드 1
     gotoxy(10, 14);
     cout << "┌──────────────┐";
-    for (int i = 15; i < 25; i++) {
+    for (int i = 15; i < 26; i++) {
         gotoxy(10, i);
         cout << "│              │";
     }
-    gotoxy(10, 25);
+    gotoxy(10, 26);
     cout << "└──────────────┘";
 
     //카드 2
     gotoxy(20, 14);
     cout << "┌──────────────┐";
-    for (int i = 15; i < 25; i++) {
+    for (int i = 15; i < 26; i++) {
         gotoxy(20, i);
         cout << "│              │";
     }
-    gotoxy(20, 25);
+    gotoxy(20, 26);
     cout << "└──────────────┘";
 
     //카드 3
     gotoxy(30, 14);
     cout << "┌──────────────┐";
-    for (int i = 15; i < 25; i++) {
+    for (int i = 15; i < 26; i++) {
         gotoxy(30, i);
         cout << "│              │";
     }
-    gotoxy(30, 25);
+    gotoxy(30, 26);
     cout << "└──────────────┘";
 
     //카드 4
     gotoxy(40, 14);
     cout << "┌──────────────┐";
-    for (int i = 15; i < 25; i++) {
+    for (int i = 15; i < 26; i++) {
         gotoxy(40, i);
         cout << "│              │";
     }
-    gotoxy(40, 25);
+    gotoxy(40, 26);
     cout << "└──────────────┘";
 
 
@@ -1166,16 +1166,16 @@ void ShowInfo()
             break;
     }
 }
-//게임 설정
-void GameSetting() {
-    DrawGameSetting();
-
-}
-void DrawGameSetting() {
-    HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
-    system("cls");
-    cout << "게임 플레이 설정 화면" << endl;
-}
+////게임 설정
+//void GameSetting() {
+//    DrawGameSetting();
+//
+//}
+//void DrawGameSetting() {
+//    HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+//    system("cls");
+//    cout << "게임 플레이 설정 화면" << endl;
+//}
 //메인
 int main(void)
 {
@@ -1188,8 +1188,8 @@ int main(void)
             ShowInfo();
         }
         else if (menuValue == 2) {    //start
-            GameSetting();
-            //StartGame();
+            //GameSetting();
+            StartGame();
         }
         else {
             exit(1);
