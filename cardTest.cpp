@@ -140,23 +140,53 @@ Card cards[CARDCOUNT] = { //과일별 카드 20장 (1:6,2:5,3:4,4:3,5:2)
     Card(4,2),Card(4,3),Card(4,3),Card(4,3),Card(4,3),
     Card(4,4),Card(4,4),Card(4,4),Card(4,5),Card(4,5),
 };
-void swap(Card* A, Card* B)
-{
-    Card temp;
-    temp = *A;
-    *A = *B;
-    *B = temp;
-}
-void randomCard(Card* card){   // 여기서 주목 해야 할 함수.
-    int i;  // 반복문에 쓰일 변수
-    for (i = 0; i < CARDCOUNT; i++)
-    {
-        // 현재 위치의 카드와 현재 위치의 다음위치에서 랜덤하게 뽑은 카드를 바꾼다.
-        swap(&card[i], &card[(rand() % (CARDCOUNT - i)) + i]);
+//void swap(Card* A, Card* B)
+//{
+//    Card temp;
+//    temp = *A;
+//    *A = *B;
+//    *B = temp;
+//}
+//void randomCard(Card* card){   // 여기서 주목 해야 할 함수.
+//    int i;  // 반복문에 쓰일 변수
+//    for (i = 0; i < CARDCOUNT; i++)
+//    {
+//        // 현재 위치의 카드와 현재 위치의 다음위치에서 랜덤하게 뽑은 카드를 바꾼다.
+//        swap(&card[i], &card[(rand() % (CARDCOUNT - i)) + i]);
+//    }
+//}
+//**********************************************************************************************************
+int* randomCard(int size) {
+    int* arr = new int[size] { 0, };
+    int* chk = new int[size] { 0, };
+    int cnt = 0;
+
+    srand((unsigned int)time(NULL));
+
+    while (cnt < size) {
+        int r = rand() % size;      // 0 ~ size 난수 생성
+        if (!chk[r]) {              // 이미 뽑힌 적이 없는 숫자면
+            ++chk[r], arr[cnt] = r; // 체크 후 shuffle 배열에 추가
+            ++cnt;
+        }
     }
+
+    delete[] chk;
+    return arr;
+}
+void randomCar1d(Player& p1, Player& p2, Player& p3, Player& p4) {
+    int* shuffle = makeRandArr(CARDCOUNT);
+
+    for (int i = 0; i < CARDCOUNT / 2; ++i)
+        p1.pushDeck(initDeck[shuffle[i]]);
+
+    for (int i = CARDCOUNT / 2; i < CARDCOUNT; ++i)
+        p2.pushDeck(initDeck[shuffle[i]]);
+
+    delete[] shuffle;
 }
 void setInitCard(Player& p1, Player& p2, Player& p3, Player& p4) {
-    randomCard(cards);
+    Card* shuffle = randomCard(CARDCOUNT);
     //각 플레이어에게 카드 분배
     for (int i = 0; i < 20; i++) {
         p1.pushBack(cards[i]);
