@@ -765,18 +765,27 @@ void randomCard(Card* card) {
 void setInitCard(Player& p1, Player& p2, Player& p3, Player& p4) {
     randomCard(cards);
     //각 플레이어에게 카드 분배
+    cout << endl;
     for (int i = 0; i < 10; i++) {
         p1.pushBack(cards[i]);
+        cards[i].getInfo();
     }
+    cout << endl;
     for (int i = 10; i < 20; i++) {
         p2.pushBack(cards[i]);
+        cards[i].getInfo();
     }
+    cout << endl;
     for (int i = 20; i < 30; i++) {
         p3.pushBack(cards[i]);
+        cards[i].getInfo();
     }
+    cout << endl;
     for (int i = 30; i < 40; i++) {
         p4.pushBack(cards[i]);
+        cards[i].getInfo();
     }
+    cout << endl;
 }
 
 //[판별] 과일 수 5개 판별
