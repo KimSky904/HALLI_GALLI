@@ -1,0 +1,48 @@
+
+
+//[화면 DRAW]
+//인트로 화면 draw
+void DrawIntro();
+//게임 화면 draw
+void DrawStartGame();
+//설명 화면 draw
+void DrawInfoScreen();
+
+
+
+48
+
+//[카드 출력 메서드]
+//빈 카드 출력
+void emptyCardPrint(Player& player);
+//전체 빈 카드 출력
+void emptyCardPrint(Player& one, Player& two, Player& three, Player& four);
+//테이블로 낸 카드 출력
+void frontCardPrint(Card& card, Player& player);
+
+//[카드 조작 메서드]
+//사용자에게 카드 랜덤 분배
+int* makeRandArr(int size);
+void setInitCard(Player& p1, Player& p2, Player& p3, Player& p4);
+//[Ring] 모든 front 승자의 back으로 이동
+void getAllFrontCard(Player& winner, Player& looser1, Player& looser2, Player& looser3);
+//[MissRing] 각 player에게 한장씩 back으로 이동
+void missRinging(Player& p1, Player& p2, Player& p3, Player& p4);
+
+//[카드 판별 메서드]
+//과일 수 5개 판별
+bool checkFiveCard(Player& user, Player& p1, Player& p2, Player& p3);
+
+//[카드 정보 출력 메서드]
+//보유 카드 && 테이블 카드 출력
+void printPlayersCardInfo(Player &p1,Player &p2,Player &p3,Player &p4);
+
+
+//[메뉴 선택]
+int ReadyGame();
+//[게임 진행 키]
+int GameKey();
+//[게임 시작]
+void StartGame();
+//[게임 설명]
+void ShowInfo();

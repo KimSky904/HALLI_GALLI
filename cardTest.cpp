@@ -156,7 +156,52 @@ Card cards[CARDCOUNT] = { //과일별 카드 20장 (1:6,2:5,3:4,4:3,5:2)
 //    }
 //}
 //**********************************************************************************************************
-int* randomCard(int size) {
+//int* randomCard(int size) {
+//    int* arr = new int[size] { 0, };
+//    int* chk = new int[size] { 0, };
+//    int cnt = 0;
+//
+//    srand((unsigned int)time(NULL));
+//
+//    while (cnt < size) {
+//        int r = rand() % size;      // 0 ~ size 난수 생성
+//        if (!chk[r]) {              // 이미 뽑힌 적이 없는 숫자면
+//            ++chk[r], arr[cnt] = r; // 체크 후 shuffle 배열에 추가
+//            ++cnt;
+//        }
+//    }
+//
+//    delete[] chk;
+//    return arr;
+//}
+//void randomCar1d(Player& p1, Player& p2, Player& p3, Player& p4) {
+//    int* shuffle = makeRandArr(CARDCOUNT);
+//
+//    for (int i = 0; i < CARDCOUNT / 2; ++i)
+//        p1.pushDeck(initDeck[shuffle[i]]);
+//
+//    for (int i = CARDCOUNT / 2; i < CARDCOUNT; ++i)
+//        p2.pushDeck(initDeck[shuffle[i]]);
+//
+//    delete[] shuffle;
+//}
+//void setInitCard(Player& p1, Player& p2, Player& p3, Player& p4) {
+//    Card* shuffle = randomCard(CARDCOUNT);
+//    //각 플레이어에게 카드 분배
+//    for (int i = 0; i < 20; i++) {
+//        p1.pushBack(cards[i]);
+//    }
+//    for (int i = 20; i < 40; i++) {
+//        p2.pushBack(cards[i]);
+//    }
+//    for (int i = 40; i < 60; i++) {
+//        p3.pushBack(cards[i]);
+//    }
+//    for (int i = 60; i < 80; i++) {
+//        p4.pushBack(cards[i]);
+//    }
+//}
+int* makeRandArr(int size) {
     int* arr = new int[size] { 0, };
     int* chk = new int[size] { 0, };
     int cnt = 0;
@@ -174,32 +219,16 @@ int* randomCard(int size) {
     delete[] chk;
     return arr;
 }
-void randomCar1d(Player& p1, Player& p2, Player& p3, Player& p4) {
+void setInitCard(Player& p1, Player& p2, Player& p3, Player& p4) {
     int* shuffle = makeRandArr(CARDCOUNT);
 
     for (int i = 0; i < CARDCOUNT / 2; ++i)
-        p1.pushDeck(initDeck[shuffle[i]]);
+        p1.pushBack(cards[shuffle[i]]);
 
     for (int i = CARDCOUNT / 2; i < CARDCOUNT; ++i)
-        p2.pushDeck(initDeck[shuffle[i]]);
+        p2.pushBack(cards[shuffle[i]]);
 
     delete[] shuffle;
-}
-void setInitCard(Player& p1, Player& p2, Player& p3, Player& p4) {
-    Card* shuffle = randomCard(CARDCOUNT);
-    //각 플레이어에게 카드 분배
-    for (int i = 0; i < 20; i++) {
-        p1.pushBack(cards[i]);
-    }
-    for (int i = 20; i < 40; i++) {
-        p2.pushBack(cards[i]);
-    }
-    for (int i = 40; i < 60; i++) {
-        p3.pushBack(cards[i]);
-    }
-    for (int i = 60; i < 80; i++) {
-        p4.pushBack(cards[i]);
-    }
 }
 //과일 5개 세는 메소드
 bool checkFiveCard(Player& user,Player& p1,Player& p2,Player& p3) {

@@ -17,11 +17,17 @@ using namespace std;
 #define PURPLE      (RED | BLUE | BLUE)
 #define WHITE       (RED | GREEN | BLUE)
 #define CARDCOUNT 20*4
+#define CARD1X 5
+#define CARD2X 15
+#define CARD3X 25
+#define CARD4X 35
+#define CARDY 12
+
 
 //ÄÜ¼Ö ¼¼ÆÃ
 void SetConsoleView()
 {
-    system("mode con cols=120 lines=41 | title Halli Galli");   //È­¸éÅ©±â,°ÔÀÓÀÌ¸§
+    system("mode con cols=135 lines=45 | title Halli Galli");   //È­¸éÅ©±â,°ÔÀÓÀÌ¸§
 }
 //Ä¿¼­ÀÌµ¿ ÇÔ¼ö
 void gotoxy(int x, int y)
@@ -158,6 +164,29 @@ public:
 };
 
 
+//Ä«µå
+Card cards[CARDCOUNT] = { //°úÀÏº° Ä«µå 20Àå (1:6,2:5,3:4,4:3,5:2)
+    //»ç°ú
+    Card(1,1),Card(1,1),Card(1,1),Card(1,1),Card(1,1),
+    Card(1,1),Card(1,2),Card(1,2),Card(1,2),Card(1,2),
+    Card(1,2),Card(1,3),Card(1,3),Card(1,3),Card(1,3),
+    Card(1,4),Card(1,4),Card(1,4),Card(1,5),Card(1,5),
+    //¹Ù³ª³ª
+    Card(2,1),Card(2,1),Card(2,1),Card(2,1),Card(2,1),
+    Card(2,1),Card(2,2),Card(2,2),Card(2,2),Card(2,2),
+    Card(2,2),Card(2,3),Card(2,3),Card(2,3),Card(2,3),
+    Card(2,4),Card(2,4),Card(2,4),Card(2,5),Card(2,5),
+    //¹è
+    Card(3,1),Card(3,1),Card(3,1),Card(3,1),Card(3,1),
+    Card(3,1),Card(3,2),Card(3,2),Card(3,2),Card(3,2),
+    Card(3,2),Card(3,3),Card(3,3),Card(3,3),Card(3,3),
+    Card(3,4),Card(3,4),Card(3,4),Card(3,5),Card(3,5),
+    //Ã¼¸®
+    Card(4,1),Card(4,1),Card(4,1),Card(4,1),Card(4,1),
+    Card(4,1),Card(4,2),Card(4,2),Card(4,2),Card(4,2),
+    Card(4,2),Card(4,3),Card(4,3),Card(4,3),Card(4,3),
+    Card(4,4),Card(4,4),Card(4,4),Card(4,5),Card(4,5),
+};
 
 
 
@@ -190,17 +219,17 @@ void ShowInfo();
 //¸ÞÀÎ
 int main(void);
 
-
+//----------------------------[Ä«µå Ãâ·Â ¸Þ¼­µå]----------------------------
 //ºó Ä«µå
-void emptyCardPrint(Player player) {
+void emptyCardPrint(Player& player) {
     //Ä«µå Ãâ·Â À§Ä¡
     int x;
-    int y = 14;
+    int y = CARDY;
     switch (player.getPlayerNum()) {
-    case 1: x = 10; break;
-    case 2: x = 20; break;
-    case 3: x = 30; break;
-    case 4: x = 40; break;
+        case 1: x = CARD1X; break;
+        case 2: x = CARD2X; break;
+        case 3: x = CARD3X; break;
+        case 4: x = CARD4X; break;
     }
     gotoxy(x, y);
     cout << "¦®¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¯";
@@ -211,15 +240,13 @@ void emptyCardPrint(Player player) {
     gotoxy(x, y + 7);
     cout << "¦±¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦°" << endl;
 }
-//Å×ÀÌºí Ä«µå Ãâ·Â ÃÊ±âÈ­
-void emptyCardPrint(Player one, Player two, Player three, Player four) {
+//ÀüÃ¼ ºó Ä«µå Ãâ·Â
+void emptyCardPrint(Player& one, Player& two, Player& three, Player& four) {
     //Ä«µå Ãâ·Â À§Ä¡
     int x;
-    int y = 14;
+    int y = CARDY;
     //1
-    x = 10;
-    gotoxy(x, y - 1);
-    cout << "mmm";
+    x = CARD1X;
     gotoxy(x, y);
     cout << "¦®¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¯";
     for (int i = 0; i < 11; ++i) {
@@ -229,7 +256,7 @@ void emptyCardPrint(Player one, Player two, Player three, Player four) {
     gotoxy(x, y + 12);
     cout << "¦±¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦°" << endl;
     //2
-    x = 20;
+    x = CARD2X;
     gotoxy(x, y);
     cout << "¦®¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¯";
     for (int i = 0; i < 11; ++i) {
@@ -239,7 +266,7 @@ void emptyCardPrint(Player one, Player two, Player three, Player four) {
     gotoxy(x, y + 12);
     cout << "¦±¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦°" << endl;
     //3
-    x = 30;
+    x = CARD3X;
     gotoxy(x, y);
     cout << "¦®¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¯";
     for (int i = 0; i < 11; ++i) {
@@ -249,7 +276,7 @@ void emptyCardPrint(Player one, Player two, Player three, Player four) {
     gotoxy(x, y + 12);
     cout << "¦±¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦°" << endl;
     //4
-    x = 40;
+    x = CARD4X;
     gotoxy(x, y);
     cout << "¦®¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¯";
     for (int i = 0; i < 11; ++i) {
@@ -259,7 +286,6 @@ void emptyCardPrint(Player one, Player two, Player three, Player four) {
     gotoxy(x, y + 12);
     cout << "¦±¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦°" << endl;
 }
-
 //¾Õ¿¡ ÀÖ´Â Ä«µå ³¿
 void frontCardPrint(Card card, Player player) {
     HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -287,12 +313,12 @@ void frontCardPrint(Card card, Player player) {
     }
     //Ä«µå Ãâ·Â À§Ä¡
     int x;
-    int y = 14;
+    int y = CARDY;
     switch (player.getPlayerNum()) {
-    case 1: x = 10; break;
-    case 2: x = 20; break;
-    case 3: x = 30; break;
-    case 4: x = 40; break;
+        case 1: x = CARD1X; break;
+        case 2: x = CARD2X; break;
+        case 3: x = CARD3X; break;
+        case 4: x = CARD4X; break;
     }
 
     switch (card.getNumber()) {
@@ -494,35 +520,12 @@ void frontCardPrint(Card card, Player player) {
     }
 }
 
-//Ä«µå
-Card cards[CARDCOUNT] = { //°úÀÏº° Ä«µå 20Àå (1:6,2:5,3:4,4:3,5:2)
-    //»ç°ú
-    Card(1,1),Card(1,1),Card(1,1),Card(1,1),Card(1,1),
-    Card(1,1),Card(1,2),Card(1,2),Card(1,2),Card(1,2),
-    Card(1,2),Card(1,3),Card(1,3),Card(1,3),Card(1,3),
-    Card(1,4),Card(1,4),Card(1,4),Card(1,5),Card(1,5),
-    //¹Ù³ª³ª
-    Card(2,1),Card(2,1),Card(2,1),Card(2,1),Card(2,1),
-    Card(2,1),Card(2,2),Card(2,2),Card(2,2),Card(2,2),
-    Card(2,2),Card(2,3),Card(2,3),Card(2,3),Card(2,3),
-    Card(2,4),Card(2,4),Card(2,4),Card(2,5),Card(2,5),
-    //¹è
-    Card(3,1),Card(3,1),Card(3,1),Card(3,1),Card(3,1),
-    Card(3,1),Card(3,2),Card(3,2),Card(3,2),Card(3,2),
-    Card(3,2),Card(3,3),Card(3,3),Card(3,3),Card(3,3),
-    Card(3,4),Card(3,4),Card(3,4),Card(3,5),Card(3,5),
-    //Ã¼¸®
-    Card(4,1),Card(4,1),Card(4,1),Card(4,1),Card(4,1),
-    Card(4,1),Card(4,2),Card(4,2),Card(4,2),Card(4,2),
-    Card(4,2),Card(4,3),Card(4,3),Card(4,3),Card(4,3),
-    Card(4,4),Card(4,4),Card(4,4),Card(4,5),Card(4,5),
-};
 
 //È­¸é·Îµù draw
 void DrawLoading() {
 
 }
-//½ÃÀÛÈ­¸é draw
+//Ã¹È­¸é draw
 void DrawIntro()
 {
     HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -583,103 +586,72 @@ void DrawStartGame()
     //120 41
     system("cls");
 
-    //ÇÃ·¹ÀÌ¾î 1 (»ç¿ëÀÚ) (¿ÞÂÊ »ó´Ü)
-    gotoxy(0, 0);
-    cout << "¢É¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¢É";
-    for (int i = 1; i < 7; i++) {
-        gotoxy(0, i);
-        cout << "¦­              ¦­";
-    }
-    gotoxy(0, 7);
-    cout << "¢É¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¢É";
-    gotoxy(0, 8);
-    cout << "º¸À¯ Ä«µå ¼ö : -";
-    gotoxy(0, 9);
-    cout << "ÆÇ¿¡ ³õÀÎ Ä«µå ¼ö : -";
-
-    //ÇÃ·¹ÀÌ¾î 2 (¿À¸¥ÂÊ »ó´Ü)
-    gotoxy(51, 0);
-    cout << "¢É¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¢É";
-    for (int i = 1; i < 7; i++) {
-        gotoxy(51, i);
-        cout << "¦­              ¦­";
-    }
-    gotoxy(51, 7);
-    cout << "¢É¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¢É";
-    gotoxy(48, 8);
-    cout << "º¸À¯ Ä«µå ¼ö : -";
-    gotoxy(48, 9);
-    cout << "ÆÇ¿¡ ³õÀÎ Ä«µå ¼ö : -";
-
-    //ÇÃ·¹ÀÌ¾î 3 (¿ÞÂÊ ÇÏ´Ü)
-    gotoxy(0, 30);
-    cout << "º¸À¯ Ä«µå ¼ö : -";
-    gotoxy(0, 31);
-    cout << "ÆÇ¿¡ ³õÀÎ Ä«µå ¼ö : -";
-    gotoxy(0, 32);
-    cout << "¢É¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¢É";
-    for (int i = 33; i < 40; i++) {
-        gotoxy(0, i);
-        cout << "¦­              ¦­";
-    }
-    gotoxy(0, 40);
-    cout << "¢É¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¢É";
-
-
-    //ÇÃ·¹ÀÌ¾î 4 (¿À¸¥ÂÊ ÇÏ´Ü)
-    gotoxy(48, 30);
-    cout << "º¸À¯ Ä«µå ¼ö : -";
-    gotoxy(48, 31);
-    cout << "ÆÇ¿¡ ³õÀÎ Ä«µå ¼ö : -";
-    gotoxy(51, 32);
-    cout << "¢É¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¢É";
-    for (int i = 33; i < 40; i++) {
-        gotoxy(51, i);
-        cout << "¦­              ¦­";
-    }
-    gotoxy(51, 40);
-    cout << "¢É¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¢É";
-
-
     //Ä«µå 1
-    gotoxy(10, 14);
+    gotoxy(CARD1X, CARDY);
     cout << "¦£¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¤";
-    for (int i = 15; i < 26; i++) {
-        gotoxy(10, i);
+    for (int i = CARDY+1; i < CARDY+12; i++) {
+        gotoxy(CARD1X, i);
         cout << "¦¢              ¦¢";
     }
-    gotoxy(10, 26);
+    gotoxy(CARD1X, CARDY + 12);
     cout << "¦¦¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¥";
 
     //Ä«µå 2
-    gotoxy(20, 14);
+    gotoxy(CARD2X, CARDY);
     cout << "¦£¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¤";
-    for (int i = 15; i < 26; i++) {
-        gotoxy(20, i);
+    for (int i = CARDY+1; i < CARDY+12; i++) {
+        gotoxy(CARD2X, i);
         cout << "¦¢              ¦¢";
     }
-    gotoxy(20, 26);
+    gotoxy(CARD2X, CARDY+12);
     cout << "¦¦¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¥";
 
     //Ä«µå 3
-    gotoxy(30, 14);
+    gotoxy(CARD3X, CARDY);
     cout << "¦£¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¤";
-    for (int i = 15; i < 26; i++) {
-        gotoxy(30, i);
+    for (int i = CARDY+1; i < CARDY+12; i++) {
+        gotoxy(CARD3X, i);
         cout << "¦¢              ¦¢";
     }
-    gotoxy(30, 26);
+    gotoxy(CARD3X, CARDY+12);
     cout << "¦¦¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¥";
 
     //Ä«µå 4
-    gotoxy(40, 14);
+    gotoxy(CARD4X, CARDY);
     cout << "¦£¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¤";
-    for (int i = 15; i < 26; i++) {
-        gotoxy(40, i);
+    for (int i = CARDY+1; i < CARDY+12; i++) {
+        gotoxy(CARD4X, i);
         cout << "¦¢              ¦¢";
     }
-    gotoxy(40, 26);
+    gotoxy(CARD4X, CARDY+12);
     cout << "¦¦¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¥";
+
+    for (int i = 0; i < 45; i++) {
+        gotoxy(48, i);
+        cout << "¦¢";
+    }
+
+    gotoxy(15,30);
+    cout << "¦£¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡  Á¶ÀÛ¹ý ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¤";
+    gotoxy(15, 31);
+    cout << "¦¢                                     ¦¢";
+    gotoxy(15, 32);
+    cout << "¦¢      Ä«µå ³Ñ±â±â ¢¹  SPACE BAR      ¦¢";
+    gotoxy(15, 33);
+    cout << "¦¢                                     ¦¢";
+    gotoxy(15, 34);
+    cout << "¦¢        Á¾ Ä¡±â   ¢¹  ENTER          ¦¢";
+    gotoxy(15, 35);
+    cout << "¦¢                                     ¦¢";
+    gotoxy(15, 36);
+    cout << "¦¢        ³ª°¡±â    ¢¹  E key          ¦¢";
+    gotoxy(15, 37);
+    cout << "¦¢                                     ¦¢";
+    gotoxy(15, 38);
+    cout << "¦¦¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¥";
+
+
+
 
 
 }
@@ -749,43 +721,43 @@ void DrawInfoScreen() {
 }
 
 
-//[Ä«µåºÐ¹è] swap
-void swap(Card* A, Card* B)
-{
-    Card temp;
-    temp = *A;
-    *A = *B;
-    *B = temp;
+//[Ä«µåÁ¶ÀÛ] »ç¿ëÀÚ¿¡°Ô Ä«µå ºÐ¹è
+int* makeRandArr(int size) {
+    int* arr = new int[size] { 0, };
+    int* chk = new int[size] { 0, };
+    int cnt = 0;
+
+    srand((unsigned int)time(NULL));
+
+    while (cnt < size) {
+        int r = rand() % size;      // 0 ~ size ³­¼ö »ý¼º
+        if (!chk[r]) {              // ÀÌ¹Ì »ÌÈù ÀûÀÌ ¾ø´Â ¼ýÀÚ¸é
+            ++chk[r], arr[cnt] = r; // Ã¼Å© ÈÄ shuffle ¹è¿­¿¡ Ãß°¡
+            ++cnt;
+        }
+    }
+
+    delete[] chk;
+    return arr;
 }
-//[Ä«µåºÐ¹è] Ä«µå ·£´ý¹èÄ¡
-void randomCard(Card* card) {
-    for (int i = 0; i < CARDCOUNT; i++) swap(&card[i], &card[(rand() % (CARDCOUNT - i)) + i]);
-}
-//[Ä«µåºÐ¹è] »ç¿ëÀÚ¿¡°Ô Ä«µå ºÐ¹è
 void setInitCard(Player& p1, Player& p2, Player& p3, Player& p4) {
-    randomCard(cards);
-    //°¢ ÇÃ·¹ÀÌ¾î¿¡°Ô Ä«µå ºÐ¹è
-    cout << endl;
-    for (int i = 0; i < 10; i++) {
-        p1.pushBack(cards[i]);
-        cards[i].getInfo();
-    }
-    cout << endl;
-    for (int i = 10; i < 20; i++) {
-        p2.pushBack(cards[i]);
-        cards[i].getInfo();
-    }
-    cout << endl;
-    for (int i = 20; i < 30; i++) {
-        p3.pushBack(cards[i]);
-        cards[i].getInfo();
-    }
-    cout << endl;
-    for (int i = 30; i < 40; i++) {
-        p4.pushBack(cards[i]);
-        cards[i].getInfo();
-    }
-    cout << endl;
+
+    int* shuffle = makeRandArr(CARDCOUNT);
+
+    for (int i = 0; i < CARDCOUNT / 4 ; ++i)
+        p1.pushBack(cards[shuffle[i]]);
+
+    for (int i = CARDCOUNT / 4; i < CARDCOUNT / 2; ++i)
+        p2.pushBack(cards[shuffle[i]]);
+
+    //CARDCOUNT * (3/4)
+    for (int i = CARDCOUNT / 2; i < 60; ++i)
+        p3.pushBack(cards[shuffle[i]]);
+
+    for (int i = 60; i < CARDCOUNT; ++i)
+        p4.pushBack(cards[shuffle[i]]);
+
+    delete[] shuffle;
 }
 
 //[ÆÇº°] °úÀÏ ¼ö 5°³ ÆÇº°
@@ -831,64 +803,41 @@ void getAllFrontCard(Player& winner, Player& looser1, Player& looser2, Player& l
     emptyCardPrint(winner,looser1,looser2,looser3);
 }
 //[ÆÇº°] Á¾ Àß¸øÃÆÀ» °æ¿ì - °¢ player¿¡°Ô Ä«µå ÇÑÀå¾¿ back¿¡ ³Ñ±è
-void missRinging(Player& p1, Player& p2, Player& p3, Player& p4) {
+void missRinging(Player& looser, Player& winner1, Player& winner2, Player& winner3) {
     //cout << "Á¾À» Àß¸øÃÆÀ¸¹Ç·Î Ä«µå¸¦ ³ª´©¾îÁÝ´Ï´Ù." << endl;
     //ÇÃ·¹ÀÌ °¡´ÉÇÑ ÀÎ¿ø ¼ö ¼¼±â
     int cnt = 0;
-    if (p1.getAvailable()) cnt++;
-    if (p2.getAvailable()) cnt++;
-    if (p3.getAvailable()) cnt++;
-    if (p4.getAvailable()) cnt++;
+    if (looser.getAvailable()) cnt++;
+    if (winner1.getAvailable()) cnt++;
+    if (winner2.getAvailable()) cnt++;
+    if (winner3.getAvailable()) cnt++;
     //back Ä«µå°¡ ¾øÀ» °æ¿ì,ºÎÁ·ÇÑ °æ¿ì Å»¶ô
-    if (p1.backIsEmpty() || p1.getBackCount() < cnt - 1) {
+    if (looser.backIsEmpty() || looser.getBackCount() < cnt - 1) {
         //cout << "»ó´ë¿¡°Ô ÁÙ Ä«µå°¡ ºÎÁ·ÇÏ¿© Å»¶ôµÇ¾ú½À´Ï´Ù." << endl;
-        p1.setNoneAvailable();
+        looser.setNoneAvailable();
         return;
     }
     //°ÔÀÓÇÃ·¹ÀÌ °¡´ÉÇÑ ÀÎ¿ø Ä«µå ³ª´²ÁÖ±â
-    if (p2.getAvailable()) {
-        p2.pushBack(p1.getBackTopCard());
-        p1.popBack();
+    if (winner1.getAvailable()) {
+        winner1.pushBack(looser.getBackTopCard());
+        looser.popBack();
     }
-    if (p3.getAvailable()) {
-        p3.pushBack(p1.getBackTopCard());
-        p1.popBack();
+    if (winner2.getAvailable()) {
+        winner2.pushBack(looser.getBackTopCard());
+        looser.popBack();
     }
-    if (p4.getAvailable()) {
-        p4.pushBack(p1.getBackTopCard());
-        p1.popBack();
+    if (winner3.getAvailable()) {
+        winner3.pushBack(looser.getBackTopCard());
+        looser.popBack();
     }
     //Ä«µå¸¦ ÁØ ÈÄ¿¡ Ä«µå°¡ ¾øÀ» °æ¿ì Å»¶ô
-    if (p1.backIsEmpty()) {
+    if (looser.backIsEmpty()) {
        // cout << "Ä«µå¸¦ ÁÖ°í ³²Àº Ä«µå°¡ ¾ø¾î Å»¶ôµÇ¾ú½À´Ï´Ù." << endl;
-        p1.setNoneAvailable();
+        looser.setNoneAvailable();
     }
     return;
 }
 
-
-//[Ãâ·Â] Å×ÀÌºí À§ÀÇ Ä«µå Á¤º¸
-void printTableInfo(Player& user, Player& p1, Player& p2, Player& p3) {
-    cout << "ÇöÀç Å×ÀÌºí Ä«µå [";
-    user.getFrontTopCard().getInfo(); cout << ", ";
-    p1.getFrontTopCard().getInfo(); cout << ", ";
-    p2.getFrontTopCard().getInfo(); cout << ", ";
-    p3.getFrontTopCard().getInfo();
-    cout << "]" << endl;
-}
-//[Ãâ·Â] »ç¿ëÀÚ Ä«µå Á¤º¸
-void printBackInfo(Player& user, Player& p1, Player& p2, Player& p3) {
-    cout << "ÇöÀç »ç¿ëÀÚ Ä«µå [";
-    if (user.getBackCount() != 0) { user.getBackTopCard().getInfo(); cout << ", "; }
-    else { cout << "[ 0 , 0 ], "; }
-    if (p1.getBackCount() != 0) { p1.getBackTopCard().getInfo(); cout << ", "; }
-    else { cout << "[ 0 , 0 ], "; }
-    if (p2.getBackCount() != 0) { p2.getBackTopCard().getInfo(); cout << ", "; }
-    else { cout << "[ 0 , 0 ], "; }
-    if (p3.getBackCount() != 0) { p3.getBackTopCard().getInfo(); }
-    else { cout << "[ 0 , 0 ]"; }
-    cout << "]" << endl;
-}
 
 //¸Þ´º¼±ÅÃ
 int ReadyGame()
@@ -897,7 +846,7 @@ int ReadyGame()
     DrawIntro();
     while (true) {
         //Å°°ª ¹Þ¾Æ¿À±â
-        int key = GetKeyValue();
+        int key = _getch();
         if (key == 'r' || key == 'R') {         //rule = 1
             return 1;
         }
@@ -929,26 +878,27 @@ int GameKey()
     return 0;
 }
 
+//º¸À¯ Ä«µå && Å×ÀÌºí Ä«µå Ãâ·Â
 void printPlayersCardInfo(Player &p1,Player &p2,Player &p3,Player &p4) {
-    gotoxy(0, 8);
-    cout << "º¸À¯ Ä«µå ¼ö : " << p1.getBackCount() << "  ";
-    gotoxy(0, 9);
-    cout << "ÆÇ¿¡ ³õÀÎ Ä«µå ¼ö : " << p1.getFrontCount() << "  ";
+    gotoxy(58, 6);
+    cout << "Å×ÀÌºíÄ«µå ¼ö : " << p1.getFrontCount() << "  ";
+    gotoxy(58, 7);
+    cout << "¼ÒÀ¯Ä«µå ¼ö : " << p1.getBackCount() << "  ";
 
-    gotoxy(48, 8);
-    cout << "º¸À¯ Ä«µå ¼ö : " << p2.getBackCount() << "  ";
-    gotoxy(48, 9);
-    cout << "ÆÇ¿¡ ³õÀÎ Ä«µå ¼ö : " << p2.getFrontCount() << "  ";
+    gotoxy(58, 16);
+    cout << "Å×ÀÌºíÄ«µå ¼ö : " << p2.getFrontCount() << "  ";
+    gotoxy(58, 17);
+    cout << "¼ÒÀ¯Ä«µå ¼ö : " << p2.getBackCount() << "  ";
 
-    gotoxy(0, 30);
-    cout << "º¸À¯ Ä«µå ¼ö : " << p3.getBackCount() << "  ";
-    gotoxy(0, 31);
-    cout << "ÆÇ¿¡ ³õÀÎ Ä«µå ¼ö : " << p3.getFrontCount() << "  ";
+    gotoxy(58, 26);
+    cout << "Å×ÀÌºíÄ«µå ¼ö : " << p3.getFrontCount() << "  ";
+    gotoxy(58, 27);
+    cout << "¼ÒÀ¯Ä«µå ¼ö : " << p3.getBackCount() << "  ";
 
-    gotoxy(48, 30);
-    cout << "º¸À¯ Ä«µå ¼ö : " << p4.getBackCount() << "  ";
-    gotoxy(48, 31);
-    cout << "ÆÇ¿¡ ³õÀÎ Ä«µå ¼ö : " << p4.getFrontCount() << "  ";
+    gotoxy(58, 36);
+    cout << "Å×ÀÌºíÄ«µå ¼ö : " << p4.getFrontCount() << "  ";
+    gotoxy(58, 37);
+    cout << "¼ÒÀ¯Ä«µå ¼ö : " << p4.getBackCount() << "  ";
 }
 
 //°ÔÀÓ ½ÃÀÛ
@@ -1171,7 +1121,7 @@ void ShowInfo()
 {
     DrawInfoScreen();
     while (true) {
-        if (GetKeyValue() == 27)
+        if (_getch() == 27)
             break;
     }
 }
@@ -1188,7 +1138,8 @@ void ShowInfo()
 //¸ÞÀÎ
 int main(void)
 {
-    SetConsoleView(); //ÄÜ¼Ö¼³Á¤
+    //ÄÜ¼Ö¼³Á¤
+    SetConsoleView(); 
     int menuValue = -1;
     while (true)
     {
