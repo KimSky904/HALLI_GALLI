@@ -529,22 +529,22 @@ void DrawLoading() {
 void DrawIntro()
 {
     HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
-
+    int x = 9;
     PrintString(hStdOut, WHITE);
     system("cls");
-    gotoxy(5, 4);
+    gotoxy(x, 4);
     cout << "##   ##    ##     ####     ####      ####               ####     ##     ####     ####      ####";
-    gotoxy(5, 5);
+    gotoxy(x, 5);
     cout << "##   ##   ####     ##       ##        ##               ##  ##   ####     ##       ##        ##";
-    gotoxy(5, 6);
+    gotoxy(x, 6);
     cout << "##   ##  ##  ##    ##       ##        ##              ##       ##  ##    ##       ##        ##";
-    gotoxy(5, 7);
+    gotoxy(x, 7);
     cout << "#######  ##  ##    ##       ##        ##              ##       ##  ##    ##       ##        ##";
-    gotoxy(5, 8);
+    gotoxy(x, 8);
     cout << "##   ##  ######    ##   #   ##   #    ##              ##  ###  ######    ##   #   ##   #    ##";
-    gotoxy(5, 9);
+    gotoxy(x, 9);
     cout << "##   ##  ##  ##    ##  ##   ##  ##    ##               ##  ##  ##  ##    ##  ##   ##  ##    ##";
-    gotoxy(5, 10);
+    gotoxy(x, 10);
     cout << "##   ##  ##  ##   #######  #######   ####               #####  ##  ##   #######  #######   ####";
 
 
@@ -573,11 +573,11 @@ void DrawIntro()
                          
 
     PrintString(hStdOut, WHITE);
-    gotoxy(24, 29);
+    gotoxy(28, 29);
     cout << "▶ Game Rule for 'r'";
-    gotoxy(24, 31);
+    gotoxy(28, 31);
     cout << "▶ Game Start for 's'";
-    gotoxy(24, 33);
+    gotoxy(28, 33);
     cout << "▶ Exit for 'e'";
 }
 //게임화면 draw
@@ -651,8 +651,67 @@ void DrawStartGame()
     cout << "└─────────────────────────────────────┘";
 
 
+    //사용자 상태 정보
+    gotoxy(57, 4);
+    cout << "Player 1";
+    gotoxy(50, 3);
+    cout << "┌─────────┐";
+    gotoxy(50, 4);
+    cout << "│  ⌒  ⌒ │";
+    gotoxy(50, 5);
+    cout << "│  ◐  ◑ │";
+    gotoxy(50, 6);
+    cout << "│         │";
+    gotoxy(50, 7);
+    cout << "│    ∇   │";
+    gotoxy(50, 8);
+    cout << "└─────────┘";
 
 
+    gotoxy(57, 14);
+    cout << "Player 2";
+    gotoxy(50, 13);
+    cout << "┌─────────┐";
+    gotoxy(50, 14);
+    cout << "│  ⌒  ⌒ │";
+    gotoxy(50, 15);
+    cout << "│  ♡  ♡ │";
+    gotoxy(50, 16);
+    cout << "│         │";
+    gotoxy(50, 17);
+    cout << "│    ∪   │";
+    gotoxy(50, 18);
+    cout << "└─────────┘";
+
+    gotoxy(57, 24);
+    cout << "Player 3";
+    gotoxy(50, 23);
+    cout << "┌─────────┐";
+    gotoxy(50, 24);
+    cout << "│  ⌒  ⌒ │";
+    gotoxy(50, 25);
+    cout << "│  ∧  ∧ │";
+    gotoxy(50, 26);
+    cout << "│         │";
+    gotoxy(50, 27);
+    cout << "│    ∪   │";
+    gotoxy(50, 28);
+    cout << "└─────────┘";
+
+    gotoxy(57, 34);
+    cout << "Player 4";
+    gotoxy(50, 33);
+    cout << "┌─────────┐";
+    gotoxy(50, 34);
+    cout << "│  ⌒  ⌒ │";
+    gotoxy(50, 35);
+    cout << "│  ≡  ≡ │";
+    gotoxy(50, 36);
+    cout << "│         │";
+    gotoxy(50, 37);
+    cout << "│    ∪   │";
+    gotoxy(50, 38);
+    cout << "└─────────┘";
 
 }
 //설명화면 draw
@@ -718,6 +777,53 @@ void DrawInfoScreen() {
     gotoxy(3, 39);
     cout << "≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫≫";
 
+}
+
+
+
+//[사용자 상태 변경 메서드]
+void makeFaceSmile(Player& player) {
+    int x=50, y;
+    switch (player.getPlayerNum()){
+    case 1: y = 5; break;
+    case 2: y = 15; break;
+    case 3: y = 25; break;
+    case 4: y = 35; break;
+    }
+    gotoxy(x, y);
+    cout << "│  >  < │";
+}
+void makeFaceAngry(Player& player) {
+    int x = 50, y;
+    switch (player.getPlayerNum()) {
+    case 1: y = 5; break;
+    case 2: y = 15; break;
+    case 3: y = 25; break;
+    case 4: y = 35; break;
+    }
+    gotoxy(x, y);
+    cout << "│  \\  / │"; //역슬래시
+}
+void makeAllFaceDefault(Player& player) {
+    int x = 50, y;
+    switch (player.getPlayerNum()) {
+    case 1: 
+        gotoxy(x,5);
+        cout << "│  ◐  ◑ │";
+        break;
+    case 2: 
+        gotoxy(x, 15);
+        cout << "│  ♡  ♡ │";
+        break;
+    case 3: 
+        gotoxy(x, 25);
+        cout << "│  ∧  ∧ │";
+        break;
+    case 4: 
+        gotoxy(x, 35);
+        cout << "│  ≡  ≡ │";
+        break;
+    }
 }
 
 
@@ -815,6 +921,8 @@ void missRinging(Player& looser, Player& winner1, Player& winner2, Player& winne
     if (looser.backIsEmpty() || looser.getBackCount() < cnt - 1) {
         //cout << "상대에게 줄 카드가 부족하여 탈락되었습니다." << endl;
         looser.setNoneAvailable();
+        gotoxy(0,1);
+        cout << "탈락처리됌" << endl;
         return;
     }
     //게임플레이 가능한 인원 카드 나눠주기
@@ -830,11 +938,11 @@ void missRinging(Player& looser, Player& winner1, Player& winner2, Player& winne
         winner3.pushBack(looser.getBackTopCard());
         looser.popBack();
     }
-    //카드를 준 후에 카드가 없을 경우 탈락
-    if (looser.backIsEmpty()) {
-       // cout << "카드를 주고 남은 카드가 없어 탈락되었습니다." << endl;
-        looser.setNoneAvailable();
-    }
+    ////카드를 준 후에 카드가 없을 경우 탈락
+    //if (looser.backIsEmpty()) {
+    //   // cout << "카드를 주고 남은 카드가 없어 탈락되었습니다." << endl;
+    //    looser.setNoneAvailable();
+    //}
     return;
 }
 
@@ -880,24 +988,24 @@ int GameKey()
 
 //보유 카드 && 테이블 카드 출력
 void printPlayersCardInfo(Player &p1,Player &p2,Player &p3,Player &p4) {
-    gotoxy(58, 6);
+    gotoxy(57, 6);
     cout << "테이블카드 수 : " << p1.getFrontCount() << "  ";
-    gotoxy(58, 7);
+    gotoxy(57, 7);
     cout << "소유카드 수 : " << p1.getBackCount() << "  ";
 
-    gotoxy(58, 16);
+    gotoxy(57, 16);
     cout << "테이블카드 수 : " << p2.getFrontCount() << "  ";
-    gotoxy(58, 17);
+    gotoxy(57, 17);
     cout << "소유카드 수 : " << p2.getBackCount() << "  ";
 
-    gotoxy(58, 26);
+    gotoxy(57, 26);
     cout << "테이블카드 수 : " << p3.getFrontCount() << "  ";
-    gotoxy(58, 27);
+    gotoxy(57, 27);
     cout << "소유카드 수 : " << p3.getBackCount() << "  ";
 
-    gotoxy(58, 36);
+    gotoxy(57, 36);
     cout << "테이블카드 수 : " << p4.getFrontCount() << "  ";
-    gotoxy(58, 37);
+    gotoxy(57, 37);
     cout << "소유카드 수 : " << p4.getBackCount() << "  ";
 }
 
@@ -914,20 +1022,12 @@ void StartGame()
     int turn = -1;
     while (true) {
         // (1:1:1:1) 한명의 플레이어만 남았을 경우
+        gotoxy(0, 0);
+        cout << (int)user.getAvailable() + (int)p1.getAvailable() + (int)p2.getAvailable() + (int)p3.getAvailable() << endl;
         if ((int)user.getAvailable() + (int)p1.getAvailable() + (int)p2.getAvailable() + (int)p3.getAvailable() == 1) {
-            if (user.getAvailable()) {
-                cout << "승자는 Player1 입니다." << endl;
-            }
-            else if (p1.getAvailable()) {
-                cout << "승자는 Player2 입니다." << endl;
-            }
-            else if (p2.getAvailable()) {
-                cout << "승자는 Player3 입니다." << endl;
-            }
-            else if (p3.getAvailable()) {
-                cout << "승자는 Player4 입니다." << endl;
-            }
-
+            //엔딩화면
+            //DrawRankingScreen();
+            cout << "End" << endl;
             break;
         }
 
@@ -938,23 +1038,11 @@ void StartGame()
                 continue;
             }
             else {
-                gotoxy(26, 7);
-                cout << "                                         ";
-                gotoxy(26, 7);
-                cout << "[ " << user.getPlayerNum() << "번 차례 ]";
                 if (user.open() == -1) continue;
                 gotoxy(10, 14);
                 frontCardPrint(user.getFrontTopCard(),user);
-                //printTableInfo(user, p1, p2, p3);
-                //printBackInfo(user, p1, p2, p3);
-                //cout << "테이블 카드 개수 : " << user.getFrontCount() << endl;
-                //cout << "사용자 카드 개수 : " << user.getBackCount() << endl;
                 input = GameKey();
                 if (input == 1) {
-                    gotoxy(24, 9);
-                    cout << "                                                          ";
-                    gotoxy(24, 9);
-                    cout << "[ 1번 player : 종을 쳤습니다 ]";
                     //과일 5개일때 쳤을 경우
                     if (checkFiveCard(user, p1, p2, p3)) {
                         //테이블 위의 카드 모두 가져감
@@ -968,11 +1056,14 @@ void StartGame()
                     }
                 }
                 else if(input==2){
-                    gotoxy(15, 9);
-                    cout << "                                                          ";
-                    gotoxy(15, 9);
-                    cout << "[ 1번 player : 종을 치지 않았습니다. 다음 턴으로 넘어갑니다. ]";
+                    //종 치지 않음
                 }
+            }
+            if (user.getBackCount() == 0) {
+                gotoxy(0, 1);
+                cout << "탈락" << endl;
+                user.setNoneAvailable();
+                printPlayersCardInfo(user, p1, p2, p3);
             }
         }
         else if (turn % 4 == 1) {
@@ -981,23 +1072,11 @@ void StartGame()
                 continue;
             }
             else {
-                gotoxy(26, 7);
-                cout << "                                         ";
-                gotoxy(26, 7);
-                cout << "[ " << p1.getPlayerNum() << "번 차례 ]";
                 if (p1.open() == -1) continue;
                 gotoxy(20, 14);
                 frontCardPrint(p1.getFrontTopCard(),p1);
-                //printTableInfo(user, p1, p2, p3);
-                //printBackInfo(user, p1, p2, p3);
-                //cout << "테이블 카드 개수 : " << p1.getFrontCount() << endl;
-                //cout << "사용자 카드 개수 : " << p1.getBackCount() << endl;
                 input = GameKey();
                 if (input == 1) {
-                    gotoxy(24, 9);
-                    cout << "                                                          ";
-                    gotoxy(24, 9);
-                    cout << "[ 2번 player : 종을 쳤습니다 ]";
                     //과일 5개일때 쳤을 경우
                     if (checkFiveCard(p1, user, p2, p3)) {
                         //테이블 위의 카드 모두 가져감
@@ -1011,11 +1090,14 @@ void StartGame()
                     }
                 }
                 else {
-                    gotoxy(15, 9);
-                    cout << "                                                          ";
-                    gotoxy(15, 9);
-                    cout << "[ 2번 player : 종을 치지 않았습니다. 다음 턴으로 넘어갑니다. ]";
+                    //종 치지 않음
                 }
+            }
+            if (p1.getBackCount() == 0) {
+                gotoxy(0, 1);
+                cout << "탈락" << endl;
+                p1.setNoneAvailable();
+                printPlayersCardInfo(user, p1, p2, p3);
             }
         }
         else if (turn % 4 == 2) {
@@ -1024,23 +1106,11 @@ void StartGame()
                 continue;
             }
             else {
-                gotoxy(26, 7);
-                cout << "                                         ";
-                gotoxy(26, 7);
-                cout << "[ " << p2.getPlayerNum() << "번 차례 ]";
                 if (p2.open() == -1) continue;
                 gotoxy(30, 14);
                 frontCardPrint(p2.getFrontTopCard(),p2);
-                //printTableInfo(user, p1, p2, p3);
-                //printBackInfo(user, p1, p2, p3);
-                //cout << "테이블 카드 개수 : " << p2.getFrontCount() << endl;
-                //cout << "사용자 카드 개수 : " << p2.getBackCount() << endl;
                 input = GameKey();
                 if (input == 1) {
-                    gotoxy(24, 9);
-                    cout << "                                                          ";
-                    gotoxy(24, 9);
-                    cout << "[ 3번 player : 종을 쳤습니다 ]";
                     //과일 5개일때 쳤을 경우
                     if (checkFiveCard(p2, user, p1, p3)) {
                         //테이블 위의 카드 모두 가져감
@@ -1054,11 +1124,14 @@ void StartGame()
                     }
                 }
                 else {
-                    gotoxy(15, 9);
-                    cout << "                                                          ";
-                    gotoxy(15, 9);
-                    cout << "[ 3번 player : 종을 치지 않았습니다. 다음 턴으로 넘어갑니다. ]";
+                    //종 치지 않음
                 }
+            }
+            if (p2.getBackCount() == 0) {
+                gotoxy(0, 1);
+                cout << "탈락" << endl;
+                p2.setNoneAvailable();
+                printPlayersCardInfo(user, p1, p2, p3);
             }
         }
         else if (turn % 4 == 3) {
@@ -1074,16 +1147,8 @@ void StartGame()
                 if (p3.open() == -1) continue;
                 gotoxy(40, 14);
                 frontCardPrint(p3.getFrontTopCard(),p3);
-                //printTableInfo(user, p1, p2, p3);
-                //printBackInfo(user, p1, p2, p3);
-                //cout << "테이블 카드 개수 : " << p3.getFrontCount() << endl;
-                //cout << "사용자 카드 개수 : " << p3.getBackCount() << endl;
                 input = GameKey();
                 if (input == 1) {
-                    gotoxy(24, 9);
-                    cout << "                                                          ";
-                    gotoxy(24, 9);
-                    cout << "[ 4번 player : 종을 쳤습니다 ]";
                     //과일 5개일때 쳤을 경우
                     if (checkFiveCard(p3, p1, p2, user)) {
                         //테이블 위의 카드 모두 가져감
@@ -1098,11 +1163,14 @@ void StartGame()
                     }
                 }
                 else {
-                    gotoxy(15, 9);
-                    cout << "                                                          ";
-                    gotoxy(15, 9);
-                    cout << "[ 4번 player : 종을 치지 않았습니다. 다음 턴으로 넘어갑니다. ]";
+                    //종 치지 않음
                 }
+            }
+            if (p3.getBackCount() == 0) {
+                gotoxy(0, 1);
+                cout << "탈락" << endl;
+                p3.setNoneAvailable();
+                printPlayersCardInfo(user, p1, p2, p3);
             }
         }
         //  cout << "==========================================================" << endl;

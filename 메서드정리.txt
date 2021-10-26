@@ -10,7 +10,10 @@ void DrawInfoScreen();
 
 
 
-48
+//[사용자 상태 변경 메서드]
+void makeFaceSmile(Player& player);
+void makeFaceAngry(Player& player);
+void makeAllFaceDefault(Player& player);
 
 //[카드 출력 메서드]
 //빈 카드 출력
