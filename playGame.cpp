@@ -37,6 +37,13 @@ void gotoxy(int x, int y)
     Pos.Y = y;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos);
 }
+void CursorView()
+{
+    CONSOLE_CURSOR_INFO cursorInfo = { 0, };
+    cursorInfo.dwSize = 1; 
+    cursorInfo.bVisible = FALSE; 
+    SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
+}
 //keyboard 입력값 반환함
 int GetKeyValue()
 {
@@ -121,7 +128,6 @@ public:
     }
     //뒤집지 않은 카드스택의 가장 위 카드 반환
     Card getBackTopCard() {
-        //if (back.empty()) return Card();
         return back.top();
     }
     //뒤집은/뒤집지 않은 카드의 숫자 반환
@@ -133,7 +139,6 @@ public:
     }
     //카드 추가
     void pushBack(const Card& card) {
-        //cout << "push됨, "<< getBackCount() << endl;
         back.push(card);
     }
     void pushFront(const Card& card) {
@@ -165,7 +170,7 @@ public:
 
 
 //카드
-Card cards[CARDCOUNT] = { //과일별 카드 20장 (1:6,2:5,3:4,4:3,5:2)
+Card cards[CARDCOUNT] = {
     //사과
     Card(1,1),Card(1,1),Card(1,1),Card(1,1),Card(1,1),
     Card(1,1),Card(1,2),Card(1,2),Card(1,2),Card(1,2),
@@ -714,6 +719,19 @@ void DrawStartGame()
     cout << "└─────────┘";
 
 }
+//엔딩화면 draw
+void DrawRankingScreen() {
+    //135 45
+    HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    system("cls");
+
+    int x = 22;
+    int y = 8;
+    gotoxy(x, y);
+    cout << "┌────────────── [  RANKING  ]──────────────┐ ";
+    gotoxy(x, y+1);
+    cout << "│                         │";
+}
 //설명화면 draw
 void DrawInfoScreen() {
     HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -1022,12 +1040,62 @@ void StartGame()
     int turn = -1;
     while (true) {
         // (1:1:1:1) 한명의 플레이어만 남았을 경우
-        gotoxy(0, 0);
-        cout << (int)user.getAvailable() + (int)p1.getAvailable() + (int)p2.getAvailable() + (int)p3.getAvailable() << endl;
         if ((int)user.getAvailable() + (int)p1.getAvailable() + (int)p2.getAvailable() + (int)p3.getAvailable() == 1) {
-            //엔딩화면
-            //DrawRankingScreen();
-            cout << "End" << endl;
+            
+            string winnerName = "";
+            if (user.getAvailable() == 1) winnerName = "Player 1";
+            else if (p1.getAvailable() == 1) winnerName = "Player 2";
+            else if (p2.getAvailable() == 1) winnerName = "Player 3";
+            else if (p3.getAvailable() == 1) winnerName = "Player 4";
+
+            int x = 20;
+            int y = 17;
+            gotoxy(x, y);
+            cout << "┌─────────────────────────────────────────┐";
+            gotoxy(x, y+1);
+            cout << "│                                         │";
+            gotoxy(x, y + 2);
+            cout << "│                GAME OVER                │";
+            gotoxy(x, y + 3);
+            cout << "│                                         │";
+            gotoxy(x, y + 4);
+            cout << "│             winner :  "<< winnerName<<"          │";
+            gotoxy(x, y + 5);
+            cout << "│                                         │";
+            gotoxy(x, y + 6);
+            cout << "│   랭킹을 작성하시겠습니까?  [ Y / N ]   │";
+            gotoxy(x, y + 7);
+            cout << "│                                         │";
+            gotoxy(x, y + 8);
+            cout << "└─────────────────────────────────────────┘";
+
+            //Y 또는 N 선택
+            while (true) {
+                if (_getch() == 89 || _getch() == 121) {
+                    string userName = "";
+                    gotoxy(x, y + 4);
+                    cout << "│                                         │";
+                    gotoxy(x, y + 5);
+                    cout << "│    닉네임 입력 :                        │";
+                    gotoxy(x, y + 6);
+                    cout << "│                                         │";
+                    gotoxy(x+12, y + 5);
+                    cin >> userName;
+                    gotoxy(0, 0);
+                    cout << userName << endl;
+                    //랭킹 화면 draw
+                    DrawRankingScreen();
+                    break;
+                }
+                else if (_getch() == 78 || _getch() == 110){
+                    //메인으로 이동합니다 3초동안 띄움
+                    gotoxy(0, 0);
+                    cout << "메인으로 이동" << endl;
+                    break;
+                }
+            }
+            
+
             break;
         }
 
@@ -1140,10 +1208,6 @@ void StartGame()
                 continue;
             }
             else {
-                gotoxy(26, 7);
-                cout << "                                         ";
-                gotoxy(26, 7);
-                cout << "[ " << p3.getPlayerNum() << "번 차례 ]";
                 if (p3.open() == -1) continue;
                 gotoxy(40, 14);
                 frontCardPrint(p3.getFrontTopCard(),p3);
@@ -1208,6 +1272,8 @@ int main(void)
 {
     //콘솔설정
     SetConsoleView(); 
+    //커서 설정
+    CursorView();
     int menuValue = -1;
     while (true)
     {

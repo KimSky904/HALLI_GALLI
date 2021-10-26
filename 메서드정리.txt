@@ -7,7 +7,8 @@ void DrawIntro();
 void DrawStartGame();
 //설명 화면 draw
 void DrawInfoScreen();
-
+//엔딩 화면 draw
+void DrawRankingScreen();
 
 
 //[사용자 상태 변경 메서드]
