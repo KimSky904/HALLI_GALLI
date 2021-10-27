@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include<iostream>
 #include<string>
 #include<ctime>
@@ -8,6 +9,9 @@
 #include<time.h>	
 #include<list>
 #include<stack>
+#include<fstream>
+#include <mmsystem.h>
+#pragma comment(lib,"winmm.lib")
 using namespace std;
 #define RED         (FOREGROUND_RED | FOREGROUND_INTENSITY)
 #define BLUE        (FOREGROUND_BLUE | FOREGROUND_INTENSITY)
@@ -203,8 +207,6 @@ void gotoxy(int x, int y);
 int GetKeyValue();
 //색상지정
 void PrintString(HANDLE hStdOut, WORD Attribute);
-//화면로딩 draw
-void DrawLoading();
 //시작화면 draw
 void DrawIntro();
 //게임화면 draw
@@ -526,10 +528,6 @@ void frontCardPrint(Card card, Player player) {
 }
 
 
-//화면로딩 draw
-void DrawLoading() {
-
-}
 //첫화면 draw
 void DrawIntro()
 {
@@ -725,12 +723,148 @@ void DrawRankingScreen() {
     HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
     system("cls");
 
-    int x = 22;
+    //구조체
+    struct players {
+        char name[20];
+        float score;
+        int rank;
+    } pl[10];
+    FILE* fp1;
+
+    //점수 초기화
+    for (int i = 0; i < 10; i++) {
+        pl[i].score = 0;
+    }
+
+    //파일에서 읽어옴
+    while(true){
+        fopen_s(&fp1, "database.txt", "r");
+        if (fp1 == NULL) {
+            gotoxy(0,0);
+            cout << "파일이 존재하지 않습니다." << endl;
+        }
+        else break;
+    }
+    for (int i = 0; i < 10; i++) { 
+        fscanf_s(fp1, "%s", pl[i].name, 20);
+        fscanf_s(fp1, "%d", &(pl[i].score));
+    }
+    fclose(fp1);
+
+
+    //순위 저장
+    for (int i = 0; i < 10; i++) {
+        pl[i].rank = 1;
+        for (int j = 0; j < 10; j++) {
+            if (pl[i].score < pl[j].score) pl[i].rank++;
+        }
+    }
+
+    //fopen_s(&fp2, "database.txt", "w");
+    int x = 14;
     int y = 8;
     gotoxy(x, y);
-    cout << "┌────────────── [  RANKING  ]──────────────┐ ";
-    gotoxy(x, y+1);
-    cout << "│                         │";
+    cout << "┌──────── [  RANKING  ]────────┐ ";
+    for (int i = 1; i <= 10; i++) {
+        for (int j = 0; j < 10; j++) {
+            if (pl[j].rank == i) {
+                gotoxy(x, ++y);
+                cout << "│                              │";
+                gotoxy(x, ++y);
+                if (pl[j].score == 0) {
+                    PrintString(hStdOut, WHITE);
+                    printf("│               -              │");
+                }
+                else {
+                    switch (i) {
+                    case 1:
+                        PrintString(hStdOut, WHITE);
+                        cout << "│  ";
+                        PrintString(hStdOut, YELLOW);
+                        printf("%2d     %10s    %4d", pl[j].rank, pl[j].name, pl[j].score);
+                        PrintString(hStdOut, WHITE);
+                        cout << "   │";
+                        break;
+                    case 2:
+                        PrintString(hStdOut, WHITE);
+                        cout << "│  ";
+                        PrintString(hStdOut, 7);
+                        printf("%2d     %10s    %4d", pl[j].rank, pl[j].name, pl[j].score);
+                        PrintString(hStdOut, WHITE);
+                        cout << "   │";
+                        break;
+                    case 3:
+                        PrintString(hStdOut, WHITE);
+                        cout << "│  ";
+                        PrintString(hStdOut, 6);
+                        printf("%2d     %10s    %4d", pl[j].rank, pl[j].name, pl[j].score);
+                        PrintString(hStdOut, WHITE);
+                        cout << "   │";
+                        break;
+                    default:
+                        PrintString(hStdOut, WHITE);
+                        printf("│  %2d     %10s    %4d   │", pl[j].rank, pl[j].name, pl[j].score);
+                    }
+                }
+                
+            }
+        }
+    }
+    gotoxy(x, y + 1);
+    cout << "│                              │";
+    gotoxy(x, y + 2);
+    cout << "└──────────────────────────────┘ ";
+
+
+    //사용자 score 등등
+    x = 32;
+    y = 8;
+    gotoxy(x, y);
+    cout << "┌───────────── [  INFO  ]────────────┐ ";
+    gotoxy(x, y + 1);
+    cout << "│                                    │";
+    gotoxy(x, y + 2);
+    cout << "│                                    │";
+    gotoxy(x, y + 3);
+    cout << "│                                    │";
+    gotoxy(x, y + 4);
+    cout << "│                                    │";
+    gotoxy(x, y + 5);
+    cout << "│                                    │";
+    gotoxy(x, y + 6);
+    cout << "│                                    │";
+    gotoxy(x, y + 7);
+    cout << "│                                    │";
+    gotoxy(x, y + 8);
+    cout << "│                                    │";
+    gotoxy(x, y + 9);
+    cout << "│                                    │";
+    gotoxy(x, y + 10);
+    cout << "└────────────────────────────────────┘ ";
+
+    gotoxy(x, y + 12);
+    cout << "┌──────── [  DEVELOPE  INFO  ]───────┐ ";
+    gotoxy(x, y + 13);
+    cout << "│                                    │";
+    gotoxy(x, y + 14);
+    cout << "│    latest change    2021.10.30     │";
+    gotoxy(x, y + 15); 
+    cout << "│                                    │";
+    gotoxy(x, y + 16); 
+    cout << "│    name                 김하늘     │";
+    gotoxy(x, y + 17);
+    cout << "│                                    │";
+    gotoxy(x, y + 18);
+    cout << "│    sch    미림여자정보과학고등학교 │";
+    gotoxy(x, y + 19);
+    cout << "│                                    │";
+    gotoxy(x, y + 20);
+    cout << "│    eml    KimCloud52@gmail.com     │";
+    gotoxy(x, y + 21);
+    cout << "│                                    │";
+    gotoxy(x, y + 22);
+    cout << "└────────────────────────────────────┘ ";
+
 }
 //설명화면 draw
 void DrawInfoScreen() {
@@ -799,7 +933,7 @@ void DrawInfoScreen() {
 
 
 
-//[사용자 상태 변경 메서드]
+//[사용자 표정 변경 메서드]
 void makeFaceSmile(Player& player) {
     int x=50, y;
     switch (player.getPlayerNum()){
@@ -900,7 +1034,6 @@ bool checkFiveCard(Player& user, Player& p1, Player& p2, Player& p3) {
 }
 //[판별] 종쳤을 경우 - 모든 front를 승자의 back으로 이동
 void getAllFrontCard(Player& winner, Player& looser1, Player& looser2, Player& looser3) {
-    cout << "[ "<<winner.getPlayerNum() <<"번 사용자가 테이블 위의 모든 카드를 획득합니다. ]" << endl;
     //자신이 낸 카드 회수
     int cnt1 = winner.getFrontCount();
     for (int i = 0; i < cnt1; i++) {
@@ -928,7 +1061,6 @@ void getAllFrontCard(Player& winner, Player& looser1, Player& looser2, Player& l
 }
 //[판별] 종 잘못쳤을 경우 - 각 player에게 카드 한장씩 back에 넘김
 void missRinging(Player& looser, Player& winner1, Player& winner2, Player& winner3) {
-    //cout << "종을 잘못쳤으므로 카드를 나누어줍니다." << endl;
     //플레이 가능한 인원 수 세기
     int cnt = 0;
     if (looser.getAvailable()) cnt++;
@@ -937,7 +1069,6 @@ void missRinging(Player& looser, Player& winner1, Player& winner2, Player& winne
     if (winner3.getAvailable()) cnt++;
     //back 카드가 없을 경우,부족한 경우 탈락
     if (looser.backIsEmpty() || looser.getBackCount() < cnt - 1) {
-        //cout << "상대에게 줄 카드가 부족하여 탈락되었습니다." << endl;
         looser.setNoneAvailable();
         gotoxy(0,1);
         cout << "탈락처리됌" << endl;
@@ -1083,14 +1214,39 @@ void StartGame()
                     cin >> userName;
                     gotoxy(0, 0);
                     cout << userName << endl;
+
+                    //사용자 이름, 점수 파일에 저장
+                    ofstream out("database.txt", ios::app);
+                    //임시 점수
+                    int score = 100;
+                    out << userName << " " << score << "\n";
+                    out.close();
+
                     //랭킹 화면 draw
                     DrawRankingScreen();
                     break;
                 }
                 else if (_getch() == 78 || _getch() == 110){
-                    //메인으로 이동합니다 3초동안 띄움
-                    gotoxy(0, 0);
-                    cout << "메인으로 이동" << endl;
+                    gotoxy(x, y);
+                    cout << "┌─────────────────────────────────────────┐";
+                    gotoxy(x, y + 1);
+                    cout << "│                                         │";
+                    gotoxy(x, y + 2);
+                    cout << "│                GAME OVER                │";
+                    gotoxy(x, y + 3);
+                    cout << "│                                         │";
+                    gotoxy(x, y + 4);
+                    cout << "│     잠시후 메인화면으로 이동합니다.     │";
+                    gotoxy(x, y + 5);
+                    cout << "│                                         │";
+                    gotoxy(x, y + 6);
+                    cout << "│                                         │";
+                    gotoxy(x, y + 7);
+                    cout << "│                                         │";
+                    gotoxy(x, y + 8);
+                    cout << "└─────────────────────────────────────────┘";
+                    Sleep(2000);
+                    //메인으로 이동
                     break;
                 }
             }
@@ -1111,6 +1267,7 @@ void StartGame()
                 frontCardPrint(user.getFrontTopCard(),user);
                 input = GameKey();
                 if (input == 1) {
+                    PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
                     //과일 5개일때 쳤을 경우
                     if (checkFiveCard(user, p1, p2, p3)) {
                         //테이블 위의 카드 모두 가져감
@@ -1119,6 +1276,7 @@ void StartGame()
                     }
                     //잘못 쳤을 경우
                     else {
+                        PlaySound(TEXT("missingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
                         missRinging(user, p1, p2, p3);
                         printPlayersCardInfo(user, p1, p2, p3);
                     }
@@ -1145,6 +1303,7 @@ void StartGame()
                 frontCardPrint(p1.getFrontTopCard(),p1);
                 input = GameKey();
                 if (input == 1) {
+                    PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
                     //과일 5개일때 쳤을 경우
                     if (checkFiveCard(p1, user, p2, p3)) {
                         //테이블 위의 카드 모두 가져감
@@ -1153,6 +1312,7 @@ void StartGame()
                     }
                     //잘못 쳤을 경우
                     else {
+                        PlaySound(TEXT("missingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
                         missRinging(p1, user, p2, p3);
                         printPlayersCardInfo(user, p1, p2, p3);
                     }
@@ -1179,6 +1339,7 @@ void StartGame()
                 frontCardPrint(p2.getFrontTopCard(),p2);
                 input = GameKey();
                 if (input == 1) {
+                    PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
                     //과일 5개일때 쳤을 경우
                     if (checkFiveCard(p2, user, p1, p3)) {
                         //테이블 위의 카드 모두 가져감
@@ -1187,6 +1348,7 @@ void StartGame()
                     }
                     //잘못 쳤을 경우
                     else {
+                        PlaySound(TEXT("missingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
                         missRinging(p2, user, p1, p3);
                         printPlayersCardInfo(user, p1, p2, p3);
                     }
@@ -1213,6 +1375,7 @@ void StartGame()
                 frontCardPrint(p3.getFrontTopCard(),p3);
                 input = GameKey();
                 if (input == 1) {
+                    PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
                     //과일 5개일때 쳤을 경우
                     if (checkFiveCard(p3, p1, p2, user)) {
                         //테이블 위의 카드 모두 가져감
@@ -1222,6 +1385,7 @@ void StartGame()
                     //잘못 쳤을 경우
                     else {
                         //각 인원에게 카드 하나씩 줌, 카드수 부족할 시 탈락
+                        PlaySound(TEXT("missingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
                         missRinging(p3, p1, p2, user);
                         printPlayersCardInfo(user, p1, p2, p3);
                     }

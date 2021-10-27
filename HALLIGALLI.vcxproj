@@ -147,6 +147,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <Text Include="database.txt" />
     <Text Include="메서드정리.txt" />
     <Text Include="카드종류.txt" />
   </ItemGroup>

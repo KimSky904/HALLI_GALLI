@@ -29,5 +29,8 @@
     <Text Include="메서드정리.txt">
       <Filter>소스 파일</Filter>
     </Text>
+    <Text Include="database.txt">
+      <Filter>소스 파일</Filter>
+    </Text>
   </ItemGroup>
 </Project>
