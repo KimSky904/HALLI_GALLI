@@ -20,13 +20,16 @@ using namespace std;
 #define YELLOW      (RED | GREEN)
 #define PURPLE      (RED | BLUE | BLUE)
 #define WHITE       (RED | GREEN | BLUE)
+//카드 좌표
 #define CARDCOUNT 20*4
 #define CARD1X 5
 #define CARD2X 15
 #define CARD3X 25
 #define CARD4X 35
 #define CARDY 12
-
+//설명 좌표
+#define longInfoX 8
+#define longInfoY 7
 
 //콘솔 세팅
 void SetConsoleView()
@@ -1058,6 +1061,12 @@ void getAllFrontCard(Player& winner, Player& looser1, Player& looser2, Player& l
     }
     //테이블 카드 초기화
     emptyCardPrint(winner,looser1,looser2,looser3);
+    //설명 출력
+    gotoxy(longInfoX+4, longInfoY);
+    cout << winner.getPlayerNum() << "번 플레이어가 종을 쳤습니다. 테이블의 모든 카드 획득!";
+    Sleep(2000);
+    gotoxy(longInfoX, longInfoY);
+    cout << "                                                                          ";
 }
 //[판별] 종 잘못쳤을 경우 - 각 player에게 카드 한장씩 back에 넘김
 void missRinging(Player& looser, Player& winner1, Player& winner2, Player& winner3) {
@@ -1070,8 +1079,12 @@ void missRinging(Player& looser, Player& winner1, Player& winner2, Player& winne
     //back 카드가 없을 경우,부족한 경우 탈락
     if (looser.backIsEmpty() || looser.getBackCount() < cnt - 1) {
         looser.setNoneAvailable();
-        gotoxy(0,1);
-        cout << "탈락처리됌" << endl;
+        //설명 출력
+        gotoxy(longInfoX, longInfoY);
+        cout << looser.getPlayerNum() << "번 플레이어는 카드가 부족하여 탈락되었습니다.";
+        Sleep(2000);
+        gotoxy(longInfoX, longInfoY);
+        cout << "                                                                          ";
         return;
     }
     //게임플레이 가능한 인원 카드 나눠주기
@@ -1087,11 +1100,12 @@ void missRinging(Player& looser, Player& winner1, Player& winner2, Player& winne
         winner3.pushBack(looser.getBackTopCard());
         looser.popBack();
     }
-    ////카드를 준 후에 카드가 없을 경우 탈락
-    //if (looser.backIsEmpty()) {
-    //   // cout << "카드를 주고 남은 카드가 없어 탈락되었습니다." << endl;
-    //    looser.setNoneAvailable();
-    //}
+    //설명 출력
+    gotoxy(longInfoX, longInfoY);
+    cout << looser.getPlayerNum() << "번 플레이어가 종을 잘못쳤습니다. 각 인원에게 카드를 나누어줍니다.";
+    Sleep(2000);
+    gotoxy(longInfoX, longInfoY);
+    cout << "                                                                          ";
     return;
 }
 
@@ -1250,8 +1264,6 @@ void StartGame()
                     break;
                 }
             }
-            
-
             break;
         }
 
@@ -1262,6 +1274,12 @@ void StartGame()
                 continue;
             }
             else {
+                //설명 출력
+                gotoxy(longInfoX + 13, longInfoY - 2);
+                cout << "                                        ";
+                gotoxy(longInfoX + 13, longInfoY - 2);
+                cout << "[ " << user.getPlayerNum() << "번 PLAYER ]";
+
                 if (user.open() == -1) continue;
                 gotoxy(10, 14);
                 frontCardPrint(user.getFrontTopCard(),user);
@@ -1298,6 +1316,12 @@ void StartGame()
                 continue;
             }
             else {
+                //설명 출력
+                gotoxy(longInfoX + 13, longInfoY - 2);
+                cout << "                                        ";
+                gotoxy(longInfoX + 13, longInfoY - 2);
+                cout << "[ " << p1.getPlayerNum() << "번 PLAYER ]";
+
                 if (p1.open() == -1) continue;
                 gotoxy(20, 14);
                 frontCardPrint(p1.getFrontTopCard(),p1);
@@ -1334,6 +1358,12 @@ void StartGame()
                 continue;
             }
             else {
+                //설명 출력
+                gotoxy(longInfoX + 13, longInfoY - 2);
+                cout << "                                        ";
+                gotoxy(longInfoX + 13, longInfoY - 2);
+                cout << "[ " << p2.getPlayerNum() << "번 PLAYER ]";
+
                 if (p2.open() == -1) continue;
                 gotoxy(30, 14);
                 frontCardPrint(p2.getFrontTopCard(),p2);
@@ -1370,6 +1400,12 @@ void StartGame()
                 continue;
             }
             else {
+                //설명 출력
+                gotoxy(longInfoX + 13, longInfoY - 2);
+                cout << "                                        ";
+                gotoxy(longInfoX + 13, longInfoY - 2);
+                cout << "[ " << p3.getPlayerNum() << "번 PLAYER ]";
+
                 if (p3.open() == -1) continue;
                 gotoxy(40, 14);
                 frontCardPrint(p3.getFrontTopCard(),p3);
