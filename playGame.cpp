@@ -101,7 +101,16 @@ public:
     //탈락처리
     void setNoneAvailable() {
         available = false;
-        cout << playerNum << "번 사용자가 탈락되었습니다." << endl;
+        int x = 57, y = 4;
+        switch (playerNum)
+        {
+            case 1: y = 4; break;
+            case 2: y = 14; break;
+            case 3: y = 24; break;
+            case 4: y = 34; break;
+        }
+        gotoxy(x, y);
+        cout << "[탈락] Player " << playerNum;
     }
     bool getAvailable() {
         return available;
@@ -1080,10 +1089,10 @@ void missRinging(Player& looser, Player& winner1, Player& winner2, Player& winne
     if (looser.backIsEmpty() || looser.getBackCount() < cnt - 1) {
         looser.setNoneAvailable();
         //설명 출력
-        gotoxy(longInfoX, longInfoY);
+        gotoxy(longInfoX+6, longInfoY);
         cout << looser.getPlayerNum() << "번 플레이어는 카드가 부족하여 탈락되었습니다.";
         Sleep(2000);
-        gotoxy(longInfoX, longInfoY);
+        gotoxy(longInfoX+6, longInfoY);
         cout << "                                                                          ";
         return;
     }
@@ -1151,6 +1160,7 @@ int GameKey()
 
 //보유 카드 && 테이블 카드 출력
 void printPlayersCardInfo(Player &p1,Player &p2,Player &p3,Player &p4) {
+
     gotoxy(57, 6);
     cout << "테이블카드 수 : " << p1.getFrontCount() << "  ";
     gotoxy(57, 7);
@@ -1304,10 +1314,13 @@ void StartGame()
                 }
             }
             if (user.getBackCount() == 0) {
-                gotoxy(0, 1);
-                cout << "탈락" << endl;
                 user.setNoneAvailable();
                 printPlayersCardInfo(user, p1, p2, p3);
+                gotoxy(longInfoX + 10, longInfoY);
+                cout << user.getPlayerNum()<< "번 사용자가 탈락되었습니다." << endl;
+                Sleep(2000);
+                gotoxy(longInfoX + 10, longInfoY);
+                cout << "                              ";
             }
         }
         else if (turn % 4 == 1) {
@@ -1346,10 +1359,13 @@ void StartGame()
                 }
             }
             if (p1.getBackCount() == 0) {
-                gotoxy(0, 1);
-                cout << "탈락" << endl;
                 p1.setNoneAvailable();
                 printPlayersCardInfo(user, p1, p2, p3);
+                gotoxy(longInfoX + 10, longInfoY);
+                cout << p1.getPlayerNum() << "번 사용자가 탈락되었습니다." << endl;
+                Sleep(2000);
+                gotoxy(longInfoX + 10, longInfoY);
+                cout << "                              ";
             }
         }
         else if (turn % 4 == 2) {
@@ -1388,10 +1404,13 @@ void StartGame()
                 }
             }
             if (p2.getBackCount() == 0) {
-                gotoxy(0, 1);
-                cout << "탈락" << endl;
                 p2.setNoneAvailable();
                 printPlayersCardInfo(user, p1, p2, p3);
+                gotoxy(longInfoX + 10, longInfoY);
+                cout << p2.getPlayerNum() << "번 사용자가 탈락되었습니다." << endl;
+                Sleep(2000);
+                gotoxy(longInfoX + 10, longInfoY);
+                cout << "                              ";
             }
         }
         else if (turn % 4 == 3) {
@@ -1431,10 +1450,13 @@ void StartGame()
                 }
             }
             if (p3.getBackCount() == 0) {
-                gotoxy(0, 1);
-                cout << "탈락" << endl;
                 p3.setNoneAvailable();
                 printPlayersCardInfo(user, p1, p2, p3);
+                gotoxy(longInfoX + 10, longInfoY);
+                cout << p3.getPlayerNum() << "번 사용자가 탈락되었습니다." << endl;
+                Sleep(2000);
+                gotoxy(longInfoX + 10, longInfoY);
+                cout << "                              ";
             }
         }
         //  cout << "==========================================================" << endl;
