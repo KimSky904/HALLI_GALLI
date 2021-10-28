@@ -50,3 +50,6 @@ int GameKey();
 void StartGame();
 //[게임 설명]
 void ShowInfo();
+
+makeFaceSmile(user);
+
