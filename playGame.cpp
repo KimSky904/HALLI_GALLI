@@ -680,26 +680,6 @@ void DrawStartGame()
         cout << "│";
     }
 
-    gotoxy(15,30);
-    cout << "┌──────────────  조작법 ──────────────┐";
-    gotoxy(15, 31);
-    cout << "│                                     │";
-    gotoxy(15, 32);
-    cout << "│      카드 넘기기 ▷  SPACE BAR      │";
-    gotoxy(15, 33);
-    cout << "│                                     │";
-    gotoxy(15, 34);
-    cout << "│        종 치기   ▷  ENTER          │";
-    gotoxy(15, 35);
-    cout << "│                                     │";
-    gotoxy(15, 36);
-    cout << "│        나가기    ▷  E key          │";
-    gotoxy(15, 37);
-    cout << "│                                     │";
-    gotoxy(15, 38);
-    cout << "└─────────────────────────────────────┘";
-
-
     //사용자 상태 정보
     gotoxy(57, 4);
     cout << "Player 1";
@@ -1245,7 +1225,33 @@ void DrawChoosePlaying() {
 //게임 시작 (1 vs 1 vs 1 vs 1)
 void StartGameMulti()
 {
+    //4명이 플레이할 경우(카드 넘기기/종치기) : qw  xc  nm  op
     DrawStartGame();
+    //조작법 draw
+    int x = 12;
+    gotoxy(x, 30);
+    cout << "┌───────────  조작법 ( NEXT / BELL ) ──────────┐";
+    gotoxy(x, 31);
+    cout << "│                                              │";
+    gotoxy(x, 32);
+    cout << "│           Player 1   ▷   Q  /  W            │";
+    gotoxy(x, 33); 
+    cout << "│                                              │";
+    gotoxy(x, 34);
+    cout << "│           Player 2   ▷   X  /  C            │";
+    gotoxy(x, 35);
+    cout << "│                                              │";
+    gotoxy(x, 36);
+    cout << "│           Player 3   ▷   N  /  M            │";
+    gotoxy(x, 37);
+    cout << "│                                              │";
+    gotoxy(x, 38);
+    cout << "│           Player 4   ▷   O  /  P            │";
+    gotoxy(x, 39); 
+    cout << "│                                              │";
+    gotoxy(x, 40);
+    cout << "└──────────────────────────────────────────────┘";
+
     //사용자 생성
     Player user(1), p1(2), p2(3), p3(4);
     //카드 랜덤배치,사용자에게 카드 분배
@@ -1591,11 +1597,33 @@ void StartGameMulti()
 }
 //게임 시작 (1 vs com vs com vs com)
 void StartGameAlone() {
+    /*
     DrawStartGame();
+    //조작법 draw
+    gotoxy(15, 30);
+    cout << "┌──────────────  조작법 ──────────────┐";
+    gotoxy(15, 31);
+    cout << "│                                     │";
+    gotoxy(15, 32);
+    cout << "│      카드 넘기기 ▷  SPACE BAR      │";
+    gotoxy(15, 33);
+    cout << "│                                     │";
+    gotoxy(15, 34);
+    cout << "│        종 치기   ▷  ENTER          │";
+    gotoxy(15, 35);
+    cout << "│                                     │";
+    gotoxy(15, 36);
+    cout << "│        나가기    ▷  E key          │";
+    gotoxy(15, 37);
+    cout << "│                                     │";
+    gotoxy(15, 38);
+    cout << "└─────────────────────────────────────┘";
+
     //사용자 생성
-    Player user(1), p1(2), p2(3), p3(4);
+    Player user(1), com1(2), com2(3), com3(4);
     //카드 랜덤배치,사용자에게 카드 분배
-    setInitCard(user, p1, p2, p3);
+    setInitCard(user, com1, com2, com3);
+
     //반복
     int input = 0;
     int turn = -1;
@@ -1936,8 +1964,11 @@ void StartGameAlone() {
         if (GetKeyValue() == 27)
             break;
     }
+    */
 }
+//게임 진행 방식 선택
 int ChoosePlaying() {
+
     DrawChoosePlaying();
 
     int result = 0;
@@ -1995,6 +2026,7 @@ int main(void)
     //커서 설정
     CursorView();
     int menuValue = -1;
+
     while (true)
     {
         menuValue = ReadyGame();    //인트로, 키 입력
