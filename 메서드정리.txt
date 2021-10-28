@@ -56,5 +56,7 @@ void StartGameMulti();
 //[게임 설명]
 void ShowInfo();
 
-makeFaceSmile(user);
-
+qw  xc  nm  op
+//Player 3 : 카드 내기 N, 종치기 M (78,110 / 77,109)
+input = _getch();
+                if (input == 67 || input == 99) {

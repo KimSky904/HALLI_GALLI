@@ -622,12 +622,12 @@ void DrawIntro()
                          
 
     PrintString(hStdOut, WHITE);
-    gotoxy(28, 29);
-    cout << "▶ Game Rule for 'r'";
-    gotoxy(28, 31);
-    cout << "▶ Game Start for 's'";
-    gotoxy(28, 33);
-    cout << "▶ Exit for 'e'";
+    gotoxy(29, 30);
+    cout << ">>  Game Rule";
+    gotoxy(29, 32);
+    cout << "    Game Start";
+    gotoxy(29, 34);
+    cout << "    Exit";
 }
 //게임화면 draw
 void DrawStartGame()
@@ -1350,6 +1350,8 @@ void StartGameMulti()
                 continue;
             }
             else {
+                //Player 1 : 카드 내기 Q, 종치기 W (81,113 / 87,119)
+
                 //설명 출력
                 gotoxy(longInfoX + 13, longInfoY - 2);
                 cout << "                                        ";
@@ -1359,8 +1361,9 @@ void StartGameMulti()
                 if (user.open() == -1) continue;
                 gotoxy(10, 14);
                 frontCardPrint(user.getFrontTopCard(),user);
-                input = GameKey();
-                if (input == 1) {
+                input = _getch();
+                //종 치기
+                if (input == 87 || input == 119) {
                     PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
                     //과일 5개일때 쳤을 경우
                     if (checkFiveCard(user, p1, p2, p3)) {
@@ -1385,8 +1388,15 @@ void StartGameMulti()
                         printPlayersCardInfo(user, p1, p2, p3);
                     }
                 }
-                else if(input==2){
+                else if(input== 81 || input == 119){
                     //종 치지 않음
+                    continue;
+                }
+                else {
+                    while (true) {
+                        input = _getch();
+                        if (input == 81 || input == 119) break;
+                    }
                 }
             }
             if (user.getBackCount() == 0) {
@@ -1410,6 +1420,8 @@ void StartGameMulti()
                 continue;
             }
             else {
+                //Player 2 : 카드 내기 X, 종치기 C (88,120 / 67,99)
+                
                 //설명 출력
                 gotoxy(longInfoX + 13, longInfoY - 2);
                 cout << "                                        ";
@@ -1419,8 +1431,8 @@ void StartGameMulti()
                 if (p1.open() == -1) continue;
                 gotoxy(20, 14);
                 frontCardPrint(p1.getFrontTopCard(),p1);
-                input = GameKey();
-                if (input == 1) {
+                input = _getch();
+                if (input == 67 || input == 99) {
                     PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
                     //과일 5개일때 쳤을 경우
                     if (checkFiveCard(p1, user, p2, p3)) {
@@ -1445,8 +1457,14 @@ void StartGameMulti()
                         printPlayersCardInfo(user, p1, p2, p3);
                     }
                 }
-                else {
+                else if (input == 88 || input == 120) {
                     //종 치지 않음
+                }
+                else {
+                    while (true) {
+                        input = _getch();
+                        if (input == 88 || input == 120) break;
+                    }
                 }
             }
             if (p1.getBackCount() == 0) {
@@ -1470,6 +1488,8 @@ void StartGameMulti()
                 continue;
             }
             else {
+                //Player 3 : 카드 내기 N, 종치기 M (78,110 / 77,109)
+
                 //설명 출력
                 gotoxy(longInfoX + 13, longInfoY - 2);
                 cout << "                                        ";
@@ -1479,8 +1499,8 @@ void StartGameMulti()
                 if (p2.open() == -1) continue;
                 gotoxy(30, 14);
                 frontCardPrint(p2.getFrontTopCard(),p2);
-                input = GameKey();
-                if (input == 1) {
+                input = _getch();
+                if (input == 77 || input == 109) {
                     PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
                     //과일 5개일때 쳤을 경우
                     if (checkFiveCard(p2, user, p1, p3)) {
@@ -1505,8 +1525,14 @@ void StartGameMulti()
                         printPlayersCardInfo(user, p1, p2, p3);
                     }
                 }
-                else {
+                else if(input==78 || input == 110) { 
                     //종 치지 않음
+                }
+                else {
+                    while (true) {
+                        input = _getch();
+                        if (input == 78 || input == 110) break;
+                    }
                 }
             }
             if (p2.getBackCount() == 0) {
@@ -1530,6 +1556,8 @@ void StartGameMulti()
                 continue;
             }
             else {
+                //Player 4 : 카드 내기 O, 종치기 P (79,111 / 80,112)
+                
                 //설명 출력
                 gotoxy(longInfoX + 13, longInfoY - 2);
                 cout << "                                        ";
@@ -1539,8 +1567,8 @@ void StartGameMulti()
                 if (p3.open() == -1) continue;
                 gotoxy(40, 14);
                 frontCardPrint(p3.getFrontTopCard(),p3);
-                input = GameKey();
-                if (input == 1) {
+                input = _getch();
+                if (input == 80 || input == 112) {
                     PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
                     //과일 5개일때 쳤을 경우
                     if (checkFiveCard(p3, p1, p2, user)) {
@@ -1567,8 +1595,14 @@ void StartGameMulti()
                         printPlayersCardInfo(user, p1, p2, p3);
                     }
                 }
-                else {
+                else if (input == 79 || input == 111) {
                     //종 치지 않음
+                }
+                else {
+                    while (true) {
+                        input = _getch();
+                        if (input == 79 || input == 111) break;
+                    }
                 }
             }
             if (p3.getBackCount() == 0) {
