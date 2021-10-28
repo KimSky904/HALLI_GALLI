@@ -9,6 +9,8 @@ void DrawStartGame();
 void DrawInfoScreen();
 //엔딩 화면 draw
 void DrawRankingScreen();
+//게임진행 선택 화면 draw
+void DrawChoosePlaying();
 
 
 //[사용자 상태 변경 메서드]
@@ -46,8 +48,11 @@ void printPlayersCardInfo(Player &p1,Player &p2,Player &p3,Player &p4);
 int ReadyGame();
 //[게임 진행 키]
 int GameKey();
+//[게임 진행 선택]
+int ChoosePlaying();
 //[게임 시작]
-void StartGame();
+void StartGameAlone();
+void StartGameMulti();
 //[게임 설명]
 void ShowInfo();
 

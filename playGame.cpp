@@ -98,6 +98,8 @@ class Player {
     //플레이 가능 여부
     bool available;
 public:
+    //소멸자
+    ~Player(){};
     //탈락처리
     void setNoneAvailable() {
         available = false;
@@ -265,7 +267,8 @@ int ReadyGame();
 //[게임 진행 키]
 int GameKey();
 //[게임 시작]
-void StartGame();
+void StartGameAlone();
+void StartGameMulti();
 //[게임 설명]
 void ShowInfo();
 
@@ -1213,8 +1216,34 @@ void printPlayersCardInfo(Player &p1,Player &p2,Player &p3,Player &p4) {
     cout << "소유카드 수 : " << p4.getBackCount() << "  ";
 }
 
-//게임 시작
-void StartGame()
+void DrawChoosePlaying() {
+    system("cls");
+
+    int x = 20;
+    int y = 17;
+    gotoxy(x, y);
+    cout << "┌───────────────────────────────────────────────┐";
+    gotoxy(x, y + 1); 
+    cout << "│                                               │";
+    gotoxy(x, y + 2);
+    cout << "│               게임 진행 방식 선택             │";
+    gotoxy(x, y + 3);
+    cout << "│                                               │";
+    gotoxy(x, y + 4);
+    cout << "│                 >>  1 Players                 │";
+    gotoxy(x, y + 5);
+    cout << "│                                               │";
+    gotoxy(x, y + 6);
+    cout << "│                     4 Players                 │";
+    gotoxy(x, y + 7);
+    cout << "│                                               │";
+    gotoxy(x, y + 8);
+    cout << "└───────────────────────────────────────────────┘";
+
+
+}
+//게임 시작 (1 vs 1 vs 1 vs 1)
+void StartGameMulti()
 {
     DrawStartGame();
     //사용자 생성
@@ -1555,11 +1584,398 @@ void StartGame()
         //게임 나가기 (강제종료)
         if (GetKeyValue() == 27) break;    
     }
+    while (true) {
+        if (GetKeyValue() == 27)
+            break;
+    }
+}
+//게임 시작 (1 vs com vs com vs com)
+void StartGameAlone() {
+    DrawStartGame();
+    //사용자 생성
+    Player user(1), p1(2), p2(3), p3(4);
+    //카드 랜덤배치,사용자에게 카드 분배
+    setInitCard(user, p1, p2, p3);
+    //반복
+    int input = 0;
+    int turn = -1;
+    while (true) {
+        // (1:1:1:1) 한명의 플레이어만 남았을 경우
+        if ((int)user.getAvailable() + (int)p1.getAvailable() + (int)p2.getAvailable() + (int)p3.getAvailable() == 1) {
+
+            string winnerName = "";
+            if (user.getAvailable() == 1) winnerName = "Player 1";
+            else if (p1.getAvailable() == 1) winnerName = "Player 2";
+            else if (p2.getAvailable() == 1) winnerName = "Player 3";
+            else if (p3.getAvailable() == 1) winnerName = "Player 4";
+
+            int x = 20;
+            int y = 17;
+            gotoxy(x, y);
+            cout << "┌─────────────────────────────────────────┐";
+            gotoxy(x, y + 1);
+            cout << "│                                         │";
+            gotoxy(x, y + 2);
+            cout << "│                GAME OVER                │";
+            gotoxy(x, y + 3);
+            cout << "│                                         │";
+            gotoxy(x, y + 4);
+            cout << "│             winner :  " << winnerName << "          │";
+            gotoxy(x, y + 5);
+            cout << "│                                         │";
+            gotoxy(x, y + 6);
+            cout << "│   랭킹을 작성하시겠습니까?  [ Y / N ]   │";
+            gotoxy(x, y + 7);
+            cout << "│                                         │";
+            gotoxy(x, y + 8);
+            cout << "└─────────────────────────────────────────┘";
+
+            //Y 또는 N 선택
+            while (true) {
+                if (_getch() == 89 || _getch() == 121) {
+                    string userName = "";
+                    gotoxy(x, y + 4);
+                    cout << "│                                         │";
+                    gotoxy(x, y + 5);
+                    cout << "│    닉네임 입력 :                        │";
+                    gotoxy(x, y + 6);
+                    cout << "│                                         │";
+                    gotoxy(x + 12, y + 5);
+                    cin >> userName;
+                    gotoxy(0, 0);
+                    cout << userName << endl;
+
+                    //사용자 이름, 점수 파일에 저장
+                    ofstream out("database.txt", ios::app);
+                    //임시 점수
+                    int score = 100;
+                    out << userName << " " << score << "\n";
+                    out.close();
+
+                    //랭킹 화면 draw
+                    DrawRankingScreen();
+                    break;
+                }
+                else if (_getch() == 78 || _getch() == 110) {
+                    gotoxy(x, y);
+                    cout << "┌─────────────────────────────────────────┐";
+                    gotoxy(x, y + 1);
+                    cout << "│                                         │";
+                    gotoxy(x, y + 2);
+                    cout << "│                GAME OVER                │";
+                    gotoxy(x, y + 3);
+                    cout << "│                                         │";
+                    gotoxy(x, y + 4);
+                    cout << "│     잠시후 메인화면으로 이동합니다.     │";
+                    gotoxy(x, y + 5);
+                    cout << "│                                         │";
+                    gotoxy(x, y + 6);
+                    cout << "│                                         │";
+                    gotoxy(x, y + 7);
+                    cout << "│                                         │";
+                    gotoxy(x, y + 8);
+                    cout << "└─────────────────────────────────────────┘";
+                    Sleep(2000);
+                    //메인으로 이동
+                    break;
+                }
+            }
+            break;
+        }
+
+        turn++;
+        if (turn % 4 == 0) {
+            printPlayersCardInfo(user, p1, p2, p3);
+            if (!user.getAvailable()) {
+                continue;
+            }
+            else {
+                //설명 출력
+                gotoxy(longInfoX + 13, longInfoY - 2);
+                cout << "                                        ";
+                gotoxy(longInfoX + 13, longInfoY - 2);
+                cout << "[ " << user.getPlayerNum() << "번 PLAYER ]";
+
+                if (user.open() == -1) continue;
+                gotoxy(10, 14);
+                frontCardPrint(user.getFrontTopCard(), user);
+                input = GameKey();
+                if (input == 1) {
+                    PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
+                    //과일 5개일때 쳤을 경우
+                    if (checkFiveCard(user, p1, p2, p3)) {
+                        //***(나)웃는 표정
+                        makeAllFaceDefault(p1);
+                        makeAllFaceDefault(p2);
+                        makeAllFaceDefault(p3);
+                        makeFaceSmile(user);
+                        //테이블 위의 카드 모두 가져감
+                        getAllFrontCard(user, p1, p2, p3);
+                        printPlayersCardInfo(user, p1, p2, p3);
+                    }
+                    //잘못 쳤을 경우
+                    else {
+                        //***화난 표정, 나머지 기본 표정
+                        makeAllFaceDefault(p1);
+                        makeAllFaceDefault(p2);
+                        makeAllFaceDefault(p3);
+                        makeFaceAngry(user);
+                        PlaySound(TEXT("missingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
+                        missRinging(user, p1, p2, p3);
+                        printPlayersCardInfo(user, p1, p2, p3);
+                    }
+                }
+                else if (input == 2) {
+                    //종 치지 않음
+                }
+            }
+            if (user.getBackCount() == 0) {
+                //***화난 표정
+                makeAllFaceDefault(p1);
+                makeAllFaceDefault(p2);
+                makeAllFaceDefault(p3);
+                makeFaceAngry(user);
+                user.setNoneAvailable();
+                printPlayersCardInfo(user, p1, p2, p3);
+                gotoxy(longInfoX + 10, longInfoY);
+                cout << user.getPlayerNum() << "번 사용자가 탈락되었습니다.";
+                Sleep(2000);
+                gotoxy(longInfoX + 10, longInfoY);
+                cout << "                              ";
+            }
+        }
+        else if (turn % 4 == 1) {
+            printPlayersCardInfo(user, p1, p2, p3);
+            if (!p1.getAvailable()) {
+                continue;
+            }
+            else {
+                //설명 출력
+                gotoxy(longInfoX + 13, longInfoY - 2);
+                cout << "                                        ";
+                gotoxy(longInfoX + 13, longInfoY - 2);
+                cout << "[ " << p1.getPlayerNum() << "번 PLAYER ]";
+
+                if (p1.open() == -1) continue;
+                gotoxy(20, 14);
+                frontCardPrint(p1.getFrontTopCard(), p1);
+                input = GameKey();
+                if (input == 1) {
+                    PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
+                    //과일 5개일때 쳤을 경우
+                    if (checkFiveCard(p1, user, p2, p3)) {
+                        //***웃는 표정
+                        makeAllFaceDefault(user);
+                        makeAllFaceDefault(p2);
+                        makeAllFaceDefault(p3);
+                        makeFaceSmile(p1);
+                        //테이블 위의 카드 모두 가져감
+                        getAllFrontCard(p1, user, p2, p3);
+                        printPlayersCardInfo(user, p1, p2, p3);
+                    }
+                    //잘못 쳤을 경우
+                    else {
+                        //***화난 표정
+                        makeAllFaceDefault(user);
+                        makeAllFaceDefault(p2);
+                        makeAllFaceDefault(p3);
+                        makeFaceAngry(p1);
+                        PlaySound(TEXT("missingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
+                        missRinging(p1, user, p2, p3);
+                        printPlayersCardInfo(user, p1, p2, p3);
+                    }
+                }
+                else {
+                    //종 치지 않음
+                }
+            }
+            if (p1.getBackCount() == 0) {
+                //***화난 표정
+                makeAllFaceDefault(user);
+                makeAllFaceDefault(p2);
+                makeAllFaceDefault(p3);
+                makeFaceAngry(p1);
+                p1.setNoneAvailable();
+                printPlayersCardInfo(user, p1, p2, p3);
+                gotoxy(longInfoX + 10, longInfoY);
+                cout << p1.getPlayerNum() << "번 사용자가 탈락되었습니다.";
+                Sleep(2000);
+                gotoxy(longInfoX + 10, longInfoY);
+                cout << "                              ";
+            }
+        }
+        else if (turn % 4 == 2) {
+            printPlayersCardInfo(user, p1, p2, p3);
+            if (!p2.getAvailable()) {
+                continue;
+            }
+            else {
+                //설명 출력
+                gotoxy(longInfoX + 13, longInfoY - 2);
+                cout << "                                        ";
+                gotoxy(longInfoX + 13, longInfoY - 2);
+                cout << "[ " << p2.getPlayerNum() << "번 PLAYER ]";
+
+                if (p2.open() == -1) continue;
+                gotoxy(30, 14);
+                frontCardPrint(p2.getFrontTopCard(), p2);
+                input = GameKey();
+                if (input == 1) {
+                    PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
+                    //과일 5개일때 쳤을 경우
+                    if (checkFiveCard(p2, user, p1, p3)) {
+                        //***웃는 표정
+                        makeAllFaceDefault(user);
+                        makeAllFaceDefault(p1);
+                        makeAllFaceDefault(p3);
+                        makeFaceSmile(p2);
+                        //테이블 위의 카드 모두 가져감
+                        getAllFrontCard(p2, user, p1, p3);
+                        printPlayersCardInfo(user, p1, p2, p3);
+                    }
+                    //잘못 쳤을 경우
+                    else {
+                        //***화난 표정
+                        makeAllFaceDefault(user);
+                        makeAllFaceDefault(p1);
+                        makeAllFaceDefault(p3);
+                        makeFaceAngry(p2);
+                        PlaySound(TEXT("missingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
+                        missRinging(p2, user, p1, p3);
+                        printPlayersCardInfo(user, p1, p2, p3);
+                    }
+                }
+                else {
+                    //종 치지 않음
+                }
+            }
+            if (p2.getBackCount() == 0) {
+                //***화난 표정
+                makeAllFaceDefault(user);
+                makeAllFaceDefault(p1);
+                makeAllFaceDefault(p3);
+                makeFaceAngry(p2);
+                p2.setNoneAvailable();
+                printPlayersCardInfo(user, p1, p2, p3);
+                gotoxy(longInfoX + 10, longInfoY);
+                cout << p2.getPlayerNum() << "번 사용자가 탈락되었습니다.";
+                Sleep(2000);
+                gotoxy(longInfoX + 10, longInfoY);
+                cout << "                              ";
+            }
+        }
+        else if (turn % 4 == 3) {
+            printPlayersCardInfo(user, p1, p2, p3);
+            if (!p3.getAvailable()) {
+                continue;
+            }
+            else {
+                //설명 출력
+                gotoxy(longInfoX + 13, longInfoY - 2);
+                cout << "                                        ";
+                gotoxy(longInfoX + 13, longInfoY - 2);
+                cout << "[ " << p3.getPlayerNum() << "번 PLAYER ]";
+
+                if (p3.open() == -1) continue;
+                gotoxy(40, 14);
+                frontCardPrint(p3.getFrontTopCard(), p3);
+                input = GameKey();
+                if (input == 1) {
+                    PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
+                    //과일 5개일때 쳤을 경우
+                    if (checkFiveCard(p3, p1, p2, user)) {
+                        //***(나)웃는 표정
+                        makeAllFaceDefault(user);
+                        makeAllFaceDefault(p1);
+                        makeAllFaceDefault(p2);
+                        makeFaceSmile(p3);
+
+                        //테이블 위의 카드 모두 가져감
+                        getAllFrontCard(p3, p1, p2, user);
+                        printPlayersCardInfo(user, p1, p2, p3);
+                    }
+                    //잘못 쳤을 경우
+                    else {
+                        //***(나)화난 표정
+                        makeAllFaceDefault(user);
+                        makeAllFaceDefault(p1);
+                        makeAllFaceDefault(p2);
+                        makeFaceAngry(p3);
+                        //각 인원에게 카드 하나씩 줌, 카드수 부족할 시 탈락
+                        PlaySound(TEXT("missingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
+                        missRinging(p3, p1, p2, user);
+                        printPlayersCardInfo(user, p1, p2, p3);
+                    }
+                }
+                else {
+                    //종 치지 않음
+                }
+            }
+            if (p3.getBackCount() == 0) {
+                //***(나)화난 표정
+                makeAllFaceDefault(user);
+                makeAllFaceDefault(p1);
+                makeAllFaceDefault(p2);
+                makeFaceAngry(p3);
+
+                p3.setNoneAvailable();
+                printPlayersCardInfo(user, p1, p2, p3);
+                gotoxy(longInfoX + 10, longInfoY);
+                cout << p3.getPlayerNum() << "번 사용자가 탈락되었습니다.";
+                Sleep(2000);
+                gotoxy(longInfoX + 10, longInfoY);
+                cout << "                              ";
+            }
+        }
+        //게임 나가기 (강제종료)
+        if (GetKeyValue() == 27) break;
+    }
 
 
     while (true) {
         if (GetKeyValue() == 27)
             break;
+    }
+}
+int ChoosePlaying() {
+    DrawChoosePlaying();
+
+    int result = 0;
+    int x = 20+11;
+    int y = 21;
+    gotoxy(x, y);
+    while (true) {
+        int num = _getch();
+        switch (num)
+        {
+        //위
+        case 72: {
+            if (y == 23) {
+                gotoxy(x - 2, y);
+                printf("  ");
+                gotoxy(x - 2, y-=2);
+                printf(">>");
+            }
+            break;
+        }
+        //아래
+        case 80: {
+            if (y == 21) {
+                gotoxy(x - 2, y);
+                printf("  ");
+                gotoxy(x - 2, y+=2);
+                printf(">>");
+            }
+            break;
+        }
+        //enter
+        case 13: 
+            result = y - 21; //0 또는 2
+            return result;
+        //exit
+        case 27:
+            return -1;
+        }
     }
 }
 //게임 설명
@@ -1571,16 +1987,6 @@ void ShowInfo()
             break;
     }
 }
-////게임 설정
-//void GameSetting() {
-//    DrawGameSetting();
-//
-//}
-//void DrawGameSetting() {
-//    HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
-//    system("cls");
-//    cout << "게임 플레이 설정 화면" << endl;
-//}
 //메인
 int main(void)
 {
@@ -1596,8 +2002,10 @@ int main(void)
             ShowInfo();
         }
         else if (menuValue == 2) {    //start
-            //GameSetting();
-            StartGame();
+            int res = ChoosePlaying();
+            if (res == 0) StartGameAlone();
+            else if (res == 2) StartGameMulti();
+            else exit(1);
         }
         else {
             exit(1);
