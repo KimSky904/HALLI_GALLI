@@ -88,6 +88,7 @@ public:
         cout << "[ " << type << " , " << num << " ]";
     }
 };
+
 class Player {
     //낸 카드
     stack<Card> front;
@@ -97,7 +98,21 @@ class Player {
     int playerNum;
     //플레이 가능 여부
     bool available;
+    //점수
+    int score;
 public:
+    //점수 획득
+    void plusScore() {
+        score += 20;
+    }
+    //점수 깎임
+    void minusScore() {
+        score -= 20;
+    }
+    //점수 반환
+    int getScore() {
+        return score;
+    }
     //소멸자
     ~Player(){};
     //탈락처리
@@ -114,6 +129,7 @@ public:
         gotoxy(x, y);
         cout << "[탈락] Player " << playerNum;
     }
+    //플레이 가능 여부
     bool getAvailable() {
         return available;
     }
@@ -138,6 +154,7 @@ public:
     Player(int num) {
         playerNum = num;
         available = true;
+        score = 0;
     }
     //뒤집은 카드스택의 가장 위 카드 반환
     Card getFrontTopCard() {
@@ -579,47 +596,24 @@ void DrawIntro()
 {
     HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
     int x = 9;
-    PrintString(hStdOut, WHITE);
+    int y = 8;
     system("cls");
-    gotoxy(x, 4);
+    PrintString(hStdOut, WHITE);
+    gotoxy(x, y);
     cout << "##   ##    ##     ####     ####      ####               ####     ##     ####     ####      ####";
-    gotoxy(x, 5);
+    gotoxy(x, y+1);
     cout << "##   ##   ####     ##       ##        ##               ##  ##   ####     ##       ##        ##";
-    gotoxy(x, 6);
+    gotoxy(x, y+2);
     cout << "##   ##  ##  ##    ##       ##        ##              ##       ##  ##    ##       ##        ##";
-    gotoxy(x, 7);
+    gotoxy(x, y+3);
     cout << "#######  ##  ##    ##       ##        ##              ##       ##  ##    ##       ##        ##";
-    gotoxy(x, 8);
+    gotoxy(x, y+4);
     cout << "##   ##  ######    ##   #   ##   #    ##              ##  ###  ######    ##   #   ##   #    ##";
-    gotoxy(x, 9);
+    gotoxy(x, y+5);
     cout << "##   ##  ##  ##    ##  ##   ##  ##    ##               ##  ##  ##  ##    ##  ##   ##  ##    ##";
-    gotoxy(x, 10);
+    gotoxy(x, y+6);
     cout << "##   ##  ##  ##   #######  #######   ####               #####  ##  ##   #######  #######   ####";
 
-
-    PrintString(hStdOut, GREEN);
-    gotoxy(26, 18);
-    cout << "     ~,";
-    gotoxy(26, 19);
-    cout << "     ~-. ";
-    gotoxy(26, 20);
-    cout << "     .~- ~     ";
-    gotoxy(26, 21);
-    cout << "      --:   ";
-    PrintString(hStdOut, RED);
-    gotoxy(25, 22);
-    cout << "     ▨▨▨▨";
-    gotoxy(25, 23);
-    cout << "    ▨▨▨▨▨";
-    gotoxy(25, 24);
-    cout << "   ▨▨▨▨▨▨";
-    gotoxy(25, 25);
-    cout << "   ▨▨▨▨▨▨";
-    gotoxy(25, 26);
-    cout << "    ▨▨▨▨▨ ";
-    gotoxy(25, 27);
-    cout << "     ▨▨▨▨ ";
-                         
 
     PrintString(hStdOut, WHITE);
     gotoxy(29, 30);
@@ -752,15 +746,16 @@ void DrawRankingScreen() {
     //구조체
     struct players {
         char name[20];
-        float score;
+        int score;
         int rank;
     } pl[10];
     FILE* fp1;
+   
 
     //점수 초기화
-    for (int i = 0; i < 10; i++) {
-        pl[i].score = 0;
-    }
+    //for (int i = 0; i < 10; i++) {
+    //    pl[i].score = 0;
+    //}
 
     //파일에서 읽어옴
     while(true){
@@ -1255,30 +1250,31 @@ void StartGameMulti()
     //4명이 플레이할 경우(카드 넘기기/종치기) : qw  xc  nm  op
     DrawStartGame();
     //조작법 draw
-    int x = 12;
-    gotoxy(x, 30);
-    cout << "┌───────────  조작법 ( NEXT / BELL ) ──────────┐";
-    gotoxy(x, 31);
-    cout << "│                                              │";
-    gotoxy(x, 32);
-    cout << "│           Player 1   ▷   Q  /  W            │";
-    gotoxy(x, 33); 
-    cout << "│                                              │";
-    gotoxy(x, 34);
-    cout << "│           Player 2   ▷   X  /  C            │";
-    gotoxy(x, 35);
-    cout << "│                                              │";
-    gotoxy(x, 36);
-    cout << "│           Player 3   ▷   N  /  M            │";
-    gotoxy(x, 37);
-    cout << "│                                              │";
-    gotoxy(x, 38);
-    cout << "│           Player 4   ▷   O  /  P            │";
-    gotoxy(x, 39); 
-    cout << "│                                              │";
-    gotoxy(x, 40);
-    cout << "└──────────────────────────────────────────────┘";
-
+    {
+        int x = 12;
+        gotoxy(x, 30);
+        cout << "┌───────────  조작법 ( NEXT / BELL ) ──────────┐";
+        gotoxy(x, 31);
+        cout << "│                                              │";
+        gotoxy(x, 32);
+        cout << "│           Player 1   ▷   Q  /  W            │";
+        gotoxy(x, 33); 
+        cout << "│                                              │";
+        gotoxy(x, 34);
+        cout << "│           Player 2   ▷   X  /  C            │";
+        gotoxy(x, 35);
+        cout << "│                                              │";
+        gotoxy(x, 36);
+        cout << "│           Player 3   ▷   N  /  M            │";
+        gotoxy(x, 37);
+        cout << "│                                              │";
+        gotoxy(x, 38);
+        cout << "│           Player 4   ▷   O  /  P            │";
+        gotoxy(x, 39); 
+        cout << "│                                              │";
+        gotoxy(x, 40);
+        cout << "└──────────────────────────────────────────────┘";
+    }
     //사용자 생성
     Player user(1), p1(2), p2(3), p3(4);
     //카드 랜덤배치,사용자에게 카드 분배
@@ -1295,82 +1291,85 @@ void StartGameMulti()
             else if (p1.getAvailable() == 1) winnerName = "Player 2";
             else if (p2.getAvailable() == 1) winnerName = "Player 3";
             else if (p3.getAvailable() == 1) winnerName = "Player 4";
+            //랭킹 물어보기
+            {
+                int x = 20;
+                int y = 17;
+                gotoxy(x, y);
+                cout << "┌─────────────────────────────────────────┐";
+                gotoxy(x, y+1);
+                cout << "│                                         │";
+                gotoxy(x, y + 2);
+                cout << "│                GAME OVER                │";
+                gotoxy(x, y + 3);
+                cout << "│                                         │";
+                gotoxy(x, y + 4);
+                cout << "│             winner :  "<< winnerName<<"          │";
+                gotoxy(x, y + 5);
+                cout << "│                                         │";
+                gotoxy(x, y + 6);
+                cout << "│   랭킹을 작성하시겠습니까?  [ Y / N ]   │";
+                gotoxy(x, y + 7);
+                cout << "│                                         │";
+                gotoxy(x, y + 8);
+                cout << "└─────────────────────────────────────────┘";
+            
+                //Y 또는 N 선택
+                while (true) {
+                    if (_getch() == 89 || _getch() == 121) {
+                        string userName = "";
+                        gotoxy(x, y + 4);
+                        cout << "│                                         │";
+                        gotoxy(x, y + 5);
+                        cout << "│    닉네임 입력 :                        │";
+                        gotoxy(x, y + 6);
+                        cout << "│                                         │";
+                        gotoxy(x+12, y + 5);
+                        cin >> userName;
+                        gotoxy(0, 0);
+                        cout << userName << endl;
 
-            int x = 20;
-            int y = 17;
-            gotoxy(x, y);
-            cout << "┌─────────────────────────────────────────┐";
-            gotoxy(x, y+1);
-            cout << "│                                         │";
-            gotoxy(x, y + 2);
-            cout << "│                GAME OVER                │";
-            gotoxy(x, y + 3);
-            cout << "│                                         │";
-            gotoxy(x, y + 4);
-            cout << "│             winner :  "<< winnerName<<"          │";
-            gotoxy(x, y + 5);
-            cout << "│                                         │";
-            gotoxy(x, y + 6);
-            cout << "│   랭킹을 작성하시겠습니까?  [ Y / N ]   │";
-            gotoxy(x, y + 7);
-            cout << "│                                         │";
-            gotoxy(x, y + 8);
-            cout << "└─────────────────────────────────────────┘";
+                        //사용자 이름, 점수 파일에 저장
+                        ofstream out("database.txt", ios::app);
+                        //임시 점수
+                        int score = 100;
+                        out << userName << " " << score << "\n";
+                        out.close();
 
-            //Y 또는 N 선택
-            while (true) {
-                if (_getch() == 89 || _getch() == 121) {
-                    string userName = "";
-                    gotoxy(x, y + 4);
-                    cout << "│                                         │";
-                    gotoxy(x, y + 5);
-                    cout << "│    닉네임 입력 :                        │";
-                    gotoxy(x, y + 6);
-                    cout << "│                                         │";
-                    gotoxy(x+12, y + 5);
-                    cin >> userName;
-                    gotoxy(0, 0);
-                    cout << userName << endl;
-
-                    //사용자 이름, 점수 파일에 저장
-                    ofstream out("database.txt", ios::app);
-                    //임시 점수
-                    int score = 100;
-                    out << userName << " " << score << "\n";
-                    out.close();
-
-                    //랭킹 화면 draw
-                    DrawRankingScreen();
-                    break;
+                        //랭킹 화면 draw
+                        DrawRankingScreen();
+                        break;
+                    }
+                    else if (_getch() == 78 || _getch() == 110){
+                        gotoxy(x, y);
+                        cout << "┌─────────────────────────────────────────┐";
+                        gotoxy(x, y + 1);
+                        cout << "│                                         │";
+                        gotoxy(x, y + 2);
+                        cout << "│                GAME OVER                │";
+                        gotoxy(x, y + 3);
+                        cout << "│                                         │";
+                        gotoxy(x, y + 4);
+                        cout << "│     잠시후 메인화면으로 이동합니다.     │";
+                        gotoxy(x, y + 5);
+                        cout << "│                                         │";
+                        gotoxy(x, y + 6);
+                        cout << "│                                         │";
+                        gotoxy(x, y + 7);
+                        cout << "│                                         │";
+                        gotoxy(x, y + 8);
+                        cout << "└─────────────────────────────────────────┘";
+                        Sleep(2000);
+                        //메인으로 이동
+                        break;
+                    }
                 }
-                else if (_getch() == 78 || _getch() == 110){
-                    gotoxy(x, y);
-                    cout << "┌─────────────────────────────────────────┐";
-                    gotoxy(x, y + 1);
-                    cout << "│                                         │";
-                    gotoxy(x, y + 2);
-                    cout << "│                GAME OVER                │";
-                    gotoxy(x, y + 3);
-                    cout << "│                                         │";
-                    gotoxy(x, y + 4);
-                    cout << "│     잠시후 메인화면으로 이동합니다.     │";
-                    gotoxy(x, y + 5);
-                    cout << "│                                         │";
-                    gotoxy(x, y + 6);
-                    cout << "│                                         │";
-                    gotoxy(x, y + 7);
-                    cout << "│                                         │";
-                    gotoxy(x, y + 8);
-                    cout << "└─────────────────────────────────────────┘";
-                    Sleep(2000);
-                    //메인으로 이동
-                    break;
-                }
+                break;
             }
-            break;
         }
 
         turn++;
+        //1번 차례
         if (turn % 4 == 0) {
             printPlayersCardInfo(user, p1, p2, p3);
             if (!user.getAvailable()) {
@@ -1394,6 +1393,8 @@ void StartGameMulti()
                     PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
                     //과일 5개일때 쳤을 경우
                     if (checkFiveCard(user, p1, p2, p3)) {
+                        //점수 계산
+                        user.plusScore();
                         //***(나)웃는 표정
                         makeAllFaceDefault(p1);
                         makeAllFaceDefault(p2);
@@ -1660,25 +1661,26 @@ void StartGameMulti()
 void StartGameAlone() {
     DrawStartGame();
     //조작법 draw
-    gotoxy(15, 30);
-    cout << "┌──────────────  조작법 ──────────────┐";
-    gotoxy(15, 31);
-    cout << "│                                     │";
-    gotoxy(15, 32);
-    cout << "│      카드 넘기기 ▷  SPACE BAR      │";
-    gotoxy(15, 33);
-    cout << "│                                     │";
-    gotoxy(15, 34);
-    cout << "│        종 치기   ▷  ENTER          │";
-    gotoxy(15, 35);
-    cout << "│                                     │";
-    gotoxy(15, 36);
-    cout << "│        나가기    ▷  E key          │";
-    gotoxy(15, 37);
-    cout << "│                                     │";
-    gotoxy(15, 38);
-    cout << "└─────────────────────────────────────┘";
-
+    {
+        gotoxy(15, 30);
+        cout << "┌──────────────  조작법 ──────────────┐";
+        gotoxy(15, 31);
+        cout << "│                                     │";
+        gotoxy(15, 32);
+        cout << "│      카드 넘기기 ▷  SPACE BAR      │";
+        gotoxy(15, 33);
+        cout << "│                                     │";
+        gotoxy(15, 34);
+        cout << "│        종 치기   ▷  ENTER          │";
+        gotoxy(15, 35);
+        cout << "│                                     │";
+        gotoxy(15, 36);
+        cout << "│        나가기    ▷  E key          │";
+        gotoxy(15, 37);
+        cout << "│                                     │";
+        gotoxy(15, 38);
+        cout << "└─────────────────────────────────────┘";
+    }
     //사용자 생성
     Player user(1), com1(2), com2(3), com3(4);
     //카드 랜덤배치,사용자에게 카드 분배
@@ -2064,7 +2066,8 @@ int ChoosePlaying() {
             return result;
         //exit
         case 27:
-            return -1;
+            ReadyGame();
+            break;
         }
     }
 }
