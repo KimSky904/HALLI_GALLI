@@ -1388,6 +1388,13 @@ void StartGameMulti()
             else {
                 //Player 1 : 카드 내기 Q, 종치기 W (81,113 / 87,119)
 
+                //체크
+                gotoxy(0, 1);
+                cout << "1번 차례";
+                Sleep(500);
+                gotoxy(0, 1);
+                cout << "            ";
+
                 //설명 출력
                 gotoxy(longInfoX + 13, longInfoY - 2);
                 cout << "                                        ";
@@ -1396,9 +1403,17 @@ void StartGameMulti()
 
                 //카드 낼때까지 기다림
                 int cardInput = 0;
-                while (cardInput == 81 || cardInput == 113) {
+                while (true) {
                     cardInput = _getch();
+                    if (cardInput == 81 || cardInput == 113) break;
                 }
+
+                //체크
+                gotoxy(0, 1);
+                cout << "(1) 빠져나옴";
+                Sleep(500);
+                gotoxy(0, 1);
+                cout << "            ";
 
                 //카드 뒤집기
                 if (cardInput == 81 || cardInput == 113) {
@@ -1408,6 +1423,12 @@ void StartGameMulti()
                     input = _getch();
                     //종 치기
                     if (input == 87 || input == 119 ) { //user가 종 친 경우
+                        //체크
+                        gotoxy(0, 1);
+                        cout << "1번이 종침";
+                        Sleep(500);
+                        gotoxy(0, 1);
+                        cout << "            ";
                         PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
                         //과일 5개일때 쳤을 경우
                         if (checkFiveCard(user, p1, p2, p3)) {
@@ -1439,6 +1460,12 @@ void StartGameMulti()
                     }
                     //종 치기
                     else if (input == 67 || input == 99) { //p1가 종 친 경우
+                        //체크
+                        gotoxy(0, 1);
+                        cout << "2번이 종침";
+                        Sleep(500);
+                        gotoxy(0, 1);
+                        cout << "            ";
                         PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
                         //과일 5개일때 쳤을 경우
                         if (checkFiveCard(user, p1, p2, p3)) {
@@ -1470,6 +1497,12 @@ void StartGameMulti()
                     }
                     //종 치기
                     else if (input == 77 || input == 109) { //p2가 종 친 경우
+                        //체크
+                        gotoxy(0, 1);
+                        cout << "3번이 종침";
+                        Sleep(500);
+                        gotoxy(0, 1);
+                        cout << "            ";
                         PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
                         //과일 5개일때 쳤을 경우
                         if (checkFiveCard(user, p1, p2, p3)) {
@@ -1500,6 +1533,12 @@ void StartGameMulti()
                     }
                     //종 치기
                     else if (input == 80 || input == 112) { //p3가 종 친 경우
+                        //체크
+                        gotoxy(0, 1);
+                        cout << "4번이 종침";
+                        Sleep(500);
+                        gotoxy(0, 1);
+                        cout << "            ";
                         PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
                         //과일 5개일때 쳤을 경우
                         if (checkFiveCard(user, p1, p2, p3)) {
@@ -1565,6 +1604,13 @@ void StartGameMulti()
             else {
                 //Player 2 : 카드 내기 X, 종치기 C (88,120 / 67,99)
                 
+                //체크
+                gotoxy(0, 1);
+                cout << "2번 차례";
+                Sleep(500);
+                gotoxy(0, 1);
+                cout << "            ";
+
                 //설명 출력
                 gotoxy(longInfoX + 13, longInfoY - 2);
                 cout << "                                        ";
@@ -1573,18 +1619,31 @@ void StartGameMulti()
 
                 //카드 낼때까지 기다림
                 int cardInput = 0;
-                while (cardInput == 88 || cardInput == 120) {
+                while (true) {
                     cardInput = _getch();
+                    if (cardInput == 88 || cardInput == 120) break;
                 }
+                //체크
+                gotoxy(0, 1);
+                cout << "(2) 빠져나옴";
+                Sleep(500);
+                gotoxy(0, 1);
+                cout << "            ";
 
                 //카드 뒤집기
                 if (cardInput == 88 || cardInput == 120) {
-                    if (user.open() == -1) continue;
+                    if (p1.open() == -1) continue;
                     gotoxy(10, 14);
-                    frontCardPrint(user.getFrontTopCard(), user);
+                    frontCardPrint(p1.getFrontTopCard(), p1);
                     input = _getch();
                     //종 치기
                     if (input == 87 || input == 119) { //user가 종 친 경우
+                        //체크
+                        gotoxy(0, 1);
+                        cout << "1번이 종침";
+                        Sleep(500);
+                        gotoxy(0, 1);
+                        cout << "            ";
                         PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
                         //과일 5개일때 쳤을 경우
                         if (checkFiveCard(user, p1, p2, p3)) {
@@ -1616,6 +1675,12 @@ void StartGameMulti()
                     }
                     //종 치기
                     else if (input == 67 || input == 99) { //p1가 종 친 경우
+                        //체크
+                        gotoxy(0, 1);
+                        cout << "2번이 종침";
+                        Sleep(500);
+                        gotoxy(0, 1);
+                        cout << "            ";
                         PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
                         //과일 5개일때 쳤을 경우
                         if (checkFiveCard(user, p1, p2, p3)) {
@@ -1647,6 +1712,12 @@ void StartGameMulti()
                     }
                     //종 치기
                     else if (input == 77 || input == 109) { //p2가 종 친 경우
+                        //체크
+                        gotoxy(0, 1);
+                        cout << "3번이 종침";
+                        Sleep(500);
+                        gotoxy(0, 1);
+                        cout << "            ";
                         PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
                         //과일 5개일때 쳤을 경우
                         if (checkFiveCard(user, p1, p2, p3)) {
@@ -1677,6 +1748,12 @@ void StartGameMulti()
                     }
                     //종 치기
                     else if (input == 80 || input == 112) { //p3가 종 친 경우
+                        //체크
+                        gotoxy(0, 1);
+                        cout << "4번이 종침";
+                        Sleep(500);
+                        gotoxy(0, 1);
+                        cout << "            ";
                         PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
                         //과일 5개일때 쳤을 경우
                         if (checkFiveCard(user, p1, p2, p3)) {
@@ -1713,11 +1790,9 @@ void StartGameMulti()
                     else {
                         gotoxy(0, 0);
                         cout << "else!!";
-                        //다음 차례가 카드를 넘기면 턴 바뀜
-                        while (true) {
-                            input = _getch();
-                            if (input == 81 || input == 119) break;
-                        }
+                        Sleep(50);
+                        gotoxy(0, 0);
+                        cout << "         ";
                     }
                 }
             }
@@ -1744,6 +1819,13 @@ void StartGameMulti()
             else {
                 //Player 3 : 카드 내기 N, 종치기 M (78,110 / 77,109)
 
+                //체크
+                gotoxy(0, 1);
+                cout << "3번 차례";
+                Sleep(500);
+                gotoxy(0, 1);
+                cout << "            ";
+
                 //설명 출력
                 gotoxy(longInfoX + 13, longInfoY - 2);
                 cout << "                                        ";
@@ -1752,18 +1834,31 @@ void StartGameMulti()
 
                 //카드 낼때까지 기다림
                 int cardInput = 0;
-                while (cardInput == 78 || cardInput == 110) {
+                while (true) {
                     cardInput = _getch();
+                    if (cardInput == 78 || cardInput == 110) break;
                 }
+                //체크
+                gotoxy(0, 1);
+                cout << "(3) 빠져나옴";
+                Sleep(500);
+                gotoxy(0, 1);
+                cout << "            ";
 
                 //카드 뒤집기
                 if (cardInput == 78 || cardInput == 110) {
-                    if (user.open() == -1) continue;
+                    if (p2.open() == -1) continue;
                     gotoxy(10, 14);
-                    frontCardPrint(user.getFrontTopCard(), user);
+                    frontCardPrint(p2.getFrontTopCard(), p2);
                     input = _getch();
                     //종 치기
                     if (input == 87 || input == 119) { //user가 종 친 경우
+                        //체크
+                        gotoxy(0, 1);
+                        cout << "1번이 종침";
+                        Sleep(500);
+                        gotoxy(0, 1);
+                        cout << "            ";
                         PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
                         //과일 5개일때 쳤을 경우
                         if (checkFiveCard(user, p1, p2, p3)) {
@@ -1795,6 +1890,12 @@ void StartGameMulti()
                     }
                     //종 치기
                     else if (input == 67 || input == 99) { //p1가 종 친 경우
+                        //체크
+                        gotoxy(0, 1);
+                        cout << "2번이 종침";
+                        Sleep(500);
+                        gotoxy(0, 1);
+                        cout << "            ";
                         PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
                         //과일 5개일때 쳤을 경우
                         if (checkFiveCard(user, p1, p2, p3)) {
@@ -1825,7 +1926,13 @@ void StartGameMulti()
                         }
                     }
                     //종 치기
-                    else if (input == 78 || input == 110) { //p2가 종 친 경우
+                    else if (input == 77 || input == 109) { //p2가 종 친 경우
+                        //체크
+                        gotoxy(0, 1);
+                        cout << "3번이 종침";
+                        Sleep(500);
+                        gotoxy(0, 1);
+                        cout << "            ";
                         PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
                         //과일 5개일때 쳤을 경우
                         if (checkFiveCard(user, p1, p2, p3)) {
@@ -1856,6 +1963,12 @@ void StartGameMulti()
                     }
                     //종 치기
                     else if (input == 79 || input == 111) { //p3가 종 친 경우
+                        //체크
+                        gotoxy(0, 1);
+                        cout << "4번이 종침";
+                        Sleep(500);
+                        gotoxy(0, 1);
+                        cout << "            ";
                         PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
                         //과일 5개일때 쳤을 경우
                         if (checkFiveCard(user, p1, p2, p3)) {
@@ -1892,11 +2005,9 @@ void StartGameMulti()
                     else {
                         gotoxy(0, 0);
                         cout << "else!!";
-                        //다음 차례가 카드를 넘기면 턴 바뀜
-                        while (true) {
-                            input = _getch();
-                            if (input == 81 || input == 119) break;
-                        }
+                        Sleep(50);
+                        gotoxy(0, 0);
+                        cout << "         ";
                     }
                 }
             }
@@ -1909,6 +2020,13 @@ void StartGameMulti()
             else {
                 //Player 4 : 카드 내기 O, 종치기 P (79,111 / 80,112)
                 
+                //체크
+                gotoxy(0, 1);
+                cout << "4번 차례";
+                Sleep(500);
+                gotoxy(0, 1);
+                cout << "            ";
+
                 //설명 출력
                 gotoxy(longInfoX + 13, longInfoY - 2);
                 cout << "                                        ";
@@ -1917,18 +2035,31 @@ void StartGameMulti()
 
                 //카드 낼때까지 기다림
                 int cardInput = 0;
-                while (cardInput == 81 || cardInput == 113) {
+                while (true) {
                     cardInput = _getch();
+                    if (cardInput == 79 || cardInput == 111) break;
                 }
+                //체크
+                gotoxy(0, 1);
+                cout << "(4) 빠져나옴";
+                Sleep(500);
+                gotoxy(0, 1);
+                cout << "            ";
 
                 //카드 뒤집기
-                if (cardInput == 81 || cardInput == 113) {
-                    if (user.open() == -1) continue;
+                if (cardInput == 79 || cardInput == 111) {
+                    if (p3.open() == -1) continue;
                     gotoxy(10, 14);
-                    frontCardPrint(user.getFrontTopCard(), user);
+                    frontCardPrint(p3.getFrontTopCard(), p3);
                     input = _getch();
                     //종 치기
                     if (input == 87 || input == 119) { //user가 종 친 경우
+                        //체크
+                        gotoxy(0, 1);
+                        cout << "1번이 종침";
+                        Sleep(500);
+                        gotoxy(0, 1);
+                        cout << "            ";
                         PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
                         //과일 5개일때 쳤을 경우
                         if (checkFiveCard(user, p1, p2, p3)) {
@@ -1960,6 +2091,12 @@ void StartGameMulti()
                     }
                     //종 치기
                     else if (input == 67 || input == 99) { //p1가 종 친 경우
+                        //체크
+                        gotoxy(0, 1);
+                        cout << "2번이 종침";
+                        Sleep(500);
+                        gotoxy(0, 1);
+                        cout << "            ";
                         PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
                         //과일 5개일때 쳤을 경우
                         if (checkFiveCard(user, p1, p2, p3)) {
@@ -1991,6 +2128,12 @@ void StartGameMulti()
                     }
                     //종 치기
                     else if (input == 77 || input == 109) { //p2가 종 친 경우
+                        //체크
+                        gotoxy(0, 1);
+                        cout << "3번이 종침";
+                        Sleep(500);
+                        gotoxy(0, 1);
+                        cout << "            ";
                         PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
                         //과일 5개일때 쳤을 경우
                         if (checkFiveCard(user, p1, p2, p3)) {
@@ -2021,6 +2164,12 @@ void StartGameMulti()
                     }
                     //종 치기
                     else if (input == 80 || input == 112) { //p3가 종 친 경우
+                        //체크
+                        gotoxy(0, 1);
+                        cout << "4번이 종침";
+                        Sleep(500);
+                        gotoxy(0, 1);
+                        cout << "            ";
                         PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
                         //과일 5개일때 쳤을 경우
                         if (checkFiveCard(user, p1, p2, p3)) {
@@ -2057,11 +2206,9 @@ void StartGameMulti()
                     else {
                         gotoxy(0, 0);
                         cout << "else!!";
-                        //다음 차례가 카드를 넘기면 턴 바뀜
-                        while (true) {
-                            input = _getch();
-                            if (input == 81 || input == 119) break;
-                        }
+                        Sleep(50);
+                        gotoxy(0, 0);
+                        cout << "         ";
                     }
                 }
             }
