@@ -683,7 +683,7 @@ void DrawStartGame()
     gotoxy(50, 4);
     cout << "│  ⌒  ⌒ │";
     gotoxy(50, 5);
-    cout << "│  ◐  ◑ │";
+    cout << "│   =  =  │";
     gotoxy(50, 6);
     cout << "│         │";
     gotoxy(50, 7);
@@ -714,7 +714,7 @@ void DrawStartGame()
     gotoxy(50, 24);
     cout << "│  ⌒  ⌒ │";
     gotoxy(50, 25);
-    cout << "│  ∧  ∧ │";
+    cout << "│  ㅡ  ㅡ │";
     gotoxy(50, 26);
     cout << "│         │";
     gotoxy(50, 27);
@@ -993,7 +993,7 @@ void makeAllFaceDefault(Player& player) {
     switch (player.getPlayerNum()) {
     case 1: 
         gotoxy(x,5);
-        cout << "│  ◐  ◑ │";
+        cout << "│   =  =  │";
         break;
     case 2: 
         gotoxy(x, 15);
@@ -1001,7 +1001,7 @@ void makeAllFaceDefault(Player& player) {
         break;
     case 3: 
         gotoxy(x, 25);
-        cout << "│  ∧  ∧ │";
+        cout << "│  ㅡ  ㅡ │";
         break;
     case 4: 
         gotoxy(x, 35);
