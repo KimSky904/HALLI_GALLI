@@ -1255,6 +1255,24 @@ void DrawChoosePlaying() {
 
 
 }
+//탈락인지 확인
+void checkPlayerNoneAble(Player& user,Player& p1,Player& p2,Player& p3){
+    if (user.getBackCount() == 0) {
+        //화난 표정
+        makeAllFaceDefault(p1);
+        makeAllFaceDefault(p2);
+        makeAllFaceDefault(p3);
+        makeFaceAngry(user);
+        user.setNoneAvailable();
+        printPlayersCardInfo(user, p1, p2, p3);
+        gotoxy(longInfoX + 10, longInfoY);
+        cout << user.getPlayerNum() << "번 사용자가 탈락되었습니다.";
+        Sleep(2000);
+        gotoxy(longInfoX + 10, longInfoY);
+        cout << "                              ";
+    }
+}
+
 //게임 시작 (1 vs 1 vs 1 vs 1)
 void StartGameMulti()
 {
@@ -1320,62 +1338,14 @@ void StartGameMulti()
                 gotoxy(x, y + 5);
                 cout << "│                                         │";
                 gotoxy(x, y + 6);
-                cout << "│   랭킹을 작성하시겠습니까?  [ Y / N ]   │";
+                cout << "│     잠시후 메인화면으로 이동합니다.     │";
                 gotoxy(x, y + 7);
                 cout << "│                                         │";
                 gotoxy(x, y + 8);
                 cout << "└─────────────────────────────────────────┘";
 
-                //Y 또는 N 선택
-                while (true) {
-                    if (_getch() == 89 || _getch() == 121) {
-                        string userName = "";
-                        gotoxy(x, y + 4);
-                        cout << "│                                         │";
-                        gotoxy(x, y + 5);
-                        cout << "│    닉네임 입력 :                        │";
-                        gotoxy(x, y + 6);
-                        cout << "│                                         │";
-                        gotoxy(x + 12, y + 5);
-                        cin >> userName;
-                        gotoxy(0, 0);
-                        cout << userName << endl;
-
-                        //사용자 이름, 점수 파일에 저장
-                        ofstream out("database.txt", ios::app);
-                        //임시 점수
-                        int score = 100;
-                        out << userName << " " << score << "\n";
-                        out.close();
-
-                        //랭킹 화면 draw
-                        DrawRankingScreen(0);
-                        break;
-                    }
-                    else if (_getch() == 78 || _getch() == 110) {
-                        gotoxy(x, y);
-                        cout << "┌─────────────────────────────────────────┐";
-                        gotoxy(x, y + 1);
-                        cout << "│                                         │";
-                        gotoxy(x, y + 2);
-                        cout << "│                GAME OVER                │";
-                        gotoxy(x, y + 3);
-                        cout << "│                                         │";
-                        gotoxy(x, y + 4);
-                        cout << "│     잠시후 메인화면으로 이동합니다.     │";
-                        gotoxy(x, y + 5);
-                        cout << "│                                         │";
-                        gotoxy(x, y + 6);
-                        cout << "│                                         │";
-                        gotoxy(x, y + 7);
-                        cout << "│                                         │";
-                        gotoxy(x, y + 8);
-                        cout << "└─────────────────────────────────────────┘";
-                        Sleep(2000);
-                        //메인으로 이동
-                        break;
-                    }
-                }
+                Sleep(2500);
+                main();
                 break;
             }
         }
@@ -1406,6 +1376,12 @@ void StartGameMulti()
                 if (user.open() == -1) continue;
                 frontCardPrint(user.getFrontTopCard(), user);
 
+                //다음턴 출력
+                gotoxy(longInfoX + 13, longInfoY - 2);
+                cout << "                                        ";
+                gotoxy(longInfoX + 13, longInfoY - 2);
+                cout << "[ " << p1.getPlayerNum() << "번 PLAYER ]";
+
                 //종치거나 다음 차례가 카드넘김
                 while (true) {
                     input = _getch();
@@ -1418,6 +1394,7 @@ void StartGameMulti()
                 //다음턴이 카드를 넘긴 경우
                 if (input == 88 || input == 120) {
                     pushOk = true;
+                    checkPlayerNoneAble(user,p1,p2,p3);
                     continue;
                 }
                 else {
@@ -1545,6 +1522,13 @@ void StartGameMulti()
                         }
                     }
                 }
+                //체크
+                gotoxy(0, 0);
+                cout << "탈락처리";
+                Sleep(400);
+                gotoxy(0, 0);
+                cout << "                       ";
+                //1번 탈락 처리
                 if (user.getBackCount() == 0) {
                     //화난 표정
                     makeAllFaceDefault(p1);
@@ -1555,6 +1539,52 @@ void StartGameMulti()
                     printPlayersCardInfo(user, p1, p2, p3);
                     gotoxy(longInfoX + 10, longInfoY);
                     cout << user.getPlayerNum() << "번 사용자가 탈락되었습니다.";
+                    Sleep(2000);
+                    gotoxy(longInfoX + 10, longInfoY);
+                    cout << "                              ";
+                }
+                //2번 탈락 처리
+                if (p1.getBackCount() == 0) {
+                    //화난 표정
+                    makeAllFaceDefault(user);
+                    makeAllFaceDefault(p2);
+                    makeAllFaceDefault(p3);
+                    makeFaceAngry(p1);
+                    p1.setNoneAvailable();
+                    printPlayersCardInfo(user, p1, p2, p3);
+                    gotoxy(longInfoX + 10, longInfoY);
+                    cout << p1.getPlayerNum() << "번 사용자가 탈락되었습니다.";
+                    Sleep(2000);
+                    gotoxy(longInfoX + 10, longInfoY);
+                    cout << "                              ";
+                }
+                //3번 탈락 처리
+                if (p2.getBackCount() == 0) {
+                    //화난 표정
+                    makeAllFaceDefault(user);
+                    makeAllFaceDefault(p1);
+                    makeAllFaceDefault(p3);
+                    makeFaceAngry(p2);
+                    p2.setNoneAvailable();
+                    printPlayersCardInfo(user, p1, p2, p3);
+                    gotoxy(longInfoX + 10, longInfoY);
+                    cout << p2.getPlayerNum() << "번 사용자가 탈락되었습니다.";
+                    Sleep(2000);
+                    gotoxy(longInfoX + 10, longInfoY);
+                    cout << "                              ";
+                }
+                //4번 탈락 처리
+                if (p3.getBackCount() == 0) {
+                    //(나)화난 표정
+                    makeAllFaceDefault(user);
+                    makeAllFaceDefault(p1);
+                    makeAllFaceDefault(p2);
+                    makeFaceAngry(p3);
+
+                    p3.setNoneAvailable();
+                    printPlayersCardInfo(user, p1, p2, p3);
+                    gotoxy(longInfoX + 10, longInfoY);
+                    cout << p3.getPlayerNum() << "번 사용자가 탈락되었습니다.";
                     Sleep(2000);
                     gotoxy(longInfoX + 10, longInfoY);
                     cout << "                              ";
@@ -1587,6 +1617,12 @@ void StartGameMulti()
                 if (p1.open() == -1) continue;
                 frontCardPrint(p1.getFrontTopCard(), p1);
 
+                //다음턴 출력
+                gotoxy(longInfoX + 13, longInfoY - 2);
+                cout << "                                        ";
+                gotoxy(longInfoX + 13, longInfoY - 2);
+                cout << "[ " << p2.getPlayerNum() << "번 PLAYER ]";
+
                 //종치거나 다음 차례가 카드넘김
                 while (true) {
                     input = _getch();
@@ -1599,8 +1635,10 @@ void StartGameMulti()
                 //다음턴이 카드를 넘긴 경우
                 if (input == 78 || input == 110) {
                     pushOk = true;
+                    checkPlayerNoneAble(p1, user, p2, p3);
                     continue;
                 }
+                //누군가 종친 경우
                 else {
                     pushOk = false;
                     //1번이 종쳤을 경우
@@ -1726,6 +1764,28 @@ void StartGameMulti()
                         }
                     }
                 }
+                //체크
+                gotoxy(0, 0);
+                cout << "탈락처리";
+                Sleep(400);
+                gotoxy(0, 0);
+                cout << "                    ";
+                //1번 탈락 처리
+                if (user.getBackCount() == 0) {
+                    //화난 표정
+                    makeAllFaceDefault(p1);
+                    makeAllFaceDefault(p2);
+                    makeAllFaceDefault(p3);
+                    makeFaceAngry(user);
+                    user.setNoneAvailable();
+                    printPlayersCardInfo(user, p1, p2, p3);
+                    gotoxy(longInfoX + 10, longInfoY);
+                    cout << user.getPlayerNum() << "번 사용자가 탈락되었습니다.";
+                    Sleep(2000);
+                    gotoxy(longInfoX + 10, longInfoY);
+                    cout << "                              ";
+                }
+                //2번 탈락 처리
                 if (p1.getBackCount() == 0) {
                     //화난 표정
                     makeAllFaceDefault(user);
@@ -1736,6 +1796,37 @@ void StartGameMulti()
                     printPlayersCardInfo(user, p1, p2, p3);
                     gotoxy(longInfoX + 10, longInfoY);
                     cout << p1.getPlayerNum() << "번 사용자가 탈락되었습니다.";
+                    Sleep(2000);
+                    gotoxy(longInfoX + 10, longInfoY);
+                    cout << "                              ";
+                }
+                //3번 탈락 처리
+                if (p2.getBackCount() == 0) {
+                    //화난 표정
+                    makeAllFaceDefault(user);
+                    makeAllFaceDefault(p1);
+                    makeAllFaceDefault(p3);
+                    makeFaceAngry(p2);
+                    p2.setNoneAvailable();
+                    printPlayersCardInfo(user, p1, p2, p3);
+                    gotoxy(longInfoX + 10, longInfoY);
+                    cout << p2.getPlayerNum() << "번 사용자가 탈락되었습니다.";
+                    Sleep(2000);
+                    gotoxy(longInfoX + 10, longInfoY);
+                    cout << "                              ";
+                }
+                //4번 탈락 처리
+                if (p3.getBackCount() == 0) {
+                    //(나)화난 표정
+                    makeAllFaceDefault(user);
+                    makeAllFaceDefault(p1);
+                    makeAllFaceDefault(p2);
+                    makeFaceAngry(p3);
+
+                    p3.setNoneAvailable();
+                    printPlayersCardInfo(user, p1, p2, p3);
+                    gotoxy(longInfoX + 10, longInfoY);
+                    cout << p3.getPlayerNum() << "번 사용자가 탈락되었습니다.";
                     Sleep(2000);
                     gotoxy(longInfoX + 10, longInfoY);
                     cout << "                              ";
@@ -1768,6 +1859,12 @@ void StartGameMulti()
                 if (p2.open() == -1) continue;
                 frontCardPrint(p2.getFrontTopCard(), p2);
 
+                //다음턴 출력
+                gotoxy(longInfoX + 13, longInfoY - 2);
+                cout << "                                        ";
+                gotoxy(longInfoX + 13, longInfoY - 2);
+                cout << "[ " << p3.getPlayerNum() << "번 PLAYER ]";
+
                 //종치거나 다음 차례가 카드넘김
                 while (true) {
                     input = _getch();
@@ -1780,6 +1877,7 @@ void StartGameMulti()
                 //다음턴이 카드를 넘긴 경우
                 if (input == 79 || input == 111) {
                     pushOk = true;
+                    checkPlayerNoneAble(p2, p1, user, p3);
                     continue;
                 }
                 else {
@@ -1907,6 +2005,43 @@ void StartGameMulti()
                         }
                     }
                 }
+                //체크
+                gotoxy(0, 0);
+                cout << "탈락처리";
+                Sleep(400);
+                gotoxy(0, 0);
+                cout << "                    ";
+                //1번 탈락 처리
+                if (user.getBackCount() == 0) {
+                    //화난 표정
+                    makeAllFaceDefault(p1);
+                    makeAllFaceDefault(p2);
+                    makeAllFaceDefault(p3);
+                    makeFaceAngry(user);
+                    user.setNoneAvailable();
+                    printPlayersCardInfo(user, p1, p2, p3);
+                    gotoxy(longInfoX + 10, longInfoY);
+                    cout << user.getPlayerNum() << "번 사용자가 탈락되었습니다.";
+                    Sleep(2000);
+                    gotoxy(longInfoX + 10, longInfoY);
+                    cout << "                              ";
+                }
+                //2번 탈락 처리
+                if (p1.getBackCount() == 0) {
+                    //화난 표정
+                    makeAllFaceDefault(user);
+                    makeAllFaceDefault(p2);
+                    makeAllFaceDefault(p3);
+                    makeFaceAngry(p1);
+                    p1.setNoneAvailable();
+                    printPlayersCardInfo(user, p1, p2, p3);
+                    gotoxy(longInfoX + 10, longInfoY);
+                    cout << p1.getPlayerNum() << "번 사용자가 탈락되었습니다.";
+                    Sleep(2000);
+                    gotoxy(longInfoX + 10, longInfoY);
+                    cout << "                              ";
+                }
+                //3번 탈락 처리
                 if (p2.getBackCount() == 0) {
                     //화난 표정
                     makeAllFaceDefault(user);
@@ -1917,6 +2052,22 @@ void StartGameMulti()
                     printPlayersCardInfo(user, p1, p2, p3);
                     gotoxy(longInfoX + 10, longInfoY);
                     cout << p2.getPlayerNum() << "번 사용자가 탈락되었습니다.";
+                    Sleep(2000);
+                    gotoxy(longInfoX + 10, longInfoY);
+                    cout << "                              ";
+                }
+                //4번 탈락 처리
+                if (p3.getBackCount() == 0) {
+                    //(나)화난 표정
+                    makeAllFaceDefault(user);
+                    makeAllFaceDefault(p1);
+                    makeAllFaceDefault(p2);
+                    makeFaceAngry(p3);
+
+                    p3.setNoneAvailable();
+                    printPlayersCardInfo(user, p1, p2, p3);
+                    gotoxy(longInfoX + 10, longInfoY);
+                    cout << p3.getPlayerNum() << "번 사용자가 탈락되었습니다.";
                     Sleep(2000);
                     gotoxy(longInfoX + 10, longInfoY);
                     cout << "                              ";
@@ -1949,6 +2100,12 @@ void StartGameMulti()
                 if (p3.open() == -1) continue;
                 frontCardPrint(p3.getFrontTopCard(), p3);
 
+                //다음턴 출력
+                gotoxy(longInfoX + 13, longInfoY - 2);
+                cout << "                                        ";
+                gotoxy(longInfoX + 13, longInfoY - 2);
+                cout << "[ " << user.getPlayerNum() << "번 PLAYER ]";
+
                 //종치거나 다음 차례가 카드넘김
                 while (true) {
                     input = _getch();
@@ -1961,6 +2118,7 @@ void StartGameMulti()
                 //다음턴이 카드를 넘긴 경우
                 if (input == 81 || input == 113) {
                     pushOk = true;
+                    checkPlayerNoneAble(p3, p1, p2, user);
                     continue;
                 }
                 else {
@@ -2088,6 +2246,58 @@ void StartGameMulti()
                         }
                     }
                 }
+                //체크
+                gotoxy(0, 0);
+                cout << "탈락처리";
+                Sleep(400);
+                gotoxy(0, 0);
+                cout << "                    ";
+                //1번 탈락 처리
+                if (user.getBackCount() == 0) {
+                    //화난 표정
+                    makeAllFaceDefault(p1);
+                    makeAllFaceDefault(p2);
+                    makeAllFaceDefault(p3);
+                    makeFaceAngry(user);
+                    user.setNoneAvailable();
+                    printPlayersCardInfo(user, p1, p2, p3);
+                    gotoxy(longInfoX + 10, longInfoY);
+                    cout << user.getPlayerNum() << "번 사용자가 탈락되었습니다.";
+                    Sleep(2000);
+                    gotoxy(longInfoX + 10, longInfoY);
+                    cout << "                              ";
+                }
+                //2번 탈락 처리
+                if (p1.getBackCount() == 0) {
+                    //화난 표정
+                    makeAllFaceDefault(user);
+                    makeAllFaceDefault(p2);
+                    makeAllFaceDefault(p3);
+                    makeFaceAngry(p1);
+                    p1.setNoneAvailable();
+                    printPlayersCardInfo(user, p1, p2, p3);
+                    gotoxy(longInfoX + 10, longInfoY);
+                    cout << p1.getPlayerNum() << "번 사용자가 탈락되었습니다.";
+                    Sleep(2000);
+                    gotoxy(longInfoX + 10, longInfoY);
+                    cout << "                              ";
+                }
+                //3번 탈락 처리
+                if (p2.getBackCount() == 0) {
+                    //화난 표정
+                    makeAllFaceDefault(user);
+                    makeAllFaceDefault(p1);
+                    makeAllFaceDefault(p3);
+                    makeFaceAngry(p2);
+                    p2.setNoneAvailable();
+                    printPlayersCardInfo(user, p1, p2, p3);
+                    gotoxy(longInfoX + 10, longInfoY);
+                    cout << p2.getPlayerNum() << "번 사용자가 탈락되었습니다.";
+                    Sleep(2000);
+                    gotoxy(longInfoX + 10, longInfoY);
+                    cout << "                              ";
+                }
+                //4번 탈락 처리
                 if (p3.getBackCount() == 0) {
                     //(나)화난 표정
                     makeAllFaceDefault(user);
