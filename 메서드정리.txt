@@ -62,14 +62,40 @@ input = _getch();
                 if (input == 67 || input == 99) {
 
 
-q 81 113
-w 87 119
+카드 내기  q 81 113
+종치기     w 87 119
 
-x 88 120
-c 67 99
+카드 내기  x 88 120
+종치기     c 67 99
 
-n 78 110
-m 77 109
+카드 내기  n 78 110
+종치기     m 77 109
 
-o 79 111
-p 80 112
+카드 내기  o 79 111
+종치기     p 80 112
+
+
+//종치지 않고 바로 다음 턴의 카드 내기를 눌렀을 경우를 체크
+if (nextTurnOk == false) {
+    //카드 낼때까지 기다림
+    int cardInput = 0;
+    while (true) {
+        cardInput = _getch();
+        if (cardInput == 81 || cardInput == 113) break;
+    }
+}
+
+if(nextTurnOk == false) {
+    while (_getch() != 81 || _getch() != 113) {}
+    //카드 뒤집기
+    if (user.open() == -1) continue;
+    gotoxy(10, 14);
+    frontCardPrint(user.getFrontTopCard(), user);
+}
+
+//다음 턴이 카드를 넘김
+input = _getch();
+if (input == 88 || input == 120) {
+    nextTurnOk = true;
+    continue;
+}
