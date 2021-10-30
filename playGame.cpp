@@ -1352,6 +1352,8 @@ void StartGameMulti()
         turn++;
         //1번 차례
         if (turn % 4 == 0) {
+            //다음 턴으로 넘어가는 키 지정
+            int nextKey1 = 88, nextKey2 = 120;
             printPlayersCardInfo(user, p1, p2, p3);
             if (!user.getAvailable()) {
                 continue;
@@ -1382,6 +1384,17 @@ void StartGameMulti()
                 gotoxy(longInfoX + 13, longInfoY - 2);
                 cout << "[ " << p1.getPlayerNum() << "번 PLAYER ]";
 
+                //다음 턴 선수의 키값 구하기 (탈락자 때문)
+                if (!p1.getAvailable()) {
+                    nextKey1 = 78, nextKey2 = 110;
+                    if (!p2.getAvailable()) {
+                        nextKey1 = 79, nextKey2 = 111;
+                        if (!p3.getAvailable()) {
+                            nextKey1 = 81, nextKey2 = 113;
+                        }
+                    }
+                }
+
                 //종치거나 다음 차례가 카드넘김
                 while (true) {
                     input = _getch();
@@ -1389,10 +1402,10 @@ void StartGameMulti()
                         input == 67 || input == 99  ||
                         input == 77 || input == 109 ||
                         input == 80 || input == 112 ||
-                        input == 88 || input == 120) break;
+                        input == nextKey1 || input == nextKey2) break;
                 }
                 //다음턴이 카드를 넘긴 경우
-                if (input == 88 || input == 120) {
+                if (input == nextKey1 || input == nextKey2) {
                     pushOk = true;
                     checkPlayerNoneAble(user,p1,p2,p3);
                     continue;
@@ -1593,6 +1606,8 @@ void StartGameMulti()
         }
         //2번 차례
         if (turn % 4 == 1) {
+            //다음 턴으로 넘어가는 키 지정
+            int nextKey1 = 78, nextKey2 = 110;
             printPlayersCardInfo(user, p1, p2, p3);
             if (!p1.getAvailable()) {
                 continue;
@@ -1623,6 +1638,17 @@ void StartGameMulti()
                 gotoxy(longInfoX + 13, longInfoY - 2);
                 cout << "[ " << p2.getPlayerNum() << "번 PLAYER ]";
 
+                //다음 턴 선수의 키값 구하기 (탈락자 때문)
+                if (!p2.getAvailable()) {
+                    nextKey1 = 79, nextKey2 = 111;
+                    if (!p3.getAvailable()) {
+                        nextKey1 = 81, nextKey2 = 113;
+                        if (!user.getAvailable()) {
+                            if (!user.getAvailable()) nextKey1 = 88, nextKey2 = 120;
+                        }
+                    }
+                }                
+
                 //종치거나 다음 차례가 카드넘김
                 while (true) {
                     input = _getch();
@@ -1630,10 +1656,10 @@ void StartGameMulti()
                         input == 67 || input == 99 ||
                         input == 77 || input == 109 ||
                         input == 80 || input == 112 ||
-                        input == 78 || input == 110) break;
+                        input == nextKey1 || input == nextKey2) break;
                 }
                 //다음턴이 카드를 넘긴 경우
-                if (input == 78 || input == 110) {
+                if (input == nextKey1 || input == nextKey2) {
                     pushOk = true;
                     checkPlayerNoneAble(p1, user, p2, p3);
                     continue;
@@ -1835,6 +1861,8 @@ void StartGameMulti()
         }
         //3번 차례
         if (turn % 4 == 2) {
+            //다음 턴으로 넘어가는 키 지정
+            int nextKey1 = 79, nextKey2 = 111;
             printPlayersCardInfo(user, p1, p2, p3);
             if (!p2.getAvailable()) {
                 continue;
@@ -1865,6 +1893,17 @@ void StartGameMulti()
                 gotoxy(longInfoX + 13, longInfoY - 2);
                 cout << "[ " << p3.getPlayerNum() << "번 PLAYER ]";
 
+                //다음 턴 선수의 키값 구하기 (탈락자 때문)
+                if (!p3.getAvailable()) {
+                    nextKey1 = 81, nextKey2 = 113;
+                    if (!user.getAvailable()) {
+                        nextKey1 = 88, nextKey2 = 120;
+                        if (!p1.getAvailable()) {
+                            nextKey1 = 78, nextKey2 = 110;
+                        }
+                    }
+                }
+                 
                 //종치거나 다음 차례가 카드넘김
                 while (true) {
                     input = _getch();
@@ -1872,10 +1911,10 @@ void StartGameMulti()
                         input == 67 || input == 99 ||
                         input == 77 || input == 109 ||
                         input == 80 || input == 112 ||
-                        input == 79 || input == 111) break;
+                        input == nextKey1 || input == nextKey2) break;
                 }
                 //다음턴이 카드를 넘긴 경우
-                if (input == 79 || input == 111) {
+                if (input == nextKey1 || input == nextKey2) {
                     pushOk = true;
                     checkPlayerNoneAble(p2, p1, user, p3);
                     continue;
@@ -2076,6 +2115,8 @@ void StartGameMulti()
         }
         //4번 차례
         if (turn % 4 == 3) {
+            //다음 턴으로 넘어가는 키 지정
+            int nextKey1 = 81, nextKey2 = 113;
             printPlayersCardInfo(user, p1, p2, p3);
             if (!p3.getAvailable()) {
                 continue;
@@ -2106,6 +2147,17 @@ void StartGameMulti()
                 gotoxy(longInfoX + 13, longInfoY - 2);
                 cout << "[ " << user.getPlayerNum() << "번 PLAYER ]";
 
+                //다음 턴 선수의 키값 구하기 (탈락자 때문)
+                if (!user.getAvailable()) {
+                    nextKey1 = 88, nextKey2 = 120;
+                    if (!p1.getAvailable()) {
+                        nextKey1 = 78, nextKey2 = 110;
+                        if (!p2.getAvailable()) {
+                            nextKey1 = 79, nextKey2 = 111;
+                        }
+                    }
+                }
+
                 //종치거나 다음 차례가 카드넘김
                 while (true) {
                     input = _getch();
@@ -2113,10 +2165,10 @@ void StartGameMulti()
                         input == 67 || input == 99 ||
                         input == 77 || input == 109 ||
                         input == 80 || input == 112 ||
-                        input == 81 || input == 113) break;
+                        input == nextKey1 || input == nextKey2) break;
                 }
                 //다음턴이 카드를 넘긴 경우
-                if (input == 81 || input == 113) {
+                if (input == nextKey1 || input == nextKey2) {
                     pushOk = true;
                     checkPlayerNoneAble(p3, p1, p2, user);
                     continue;
