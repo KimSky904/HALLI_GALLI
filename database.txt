@@ -18,3 +18,4 @@ hdhd 100
 ÇÏ´Ã±è 100
 dasd 0
 kjsda 0
+qweasd 0

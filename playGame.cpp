@@ -2389,8 +2389,8 @@ void StartGameAlone() {
     random_device rd;
     //난수 생성 엔진 초기화
     mt19937 gen(rd());
-    //0.5초 ~ 0.9초 균등한 난수 정의
-    uniform_int_distribution<int> sec(500,900);
+    //0.8초 ~ 1.3초 균등한 난수 정의
+    uniform_int_distribution<int> sec(800,1300);
     //com1 ~ com3 균등 난수
     uniform_int_distribution<int> com(1, 3);
     //반복
@@ -2424,13 +2424,14 @@ void StartGameAlone() {
 
                 //카드 뒤집기
                 if (user.open() == -1) continue;
+                PlaySound(TEXT("openCard.wav"), 0, SND_FILENAME | SND_ASYNC);
                 gotoxy(10, 14);
                 frontCardPrint(user.getFrontTopCard(), user);
 
                 //5개인지 확인
                 if (checkFiveCard(user, com1, com2, com3)) {
                     //로봇중에서 랜덤으로 종침
-                    //기다리는 시간
+                    //랜덤 기다리는 시간
                     int msec = sec(gen);
                     //사용자 종침 여부
                     boolean userRinging = false;
@@ -2513,114 +2514,50 @@ void StartGameAlone() {
                 }
                 //5개가 아니었을 때 종쳤을 경우
                 else {
-                    //점수 계산
-                    user.minusScore();
-                    //화난 표정
-                    makeAllFaceDefault(com1);
-                    makeAllFaceDefault(com2);
-                    makeAllFaceDefault(com3);
-                    makeFaceAngry(user);
-                    PlaySound(TEXT("missingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
-                    //카드 한장씩 나누어줌
-                    missRinging(user, com1, com2, com3);
-                    printPlayersCardInfo(user, com1, com2, com3);
+                    //사용자 종침 여부
+                    boolean userRinging = false;
+                    clock_t start = clock();
+                    //사용자가 1초안에 종을 쳤을 경우
+                    while (true) {
+                        clock_t end = clock();
+                        double time = end - start;
+                        if (time >= 1200) { //1.2초 기다려줌
+                            userRinging = false;
+                            break;
+                        }
+                        int userRingingKey = _kbhit();
+                        if (userRingingKey == 13) { //1.2초안에 종치면 true
+                            userRinging = true;
+                        }
+                        else { //1.2초 안에 예외키 누르거나 안누르면 false
+                            userRinging = false;
+                        }
+                        //체크
+                        gotoxy(0, 2);
+                        cout << time;
+                        Sleep(100);
+                        gotoxy(0, 2);
+                        cout << "                ";
+                    }
+                    if (userRinging) {
+                        //점수 계산
+                        user.minusScore();
+                        //화난 표정
+                        makeAllFaceDefault(com1);
+                        makeAllFaceDefault(com2);
+                        makeAllFaceDefault(com3);
+                        makeFaceAngry(user);
+                        PlaySound(TEXT("missingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
+                        //카드 한장씩 나누어줌
+                        missRinging(user, com1, com2, com3);
+                        printPlayersCardInfo(user, com1, com2, com3);
+                    }
                 }
             }
             if (user.getBackCount() == 0 || !user.getAvailable()) {
                 checkUserAvailable(user, com1, com2, com3);
                 break;
             }
-            //if (user.getBackCount() == 0) {
-            //    //화난 표정
-            //    makeAllFaceDefault(com1);
-            //    makeAllFaceDefault(com2);
-            //    makeAllFaceDefault(com3);
-            //    makeFaceAngry(user);
-            //    user.setNoneAvailable();
-            //    printPlayersCardInfo(user, com1, com2, com3);
-            //    gotoxy(longInfoX + 10, longInfoY);
-            //    cout << user.getPlayerNum() << "번 사용자가 탈락되었습니다.";
-            //    Sleep(2000);
-            //    gotoxy(longInfoX + 10, longInfoY);
-            //    cout << "                              ";
-
-            //    //점수
-            //    int score = 0;
-            //    int x = 20;
-            //    int y = 17;
-            //    gotoxy(x, y);
-            //    cout << "┌─────────────────────────────────────────┐";
-            //    gotoxy(x, y + 1);
-            //    cout << "│                                         │";
-            //    gotoxy(x, y + 2);
-            //    cout << "│                GAME OVER                │";
-            //    gotoxy(x, y + 3);
-            //    cout << "│                                         │";
-            //    gotoxy(x, y + 4);
-            //    cout << "│               score  :                  │";
-            //    gotoxy(x + 5, y + 4);
-            //    cout << score;
-            //    gotoxy(x, y + 5);
-            //    cout << "│                                         │";
-            //    gotoxy(x, y + 6);
-            //    cout << "│   랭킹을 작성하시겠습니까?  [ Y / N ]   │";
-            //    gotoxy(x, y + 7);
-            //    cout << "│                                         │";
-            //    gotoxy(x, y + 8);
-            //    cout << "└─────────────────────────────────────────┘";
-
-            //    //Y 또는 N 선택
-            //    while (true) {
-            //        if (_getch() == 89 || _getch() == 121) {
-            //            string userName = "";
-            //            gotoxy(x, y + 4);
-            //            cout << "│                                         │";
-            //            gotoxy(x, y + 5);
-            //            cout << "│    닉네임 입력 :                        │";
-            //            gotoxy(x, y + 6);
-            //            cout << "│                                         │";
-            //            gotoxy(x + 12, y + 5);
-            //            cin >> userName;
-            //            gotoxy(0, 0);
-            //            cout << userName << endl;
-
-            //            //사용자 이름, 점수 파일에 저장
-            //            ofstream out("database.txt", ios::app);
-            //            //임시 점수
-            //            out << userName << " " << score << "\n";
-            //            out.close();
-
-            //            //랭킹 화면 draw
-            //            DrawRankingScreen();
-            //            break;
-            //        }
-            //        else if (_getch() == 78 || _getch() == 110) {
-            //            gotoxy(x, y);
-            //            cout << "┌─────────────────────────────────────────┐";
-            //            gotoxy(x, y + 1);
-            //            cout << "│                                         │";
-            //            gotoxy(x, y + 2);
-            //            cout << "│                GAME OVER                │";
-            //            gotoxy(x, y + 3);
-            //            cout << "│                                         │";
-            //            gotoxy(x, y + 4);
-            //            cout << "│     잠시후 메인화면으로 이동합니다.     │";
-            //            gotoxy(x, y + 5);
-            //            cout << "│                                         │";
-            //            gotoxy(x, y + 6);
-            //            cout << "│                                         │";
-            //            gotoxy(x, y + 7);
-            //            cout << "│                                         │";
-            //            gotoxy(x, y + 8);
-            //            cout << "└─────────────────────────────────────────┘";
-            //            Sleep(2000);
-            //            //메인으로 이동
-            //            main();
-            //            break;
-            //        }
-            //    }
-            //    break;
-            //}
         }
         else if (turn % 4 == 1) {
             printPlayersCardInfo(user, com1, com2, com3);
@@ -2638,11 +2575,12 @@ void StartGameAlone() {
                 clock_t start = clock();
                 while (true) {
                     clock_t end = clock();
-                    if ((double)(end - start) >= 400) break;
+                    if ((double)(end - start) >= 200) break;
                 }
 
                 //카드 뒤집기
                 if (com1.open() == -1) continue;
+                PlaySound(TEXT("openCard.wav"), 0, SND_FILENAME | SND_ASYNC);
                 gotoxy(20, 14);
                 frontCardPrint(com1.getFrontTopCard(), com1);
                 
@@ -2732,17 +2670,38 @@ void StartGameAlone() {
                 }
                 //5개가 아니었을 때 종쳤을 경우
                 else {
-                    //점수 계산
-                    user.minusScore();
-                    //화난 표정
-                    makeAllFaceDefault(com1);
-                    makeAllFaceDefault(com2);
-                    makeAllFaceDefault(com3);
-                    makeFaceAngry(user);
-                    PlaySound(TEXT("missingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
-                    //카드 한장씩 나누어줌
-                    missRinging(user, com1, com2, com3);
-                    printPlayersCardInfo(user, com1, com2, com3);
+                    //사용자 종침 여부
+                    boolean userRinging = false;
+                    clock_t start = clock();
+                    //사용자가 1초안에 종을 쳤을 경우
+                    while (true) {
+                        clock_t end = clock();
+                        double time = end - start;
+                        if (time >= 1200) { //1.2초 기다려줌
+                            userRinging = false;
+                            break;
+                        }
+                        int userRingingKey = _kbhit();
+                        if (userRingingKey == 13) { //1.2초안에 종치면 true
+                            userRinging = true;
+                        }
+                        else { //1.2초 안에 예외키 누르거나 안누르면 false
+                            userRinging = false;
+                        }
+                    }
+                    if (userRinging) {
+                        //점수 계산
+                        user.minusScore();
+                        //화난 표정
+                        makeAllFaceDefault(com1);
+                        makeAllFaceDefault(com2);
+                        makeAllFaceDefault(com3);
+                        makeFaceAngry(user);
+                        PlaySound(TEXT("missingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
+                        //카드 한장씩 나누어줌
+                        missRinging(user, com1, com2, com3);
+                        printPlayersCardInfo(user, com1, com2, com3);
+                    }
                 }
             }
             if (com1.getBackCount() == 0) {
@@ -2780,11 +2739,12 @@ void StartGameAlone() {
                 clock_t start = clock();
                 while (true) {
                     clock_t end = clock();
-                    if ((double)(end - start) >= 400) break;
+                    if ((double)(end - start) >= 200) break;
                 }
 
                 //카드 뒤집기
                 if (com2.open() == -1) continue;
+                PlaySound(TEXT("openCard.wav"), 0, SND_FILENAME | SND_ASYNC);
                 gotoxy(30, 14);
                 frontCardPrint(com2.getFrontTopCard(), com2);
 
@@ -2874,17 +2834,44 @@ void StartGameAlone() {
                 }
                 //5개가 아니었을 때 종쳤을 경우
                 else {
-                    //점수 계산
-                    user.minusScore();
-                    //화난 표정
-                    makeAllFaceDefault(com1);
-                    makeAllFaceDefault(com2);
-                    makeAllFaceDefault(com3);
-                    makeFaceAngry(user);
-                    PlaySound(TEXT("missingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
-                    //카드 한장씩 나누어줌
-                    missRinging(user, com1, com2, com3);
-                    printPlayersCardInfo(user, com1, com2, com3);
+                    //사용자 종침 여부
+                    boolean userRinging = false;
+                    clock_t start = clock();
+                    //사용자가 1초안에 종을 쳤을 경우
+                    while (true) {
+                        clock_t end = clock();
+                        double time = end - start;
+                        if (time >= 1200) { //1.2초 기다려줌
+                            userRinging = false;
+                            break;
+                        }
+                        int userRingingKey = _kbhit();
+                        if (userRingingKey == 13) { //1.2초안에 종치면 true
+                            userRinging = true;
+                        }
+                        else { //1.2초 안에 예외키 누르거나 안누르면 false
+                            userRinging = false;
+                        }
+                        //체크
+                        gotoxy(0, 2);
+                        cout << time;
+                        Sleep(100);
+                        gotoxy(0, 2);
+                        cout << "                ";
+                    }
+                    if (userRinging) {
+                        //점수 계산
+                        user.minusScore();
+                        //화난 표정
+                        makeAllFaceDefault(com1);
+                        makeAllFaceDefault(com2);
+                        makeAllFaceDefault(com3);
+                        makeFaceAngry(user);
+                        PlaySound(TEXT("missingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
+                        //카드 한장씩 나누어줌
+                        missRinging(user, com1, com2, com3);
+                        printPlayersCardInfo(user, com1, com2, com3);
+                    }
                 }
             }
             if (com2.getBackCount() == 0) {
@@ -2918,15 +2905,16 @@ void StartGameAlone() {
                 gotoxy(longInfoX + 13, longInfoY - 2);
                 cout << "[ " << com3.getPlayerNum() << "번 PLAYER ]";
 
-                //모든 로봇은 1.5초간격으로 카드를 낸다.
+                //모든 로봇은 0.2+2초간격으로 카드를 낸다.
                 clock_t start = clock();
                 while (true) {
                     clock_t end = clock();
-                    if ((double)(end - start) >= 400) break;
+                    if ((double)(end - start) >= 200) break;
                 }
 
                 //카드 뒤집기
                 if (com3.open() == -1) continue;
+                PlaySound(TEXT("openCard.wav"), 0, SND_FILENAME | SND_ASYNC);
                 gotoxy(40, 14);
                 frontCardPrint(com3.getFrontTopCard(), com3);
 
@@ -3016,17 +3004,44 @@ void StartGameAlone() {
                 }
                 //5개가 아니었을 때 종쳤을 경우
                 else {
-                    //점수 계산
-                    user.minusScore();
-                    //화난 표정
-                    makeAllFaceDefault(com1);
-                    makeAllFaceDefault(com2);
-                    makeAllFaceDefault(com3);
-                    makeFaceAngry(user);
-                    PlaySound(TEXT("missingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
-                    //카드 한장씩 나누어줌
-                    missRinging(user, com1, com2, com3);
-                    printPlayersCardInfo(user, com1, com2, com3);
+                    //사용자 종침 여부
+                    boolean userRinging = false;
+                    clock_t start = clock();
+                    //사용자가 1초안에 종을 쳤을 경우
+                    while (true) {
+                        clock_t end = clock();
+                        double time = end - start;
+                        if (time >= 1200) { //1.2초 기다려줌
+                            userRinging = false;
+                            break;
+                        }
+                        int userRingingKey = _kbhit();
+                        if (userRingingKey == 13) { //1.2초안에 종치면 true
+                            userRinging = true;
+                        }
+                        else { //1.2초 안에 예외키 누르거나 안누르면 false
+                            userRinging = false;
+                        }
+                        //체크
+                        gotoxy(0, 2);
+                        cout << time;
+                        Sleep(100);
+                        gotoxy(0, 2);
+                        cout << "                ";
+                    }
+                    if (userRinging) {
+                        //점수 계산
+                        user.minusScore();
+                        //화난 표정
+                        makeAllFaceDefault(com1);
+                        makeAllFaceDefault(com2);
+                        makeAllFaceDefault(com3);
+                        makeFaceAngry(user);
+                        PlaySound(TEXT("missingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
+                        //카드 한장씩 나누어줌
+                        missRinging(user, com1, com2, com3);
+                        printPlayersCardInfo(user, com1, com2, com3);
+                    }
                 }
             }
             if (com3.getBackCount() == 0) {
