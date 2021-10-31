@@ -1001,7 +1001,7 @@ void DrawChoosePlaying() {
     gotoxy(x, y + 1);
     cout << "│                                               │";
     gotoxy(x, y + 2);
-    cout << "│               게임 진행 방식 선택             │";
+    cout << "│               게임 진행 방식 설정             │";
     gotoxy(x, y + 3);
     cout << "│                                               │";
     gotoxy(x, y + 4);
