@@ -32,8 +32,5 @@
     <Text Include="database.txt">
       <Filter>소스 파일</Filter>
     </Text>
-    <Text Include="database_solo.txt">
-      <Filter>소스 파일</Filter>
-    </Text>
   </ItemGroup>
 </Project>

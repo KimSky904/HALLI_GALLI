@@ -31,6 +31,9 @@ using namespace std;
 //설명 좌표
 #define longInfoX 8
 #define longInfoY 7
+//턴 횟수 (전역변수)
+int turnCount = 0;
+
 
 //콘솔 세팅
 void SetConsoleView()
@@ -101,10 +104,48 @@ class Player {
     bool available;
     //점수
     int score;
+    //플레이어 이름
+    string name;
+    //카드 획득 횟수
+    int count;
+    //게임시작 시간
+    clock_t startGame;
+    //게임끝 시간
+    clock_t endGame;
 public:
+    //생성자
+    Player(int num) {
+        playerNum = num;
+        available = true;
+        score = 0;
+        count = 0;
+        startGame = clock();
+    }
+    //테스트용
+    void setCount() {
+        count = 10;
+    }
+    //이름 지정
+    void setName(string name) {
+        this->name = name;
+    }
+    //이름 반환
+    string getName() {
+        return name;
+    }
+    //카드획득횟수 반환
+    int getCount() {
+        return count;
+    }
+    //게임 소요시간 반환
+    int getTime() {
+        endGame = clock();
+        return (int)(endGame - startGame);
+    }
     //점수 획득
     void plusScore() {
         score += 20;
+        count++;
     }
     //점수 깎임
     void minusScore() {
@@ -150,12 +191,6 @@ public:
     }
     int getPlayerNum() {
         return playerNum;
-    }
-    //초반 카드 수 지정
-    Player(int num) {
-        playerNum = num;
-        available = true;
-        score = 0;
     }
     //뒤집은 카드스택의 가장 위 카드 반환
     Card getFrontTopCard() {
@@ -247,7 +282,7 @@ void DrawStartGame();
 //설명 화면 draw
 void DrawInfoScreen();
 //엔딩 화면 draw
-void DrawRankingScreen();
+void DrawRankingScreen(Player& user);
 
 
 //[사용자 상태 변경 메서드]
@@ -740,7 +775,7 @@ void DrawStartGame()
 
 }
 //엔딩화면 draw
-void DrawRankingScreen() {
+void DrawRankingScreen(Player& user) {
     //135 45
     HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
     system("cls");
@@ -833,7 +868,6 @@ void DrawRankingScreen() {
     gotoxy(x, y + 2);
     cout << "└──────────────────────────────┘ ";
 
-
     //사용자 score 등등
     x = 32;
     y = 8;
@@ -841,27 +875,27 @@ void DrawRankingScreen() {
     cout << "┌───────────── [  INFO  ]────────────┐ ";
     gotoxy(x, y + 1);
     cout << "│                                    │";
-    gotoxy(x, y + 2);
-    cout << "│                                    │";
+    gotoxy(x , y + 2);
+    printf("│     획득한 score    :      %4d    │", user.getScore());
     gotoxy(x, y + 3);
     cout << "│                                    │";
     gotoxy(x, y + 4);
-    cout << "│                                    │";
+    printf("│     카드 획득 횟수  :      %4d    │", user.getCount());
     gotoxy(x, y + 5);
     cout << "│                                    │";
     gotoxy(x, y + 6);
-    cout << "│                                    │";
+    printf("│     종친 횟수       :      %4d    │", turnCount);
     gotoxy(x, y + 7);
     cout << "│                                    │";
     gotoxy(x, y + 8);
-    cout << "│                                    │";
+    printf("│     플레이 시간     :     %4d초   │", user.getTime()/1000);
     gotoxy(x, y + 9);
     cout << "│                                    │";
     gotoxy(x, y + 10);
     cout << "└────────────────────────────────────┘ ";
 
     gotoxy(x, y + 12);
-    cout << "┌──────── [  DEVELOPE  INFO  ]───────┐ ";
+    cout << "┌──────── [  DEVELOPER INFO  ]───────┐ ";
     gotoxy(x, y + 13);
     cout << "│                                    │";
     gotoxy(x, y + 14);
@@ -1242,96 +1276,100 @@ void DrawChoosePlaying() {
 
 }
 
-//1 vs com에서 사용자 탈락시
+//1 vs com 게임 종료    
 void checkUserAvailable(Player& user,Player& com1, Player& com2,Player& com3) {
-    if (user.getBackCount() == 0) {
-        //화난 표정
-        makeAllFaceDefault(com1);
-        makeAllFaceDefault(com2);
-        makeAllFaceDefault(com3);
-        makeFaceAngry(user);
-        user.setNoneAvailable();
-        printPlayersCardInfo(user, com1, com2, com3);
+    //사용자가 탈락했을 경우
+    if (!user.getAvailable()) {
         gotoxy(longInfoX + 10, longInfoY);
         cout << user.getPlayerNum() << "번 사용자가 탈락되었습니다.";
         Sleep(2000);
         gotoxy(longInfoX + 10, longInfoY);
         cout << "                              ";
+    }
+    //화난 표정
+    makeAllFaceDefault(com1);
+    makeAllFaceDefault(com2);
+    makeAllFaceDefault(com3);
+    makeFaceAngry(user);
+    user.setNoneAvailable();
+    printPlayersCardInfo(user, com1, com2, com3);
 
-        //점수
-        int score = 0;
-        int x = 20;
-        int y = 17;
-        gotoxy(x, y);
-        cout << "┌─────────────────────────────────────────┐";
-        gotoxy(x, y + 1);
-        cout << "│                                         │";
-        gotoxy(x, y + 2);
-        cout << "│                GAME OVER                │";
-        gotoxy(x, y + 3);
-        cout << "│                                         │";
-        gotoxy(x, y + 4);
-        cout << "│               score  :                  │";
-        gotoxy(x + 15, y + 4);
-        cout << score;
-        gotoxy(x, y + 5);
-        cout << "│                                         │";
-        gotoxy(x, y + 6);
-        cout << "│   랭킹을 작성하시겠습니까?  [ Y / N ]   │";
-        gotoxy(x, y + 7);
-        cout << "│                                         │";
-        gotoxy(x, y + 8);
-        cout << "└─────────────────────────────────────────┘";
 
-        //Y 또는 N 선택
-        while (true) {
-            if (_getch() == 89 || _getch() == 121) {
-                string userName = "";
-                gotoxy(x, y + 4);
-                cout << "│                                         │";
-                gotoxy(x, y + 5);
-                cout << "│    닉네임 입력 :                        │";
-                gotoxy(x, y + 6);
-                cout << "│                                         │";
-                gotoxy(x + 12, y + 5);
-                cin >> userName;
-                gotoxy(0, 0);
-                cout << userName << endl;
+    //점수
+    int score = user.getScore();
+    int x = 20;
+    int y = 17;
+    gotoxy(x, y);
+    cout << "┌─────────────────────────────────────────┐";
+    gotoxy(x, y + 1);
+    cout << "│                                         │";
+    gotoxy(x, y + 2);
+    cout << "│                GAME OVER                │";
+    gotoxy(x, y + 3);
+    cout << "│                                         │";
+    gotoxy(x, y + 4);
+    cout << "│               score  :                  │";
+    gotoxy(x + 15, y + 4);
+    cout << score;
+    gotoxy(x, y + 5);
+    cout << "│                                         │";
+    gotoxy(x, y + 6);
+    cout << "│   랭킹을 작성하시겠습니까?  [ Y / N ]   │";
+    gotoxy(x, y + 7);
+    cout << "│                                         │";
+    gotoxy(x, y + 8);
+    cout << "└─────────────────────────────────────────┘";
 
-                //사용자 이름, 점수 파일에 저장
-                ofstream out("database.txt", ios::app);
-                //임시 점수
-                out << userName << " " << score << "\n";
-                out.close();
+    //Y 또는 N 선택
+    while (true) {
+        if (_getch() == 89 || _getch() == 121) {
+            string userName = "";
+            gotoxy(x, y + 4);
+            cout << "│                                         │";
+            gotoxy(x, y + 5);
+            cout << "│    닉네임 입력 :                        │";
+            gotoxy(x, y + 6);
+            cout << "│                                         │";
+            gotoxy(x + 12, y + 5);
+            cin >> userName;
+            gotoxy(0, 0);
+            cout << userName << endl;
 
-                //랭킹 화면 draw
-                DrawRankingScreen();
-                break;
-            }
-            else if (_getch() == 78 || _getch() == 110) {
-                gotoxy(x, y);
-                cout << "┌─────────────────────────────────────────┐";
-                gotoxy(x, y + 1);
-                cout << "│                                         │";
-                gotoxy(x, y + 2);
-                cout << "│                GAME OVER                │";
-                gotoxy(x, y + 3);
-                cout << "│                                         │";
-                gotoxy(x, y + 4);
-                cout << "│     잠시후 메인화면으로 이동합니다.     │";
-                gotoxy(x, y + 5);
-                cout << "│                                         │";
-                gotoxy(x, y + 6);
-                cout << "│                                         │";
-                gotoxy(x, y + 7);
-                cout << "│                                         │";
-                gotoxy(x, y + 8);
-                cout << "└─────────────────────────────────────────┘";
-                Sleep(2000);
-                //메인으로 이동
-                main();
-                break;
-            }
+            //사용자 이름 객체에 저장
+            user.setName(userName);
+            //사용자 이름, 점수 파일에 저장
+            ofstream out("database.txt", ios::app);
+            //점수 저장
+            out << userName << " " << score << "\n";
+            out.close();
+
+            //랭킹 화면 draw
+            DrawRankingScreen(user);
+            break;
+        }
+        else if (_getch() == 78 || _getch() == 110) {
+            gotoxy(x, y);
+            cout << "┌─────────────────────────────────────────┐";
+            gotoxy(x, y + 1);
+            cout << "│                                         │";
+            gotoxy(x, y + 2);
+            cout << "│                GAME OVER                │";
+            gotoxy(x, y + 3);
+            cout << "│                                         │";
+            gotoxy(x, y + 4);
+            cout << "│     잠시후 메인화면으로 이동합니다.     │";
+            gotoxy(x, y + 5);
+            cout << "│                                         │";
+            gotoxy(x, y + 6);
+            cout << "│                                         │";
+            gotoxy(x, y + 7);
+            cout << "│                                         │";
+            gotoxy(x, y + 8);
+            cout << "└─────────────────────────────────────────┘";
+            Sleep(2000);
+            //메인으로 이동
+            main();
+            break;
         }
     }
 }
@@ -2304,38 +2342,38 @@ void StartGameMulti()
                     //4번이 종친 경우
                     else if (input == 80 || input == 112) { //p3가 종 친 경우
                         if (p3.getAvailable()) {
-                            PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
-                            //과일 5개일때 쳤을 경우
-                            if (checkFiveCard(user, p1, p2, p3)) {
-                                //점수 계산
-                                p3.plusScore();
-                                //(나)웃는 표정
-                                makeAllFaceDefault(p1);
-                                makeAllFaceDefault(p2);
-                                makeAllFaceDefault(user);
-                                makeFaceSmile(p3);
-                                //테이블 위의 카드 모두 가져감
-                                getAllFrontCard(p3, p1, p2, user);
-                                printPlayersCardInfo(user, p1, p2, p3);
-                            }
-                            //잘못 쳤을 경우
-                            else {
-                                //점수 계산
-                                p3.minusScore();
-                                //화난 표정, 나머지 기본 표정
-                                makeAllFaceDefault(p1);
-                                makeAllFaceDefault(p2);
-                                makeAllFaceDefault(user);
-                                makeFaceAngry(p3);
-                                PlaySound(TEXT("missingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
-                                missRinging(p3, p1, p2, user);
-                                printPlayersCardInfo(user, p1, p2, p3);
-                            }
+PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
+//과일 5개일때 쳤을 경우
+if (checkFiveCard(user, p1, p2, p3)) {
+    //점수 계산
+    p3.plusScore();
+    //(나)웃는 표정
+    makeAllFaceDefault(p1);
+    makeAllFaceDefault(p2);
+    makeAllFaceDefault(user);
+    makeFaceSmile(p3);
+    //테이블 위의 카드 모두 가져감
+    getAllFrontCard(p3, p1, p2, user);
+    printPlayersCardInfo(user, p1, p2, p3);
+}
+//잘못 쳤을 경우
+else {
+    //점수 계산
+    p3.minusScore();
+    //화난 표정, 나머지 기본 표정
+    makeAllFaceDefault(p1);
+    makeAllFaceDefault(p2);
+    makeAllFaceDefault(user);
+    makeFaceAngry(p3);
+    PlaySound(TEXT("missingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
+    missRinging(p3, p1, p2, user);
+    printPlayersCardInfo(user, p1, p2, p3);
+}
                         }
                     }
                 }
 
-                
+
                 //4번 탈락 처리
                 if (p3.getBackCount() == 0) {
                     //(나)화난 표정
@@ -2379,7 +2417,7 @@ void StartGameAlone() {
         gotoxy(15, 35);
         cout << "│                                     │";
         gotoxy(15, 36);
-        cout << "│        나가기    ▷  E key          │";
+        cout << "│         나가기   ▷  E key          │";
         gotoxy(15, 37);
         cout << "│                                     │";
         gotoxy(15, 38);
@@ -2394,9 +2432,12 @@ void StartGameAlone() {
     //난수 생성 엔진 초기화
     mt19937 gen(rd());
     //0.5초 ~ 1.2초 균등한 난수 정의 (난이도 역할)
-    uniform_int_distribution<int> sec(500,1200);
+    uniform_int_distribution<int> sec(500, 1200);
     //com1 ~ com3 균등 난수
     uniform_int_distribution<int> com(1, 3);
+
+    user.setNoneAvailable();
+    
     //반복
     int input = 0;
     int turn = -1;
@@ -2404,7 +2445,12 @@ void StartGameAlone() {
         turn++;
         if (turn % 4 == 0) {
             printPlayersCardInfo(user, com1, com2, com3);
+            if ((int)com1.getAvailable() + (int)com2.getAvailable() + (int)com3.getAvailable() == 0){
+                checkUserAvailable(user, com1, com2, com3);
+                break;
+            }
             if (!user.getAvailable()) {
+                checkUserAvailable(user, com1, com2, com3);
                 break;
             }
             else {
@@ -2428,6 +2474,7 @@ void StartGameAlone() {
 
                 //5개인지 확인
                 if (checkFiveCard(user, com1, com2, com3)) {
+                    turnCount++;
                     //로봇중에서 랜덤으로 종침
                     //랜덤 기다리는 시간
                     int msec = sec(gen);
@@ -2465,7 +2512,23 @@ void StartGameAlone() {
                     //로봇이 빠른경우
                     else {
                         PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
-                        switch (com(gen)) {
+                        int randomRobot = com(gen);
+                        //남은 로봇 1대일 경우
+                        if (com1.getAvailable() + com2.getAvailable() + com3.getAvailable() == 1) {
+                            if (com1.getAvailable()) randomRobot = 1;
+                            else if(com2.getAvailable()) randomRobot = 2;
+                            else randomRobot = 3;
+                        }
+                        //남은 로봇 2대 이상일 경우
+                        else {
+                            //com1이 탈락인 경우
+                            if (randomRobot == 1 && !com1.getAvailable()) randomRobot = 2;
+                            //com2이 탈락인 경우
+                            if (randomRobot == 2 && !com2.getAvailable()) randomRobot = 3;
+                            //com3이 탈락인 경우
+                            if (randomRobot == 3 && !com3.getAvailable()) randomRobot = 1;
+                        }
+                        switch (randomRobot) {
                         case 1:
                             //점수 계산
                             com1.plusScore();
@@ -2545,7 +2608,8 @@ void StartGameAlone() {
                     }
                 }
             }
-            if (user.getBackCount() == 0 || !user.getAvailable()) {
+            //사용자가 탈락하거나 com123이 모두 탈락한 경우
+            if (user.getBackCount() == 0 || !user.getAvailable() || ((int)com1.getAvailable() + (int)com2.getAvailable() + (int)com3.getAvailable() == 0)) {
                 checkUserAvailable(user, com1, com2, com3);
                 break;
             }
@@ -2577,6 +2641,7 @@ void StartGameAlone() {
                 
                 //5개인지 확인
                 if (checkFiveCard(user, com1, com2, com3)) {
+                    turnCount++;
                     //로봇중에서 랜덤으로 종침
                     //기다리는 시간
                     int msec = sec(gen);
@@ -2614,7 +2679,23 @@ void StartGameAlone() {
                     //로봇이 빠른경우
                     else {
                         PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
-                        switch (com(gen)) {
+                        int randomRobot = com(gen);
+                        //남은 로봇 1대일 경우
+                        if (com1.getAvailable() + com2.getAvailable() + com3.getAvailable() == 1) {
+                            if (com1.getAvailable()) randomRobot = 1;
+                            else if (com2.getAvailable()) randomRobot = 2;
+                            else randomRobot = 3;
+                        }
+                        //남은 로봇 2대 이상일 경우
+                        else {
+                            //com1이 탈락인 경우
+                            if (randomRobot == 1 && !com1.getAvailable()) randomRobot = 2;
+                            //com2이 탈락인 경우
+                            if (randomRobot == 2 && !com2.getAvailable()) randomRobot = 3;
+                            //com3이 탈락인 경우
+                            if (randomRobot == 3 && !com3.getAvailable()) randomRobot = 1;
+                        }
+                        switch (randomRobot) {
                         case 1:
                             //점수 계산
                             com1.plusScore();
@@ -2740,6 +2821,7 @@ void StartGameAlone() {
 
                 //5개인지 확인
                 if (checkFiveCard(user, com1, com2, com3)) {
+                    turnCount++;
                     //로봇중에서 랜덤으로 종침
                     //기다리는 시간
                     int msec = sec(gen);
@@ -2777,7 +2859,23 @@ void StartGameAlone() {
                     //로봇이 빠른경우
                     else {
                         PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
-                        switch (com(gen)) {
+                        int randomRobot = com(gen);
+                        //남은 로봇 1대일 경우
+                        if (com1.getAvailable() + com2.getAvailable() + com3.getAvailable() == 1) {
+                            if (com1.getAvailable()) randomRobot = 1;
+                            else if (com2.getAvailable()) randomRobot = 2;
+                            else randomRobot = 3;
+                        }
+                        //남은 로봇 2대 이상일 경우
+                        else {
+                            //com1이 탈락인 경우
+                            if (randomRobot == 1 && !com1.getAvailable()) randomRobot = 2;
+                            //com2이 탈락인 경우
+                            if (randomRobot == 2 && !com2.getAvailable()) randomRobot = 3;
+                            //com3이 탈락인 경우
+                            if (randomRobot == 3 && !com3.getAvailable()) randomRobot = 1;
+                        }
+                        switch (randomRobot) {
                         case 1:
                             //점수 계산
                             com1.plusScore();
@@ -2903,6 +3001,7 @@ void StartGameAlone() {
 
                 //5개인지 확인
                 if (checkFiveCard(user, com1, com2, com3)) {
+                    turnCount++;
                     //로봇중에서 랜덤으로 종침
                     //기다리는 시간
                     int msec = sec(gen);
@@ -2940,7 +3039,23 @@ void StartGameAlone() {
                     //로봇이 빠른경우
                     else {
                         PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
-                        switch (com(gen)) {
+                        int randomRobot = com(gen);
+                        //남은 로봇 1대일 경우
+                        if (com1.getAvailable() + com2.getAvailable() + com3.getAvailable() == 1) {
+                            if (com1.getAvailable()) randomRobot = 1;
+                            else if (com2.getAvailable()) randomRobot = 2;
+                            else randomRobot = 3;
+                        }
+                        //남은 로봇 2대 이상일 경우
+                        else {
+                            //com1이 탈락인 경우
+                            if (randomRobot == 1 && !com1.getAvailable()) randomRobot = 2;
+                            //com2이 탈락인 경우
+                            if (randomRobot == 2 && !com2.getAvailable()) randomRobot = 3;
+                            //com3이 탈락인 경우
+                            if (randomRobot == 3 && !com3.getAvailable()) randomRobot = 1;
+                        }
+                        switch (randomRobot) {
                         case 1:
                             //점수 계산
                             com1.plusScore();
