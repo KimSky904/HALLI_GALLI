@@ -121,10 +121,6 @@ public:
         count = 0;
         startGame = clock();
     }
-    //테스트용
-    void setCount() {
-        count = 10;
-    }
     //이름 지정
     void setName(string name) {
         this->name = name;
@@ -774,92 +770,94 @@ void DrawStartGame()
     cout << "└─────────┘";
 
 }
+
 //엔딩화면 draw
 void DrawRankingScreen(Player& user) {
     //135 45
     HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
     system("cls");
 
+    //파일 줄 수 세기
+    int line = 0;
+    char c;
+    FILE* lineFp = fopen("database.txt", "r");
+    while ((c = fgetc(lineFp)) != EOF)
+        if (c == '\n') line++;
+    fclose(lineFp);
+
     //구조체
     struct players {
         char name[20];
         int score;
         int rank;
-    } pl[10];
-    FILE* fp1;
-   
+    };
+    //라인 수 만큼 동적할당
+    players* pl = new players[line];
+
+    FILE* fp;
     //파일에서 읽어옴
     while (true) {
-        fopen_s(&fp1, "database.txt", "r");
-        if (fp1 == NULL) {
+        fopen_s(&fp, "database.txt", "r");
+        if (fp == NULL) {
             gotoxy(0, 0);
             cout << "파일이 존재하지 않습니다." << endl;
         }
         else break;
     }
     
-    for (int i = 0; i < 10; i++) { 
-        fscanf_s(fp1, "%s", pl[i].name, 20);
-        fscanf_s(fp1, "%d", &(pl[i].score));
+    for (int i = 0; i < line; i++) { 
+        fscanf_s(fp, "%s", pl[i].name, 20);
+        fscanf_s(fp, "%d", &(pl[i].score));
     }
-    fclose(fp1);
+    fclose(fp);
 
 
     //순위 저장
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < line; i++) {
         pl[i].rank = 1;
-        for (int j = 0; j < 10; j++) {
+        for (int j = 0; j < line; j++) {
             if (pl[i].score < pl[j].score) pl[i].rank++;
         }
     }
-
-    //fopen_s(&fp2, "database.txt", "w");
     int x = 14;
     int y = 8;
     gotoxy(x, y);
     cout << "┌──────── [  RANKING  ]────────┐ ";
     for (int i = 1; i <= 10; i++) {
-        for (int j = 0; j < 10; j++) {
+        for (int j = 0; j < line; j++) {
             if (pl[j].rank == i) {
                 gotoxy(x, ++y);
                 cout << "│                              │";
                 gotoxy(x, ++y);
-                if (pl[j].score == 0) {
+                switch (i) {
+                case 1:
                     PrintString(hStdOut, WHITE);
-                    printf("│               -              │");
+                    cout << "│  ";
+                    PrintString(hStdOut, YELLOW);
+                    printf("%2d    %12s    %4d", pl[j].rank, pl[j].name, pl[j].score);
+                    PrintString(hStdOut, WHITE);
+                    cout << "  │";
+                    break;
+                case 2:
+                    PrintString(hStdOut, WHITE);
+                    cout << "│  ";
+                    PrintString(hStdOut, 7);
+                    printf("%2d    %12s    %4d", pl[j].rank, pl[j].name, pl[j].score);
+                    PrintString(hStdOut, WHITE);
+                    cout << "  │";
+                    break;
+                case 3:
+                    PrintString(hStdOut, WHITE);
+                    cout << "│  ";
+                    PrintString(hStdOut, 6);
+                    printf("%2d    %12s    %4d", pl[j].rank, pl[j].name, pl[j].score);
+                    PrintString(hStdOut, WHITE);
+                    cout << "  │";
+                    break;
+                default:
+                    PrintString(hStdOut, WHITE);
+                    printf("│  %2d    %12s    %4d  │", pl[j].rank, pl[j].name, pl[j].score);
                 }
-                else {
-                    switch (i) {
-                    case 1:
-                        PrintString(hStdOut, WHITE);
-                        cout << "│  ";
-                        PrintString(hStdOut, YELLOW);
-                        printf("%2d     %10s    %4d", pl[j].rank, pl[j].name, pl[j].score);
-                        PrintString(hStdOut, WHITE);
-                        cout << "   │";
-                        break;
-                    case 2:
-                        PrintString(hStdOut, WHITE);
-                        cout << "│  ";
-                        PrintString(hStdOut, 7);
-                        printf("%2d     %10s    %4d", pl[j].rank, pl[j].name, pl[j].score);
-                        PrintString(hStdOut, WHITE);
-                        cout << "   │";
-                        break;
-                    case 3:
-                        PrintString(hStdOut, WHITE);
-                        cout << "│  ";
-                        PrintString(hStdOut, 6);
-                        printf("%2d     %10s    %4d", pl[j].rank, pl[j].name, pl[j].score);
-                        PrintString(hStdOut, WHITE);
-                        cout << "   │";
-                        break;
-                    default:
-                        PrintString(hStdOut, WHITE);
-                        printf("│  %2d     %10s    %4d   │", pl[j].rank, pl[j].name, pl[j].score);
-                    }
-                }
-                
             }
         }
     }
@@ -1342,7 +1340,7 @@ void checkUserAvailable(Player& user,Player& com1, Player& com2,Player& com3) {
             //점수 저장
             out << userName << " " << score << "\n";
             out.close();
-
+            
             //랭킹 화면 draw
             DrawRankingScreen(user);
             break;
@@ -2342,33 +2340,33 @@ void StartGameMulti()
                     //4번이 종친 경우
                     else if (input == 80 || input == 112) { //p3가 종 친 경우
                         if (p3.getAvailable()) {
-PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
-//과일 5개일때 쳤을 경우
-if (checkFiveCard(user, p1, p2, p3)) {
-    //점수 계산
-    p3.plusScore();
-    //(나)웃는 표정
-    makeAllFaceDefault(p1);
-    makeAllFaceDefault(p2);
-    makeAllFaceDefault(user);
-    makeFaceSmile(p3);
-    //테이블 위의 카드 모두 가져감
-    getAllFrontCard(p3, p1, p2, user);
-    printPlayersCardInfo(user, p1, p2, p3);
-}
-//잘못 쳤을 경우
-else {
-    //점수 계산
-    p3.minusScore();
-    //화난 표정, 나머지 기본 표정
-    makeAllFaceDefault(p1);
-    makeAllFaceDefault(p2);
-    makeAllFaceDefault(user);
-    makeFaceAngry(p3);
-    PlaySound(TEXT("missingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
-    missRinging(p3, p1, p2, user);
-    printPlayersCardInfo(user, p1, p2, p3);
-}
+                            PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
+                            //과일 5개일때 쳤을 경우
+                            if (checkFiveCard(user, p1, p2, p3)) {
+                                //점수 계산
+                                p3.plusScore();
+                                //(나)웃는 표정
+                                makeAllFaceDefault(p1);
+                                makeAllFaceDefault(p2);
+                                makeAllFaceDefault(user);
+                                makeFaceSmile(p3);
+                                //테이블 위의 카드 모두 가져감
+                                getAllFrontCard(p3, p1, p2, user);
+                                printPlayersCardInfo(user, p1, p2, p3);
+                            }
+                            //잘못 쳤을 경우
+                            else {
+                                //점수 계산
+                                p3.minusScore();
+                                //화난 표정, 나머지 기본 표정
+                                makeAllFaceDefault(p1);
+                                makeAllFaceDefault(p2);
+                                makeAllFaceDefault(user);
+                                makeFaceAngry(p3);
+                                PlaySound(TEXT("missingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
+                                missRinging(p3, p1, p2, user);
+                                printPlayersCardInfo(user, p1, p2, p3);
+                            }
                         }
                     }
                 }
@@ -2431,12 +2429,10 @@ void StartGameAlone() {
     random_device rd;
     //난수 생성 엔진 초기화
     mt19937 gen(rd());
-    //0.5초 ~ 1.2초 균등한 난수 정의 (난이도 역할)
-    uniform_int_distribution<int> sec(500, 1200);
+    //0.5초 ~ 1초 균등한 난수 정의 (난이도 역할)
+    uniform_int_distribution<int> sec(500, 1000);
     //com1 ~ com3 균등 난수
     uniform_int_distribution<int> com(1, 3);
-
-    user.setNoneAvailable();
     
     //반복
     int input = 0;
@@ -2484,10 +2480,12 @@ void StartGameAlone() {
                     //사용자가 로봇보다 빨리 칠 경우 true
                     while (true) {
                         clock_t end = clock();
-                        int userRingingKey = _kbhit();
-                        if (userRingingKey == 1) {
-                            userRinging = true;
-                            break;
+                        if (_kbhit()) { 
+                            int userRingingKey = _getch();
+                            if (userRingingKey == 13) {
+                                userRinging = true;
+                                break;
+                            }
                         }
                         if ((double)(end - start) >= msec) {
                             userRinging = false;
@@ -2651,10 +2649,12 @@ void StartGameAlone() {
                     //사용자가 로봇보다 빨리 칠 경우 true
                     while (true) {
                         clock_t end = clock();
-                        int userRingingKey = _kbhit();
-                        if (userRingingKey == 1) {
-                            userRinging = true;
-                            break;
+                        if (_kbhit()) {
+                            int userRingingKey = _getch();
+                            if (userRingingKey == 13) {
+                                userRinging = true;
+                                break;
+                            }
                         }
                         if ((double)(end - start) >= msec) {
                             userRinging = false;
@@ -2831,10 +2831,12 @@ void StartGameAlone() {
                     //사용자가 로봇보다 빨리 칠 경우 true
                     while (true) {
                         clock_t end = clock();
-                        int userRingingKey = _kbhit();
-                        if (userRingingKey == 1) {
-                            userRinging = true;
-                            break;
+                        if (_kbhit()) {
+                            int userRingingKey = _getch();
+                            if (userRingingKey == 13) {
+                                userRinging = true;
+                                break;
+                            }
                         }
                         if ((double)(end - start) >= msec) {
                             userRinging = false;
@@ -3011,10 +3013,12 @@ void StartGameAlone() {
                     //사용자가 로봇보다 빨리 칠 경우 true
                     while (true) {
                         clock_t end = clock();
-                        int userRingingKey = _kbhit();
-                        if (userRingingKey == 1) {
-                            userRinging = true;
-                            break;
+                        if (_kbhit()) {
+                            int userRingingKey = _getch();
+                            if (userRingingKey == 13) {
+                                userRinging = true;
+                                break;
+                            }
                         }
                         if ((double)(end - start) >= msec) {
                             userRinging = false;
