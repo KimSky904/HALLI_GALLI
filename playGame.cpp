@@ -1459,6 +1459,7 @@ void StartGameMulti()
 
                 //카드 뒤집기
                 if (user.open() == -1) continue;
+                PlaySound(TEXT("openCard.wav"), 0, SND_FILENAME | SND_ASYNC);
                 frontCardPrint(user.getFrontTopCard(), user);
                 printPlayersCardInfo(user, p1, p2, p3);
 
@@ -1686,6 +1687,7 @@ void StartGameMulti()
 
                 //카드 뒤집기
                 if (p1.open() == -1) continue;
+                PlaySound(TEXT("openCard.wav"), 0, SND_FILENAME | SND_ASYNC);
                 frontCardPrint(p1.getFrontTopCard(), p1);
                 printPlayersCardInfo(user, p1, p2, p3);
 
@@ -1915,6 +1917,7 @@ void StartGameMulti()
 
                 //카드 뒤집기
                 if (p2.open() == -1) continue;
+                PlaySound(TEXT("openCard.wav"), 0, SND_FILENAME | SND_ASYNC);
                 frontCardPrint(p2.getFrontTopCard(), p2);
                 printPlayersCardInfo(user, p1, p2, p3);
 
@@ -2149,6 +2152,7 @@ void StartGameMulti()
 
                 //카드 뒤집기
                 if (p3.open() == -1) continue;
+                PlaySound(TEXT("openCard.wav"), 0, SND_FILENAME | SND_ASYNC);
                 frontCardPrint(p3.getFrontTopCard(), p3);
                 printPlayersCardInfo(user, p1, p2, p3);
 
@@ -2389,8 +2393,8 @@ void StartGameAlone() {
     random_device rd;
     //난수 생성 엔진 초기화
     mt19937 gen(rd());
-    //0.8초 ~ 1.3초 균등한 난수 정의
-    uniform_int_distribution<int> sec(800,1300);
+    //0.5초 ~ 1.2초 균등한 난수 정의 (난이도 역할)
+    uniform_int_distribution<int> sec(500,1200);
     //com1 ~ com3 균등 난수
     uniform_int_distribution<int> com(1, 3);
     //반복
@@ -2401,12 +2405,6 @@ void StartGameAlone() {
         if (turn % 4 == 0) {
             printPlayersCardInfo(user, com1, com2, com3);
             if (!user.getAvailable()) {
-                //체크
-                gotoxy(0, 0);
-                cout << "사용자 탈락";
-                Sleep(1000);
-                gotoxy(0, 0);
-                cout << "                          ";
                 break;
             }
             else {
@@ -2438,23 +2436,18 @@ void StartGameAlone() {
                     clock_t start = clock();
                     //사용자가 로봇보다 빨리 칠 경우 true
                     while (true) {
-                        int userRingingKey = _getch();
                         clock_t end = clock();
-                        if (userRingingKey == 13) {
+                        int userRingingKey = _kbhit();
+                        if (userRingingKey == 1) {
                             userRinging = true;
                             break;
                         }
                         if ((double)(end - start) >= msec) {
                             userRinging = false;
                             break;
-                        } 
+                        }
+                        else userRinging = false;
                     }
-                    //체크
-                    gotoxy(0, 0);
-                    cout << userRinging;
-                    Sleep(150);
-                    gotoxy(0, 0);
-                    cout << "           ";
                     //사용자가 빠른경우
                     if (userRinging) {
                         PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
@@ -2517,27 +2510,25 @@ void StartGameAlone() {
                     //사용자 종침 여부
                     boolean userRinging = false;
                     clock_t start = clock();
-                    //사용자가 1초안에 종을 쳤을 경우
+                    int userRingingKey;
+                    //사용자가 1.5초안에 종을 쳤을 경우
                     while (true) {
                         clock_t end = clock();
                         double time = end - start;
-                        if (time >= 1200) { //1.2초 기다려줌
+                        if (_kbhit()) { //1.5초안에 종치면 true
+                            userRingingKey = _getch();
+                            if (userRingingKey == 13) {
+                                userRinging = true;
+                                break;
+                            }
+                        }
+                        else { //1.5초 안에 예외키 누르거나 안누르면 false
+                            userRinging = false;
+                        }
+                        if (time >= 1500) { //1.5초 기다려줌
                             userRinging = false;
                             break;
                         }
-                        int userRingingKey = _kbhit();
-                        if (userRingingKey == 13) { //1.2초안에 종치면 true
-                            userRinging = true;
-                        }
-                        else { //1.2초 안에 예외키 누르거나 안누르면 false
-                            userRinging = false;
-                        }
-                        //체크
-                        gotoxy(0, 2);
-                        cout << time;
-                        Sleep(100);
-                        gotoxy(0, 2);
-                        cout << "                ";
                     }
                     if (userRinging) {
                         //점수 계산
@@ -2571,11 +2562,11 @@ void StartGameAlone() {
                 gotoxy(longInfoX + 13, longInfoY - 2);
                 cout << "[ " << com1.getPlayerNum() << "번 PLAYER ]";
 
-                //모든 로봇은 1.1초간격으로 카드를 낸다.
+                //모든 로봇은 0.2+a 초간격으로 카드를 낸다.
                 clock_t start = clock();
                 while (true) {
                     clock_t end = clock();
-                    if ((double)(end - start) >= 200) break;
+                    if ((double)(end - start) >= 20) break;
                 }
 
                 //카드 뒤집기
@@ -2594,9 +2585,9 @@ void StartGameAlone() {
                     clock_t start = clock();
                     //사용자가 로봇보다 빨리 칠 경우 true
                     while (true) {
-                        int userRingingKey = _getch();
                         clock_t end = clock();
-                        if (userRingingKey == 13) {
+                        int userRingingKey = _kbhit();
+                        if (userRingingKey == 1) {
                             userRinging = true;
                             break;
                         }
@@ -2604,13 +2595,8 @@ void StartGameAlone() {
                             userRinging = false;
                             break;
                         }
+                        else userRinging = false;
                     }
-                    //체크
-                    gotoxy(0, 0);
-                    cout << userRinging;
-                    Sleep(150);
-                    gotoxy(0, 0);
-                    cout << "           ";
                     //사용자가 빠른경우
                     if (userRinging) {
                         PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
@@ -2673,20 +2659,24 @@ void StartGameAlone() {
                     //사용자 종침 여부
                     boolean userRinging = false;
                     clock_t start = clock();
-                    //사용자가 1초안에 종을 쳤을 경우
+                    int userRingingKey;
+                    //사용자가 1.5초안에 종을 쳤을 경우
                     while (true) {
                         clock_t end = clock();
                         double time = end - start;
-                        if (time >= 1200) { //1.2초 기다려줌
+                        if (_kbhit()) { //1.5초안에 종치면 true
+                            userRingingKey = _getch();
+                            if (userRingingKey == 13) {
+                                userRinging = true;
+                                break;
+                            }
+                        }
+                        else { //1.5초 안에 예외키 누르거나 안누르면 false
+                            userRinging = false;
+                        }
+                        if (time >= 1500) { //1.5초 기다려줌
                             userRinging = false;
                             break;
-                        }
-                        int userRingingKey = _kbhit();
-                        if (userRingingKey == 13) { //1.2초안에 종치면 true
-                            userRinging = true;
-                        }
-                        else { //1.2초 안에 예외키 누르거나 안누르면 false
-                            userRinging = false;
                         }
                     }
                     if (userRinging) {
@@ -2735,11 +2725,11 @@ void StartGameAlone() {
                 gotoxy(longInfoX + 13, longInfoY - 2);
                 cout << "[ " << com2.getPlayerNum() << "번 PLAYER ]";
 
-                //모든 로봇은 1.5초간격으로 카드를 낸다.
+                //모든 로봇은 0.2+a 초간격으로 카드를 낸다.
                 clock_t start = clock();
                 while (true) {
                     clock_t end = clock();
-                    if ((double)(end - start) >= 200) break;
+                    if ((double)(end - start) >= 20) break;
                 }
 
                 //카드 뒤집기
@@ -2758,9 +2748,9 @@ void StartGameAlone() {
                     clock_t start = clock();
                     //사용자가 로봇보다 빨리 칠 경우 true
                     while (true) {
-                        int userRingingKey = _getch();
                         clock_t end = clock();
-                        if (userRingingKey == 13) {
+                        int userRingingKey = _kbhit();
+                        if (userRingingKey == 1) {
                             userRinging = true;
                             break;
                         }
@@ -2768,13 +2758,8 @@ void StartGameAlone() {
                             userRinging = false;
                             break;
                         }
+                        else userRinging = false;
                     }
-                    //체크
-                    gotoxy(0, 0);
-                    cout << userRinging;
-                    Sleep(150);
-                    gotoxy(0, 0);
-                    cout << "           ";
                     //사용자가 빠른경우
                     if (userRinging) {
                         PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
@@ -2837,27 +2822,25 @@ void StartGameAlone() {
                     //사용자 종침 여부
                     boolean userRinging = false;
                     clock_t start = clock();
-                    //사용자가 1초안에 종을 쳤을 경우
+                    int userRingingKey;
+                    //사용자가 1.5초안에 종을 쳤을 경우
                     while (true) {
                         clock_t end = clock();
                         double time = end - start;
-                        if (time >= 1200) { //1.2초 기다려줌
+                        if (_kbhit()) { //1.5초안에 종치면 true
+                            userRingingKey = _getch();
+                            if (userRingingKey == 13) {
+                                userRinging = true;
+                                break;
+                            }
+                        }
+                        else { //1.5초 안에 예외키 누르거나 안누르면 false
+                            userRinging = false;
+                        }
+                        if (time >= 1500) { //1.5초 기다려줌
                             userRinging = false;
                             break;
                         }
-                        int userRingingKey = _kbhit();
-                        if (userRingingKey == 13) { //1.2초안에 종치면 true
-                            userRinging = true;
-                        }
-                        else { //1.2초 안에 예외키 누르거나 안누르면 false
-                            userRinging = false;
-                        }
-                        //체크
-                        gotoxy(0, 2);
-                        cout << time;
-                        Sleep(100);
-                        gotoxy(0, 2);
-                        cout << "                ";
                     }
                     if (userRinging) {
                         //점수 계산
@@ -2905,11 +2888,11 @@ void StartGameAlone() {
                 gotoxy(longInfoX + 13, longInfoY - 2);
                 cout << "[ " << com3.getPlayerNum() << "번 PLAYER ]";
 
-                //모든 로봇은 0.2+2초간격으로 카드를 낸다.
+                //모든 로봇은 0.2+a 초간격으로 카드를 낸다.
                 clock_t start = clock();
                 while (true) {
                     clock_t end = clock();
-                    if ((double)(end - start) >= 200) break;
+                    if ((double)(end - start) >= 20) break;
                 }
 
                 //카드 뒤집기
@@ -2928,9 +2911,9 @@ void StartGameAlone() {
                     clock_t start = clock();
                     //사용자가 로봇보다 빨리 칠 경우 true
                     while (true) {
-                        int userRingingKey = _getch();
                         clock_t end = clock();
-                        if (userRingingKey == 13) {
+                        int userRingingKey = _kbhit();
+                        if (userRingingKey == 1) {
                             userRinging = true;
                             break;
                         }
@@ -2938,13 +2921,8 @@ void StartGameAlone() {
                             userRinging = false;
                             break;
                         }
+                        else userRinging = false;
                     }
-                    //체크
-                    gotoxy(0, 0);
-                    cout << userRinging;
-                    Sleep(150);
-                    gotoxy(0, 0);
-                    cout << "           ";
                     //사용자가 빠른경우
                     if (userRinging) {
                         PlaySound(TEXT("ringingBell.wav"), 0, SND_FILENAME | SND_ASYNC);
@@ -3007,27 +2985,25 @@ void StartGameAlone() {
                     //사용자 종침 여부
                     boolean userRinging = false;
                     clock_t start = clock();
-                    //사용자가 1초안에 종을 쳤을 경우
+                    int userRingingKey;
+                    //사용자가 1.5초안에 종을 쳤을 경우
                     while (true) {
                         clock_t end = clock();
                         double time = end - start;
-                        if (time >= 1200) { //1.2초 기다려줌
+                        if (_kbhit()) { //1.5초안에 종치면 true
+                            userRingingKey = _getch();
+                            if (userRingingKey == 13) {
+                                userRinging = true;
+                                break;
+                            }
+                        }
+                        else { //1.5초 안에 예외키 누르거나 안누르면 false
+                            userRinging = false;
+                        }
+                        if (time >= 1500) { //1.5초 기다려줌
                             userRinging = false;
                             break;
                         }
-                        int userRingingKey = _kbhit();
-                        if (userRingingKey == 13) { //1.2초안에 종치면 true
-                            userRinging = true;
-                        }
-                        else { //1.2초 안에 예외키 누르거나 안누르면 false
-                            userRinging = false;
-                        }
-                        //체크
-                        gotoxy(0, 2);
-                        cout << time;
-                        Sleep(100);
-                        gotoxy(0, 2);
-                        cout << "                ";
                     }
                     if (userRinging) {
                         //점수 계산

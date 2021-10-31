@@ -18,10 +18,7 @@
     <ClCompile Include="playGame.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="cardTest.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="multigame.cpp">
+    <ClCompile Include="firstRingingTest.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
