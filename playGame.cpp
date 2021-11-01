@@ -1,4 +1,8 @@
-﻿#define _CRT_SECURE_NO_WARNINGS
+﻿//2021 2학기 C++ 프로젝트
+//콘솔게임 - 할리갈리
+//랜덤값 시드 발생기를 이용한 로봇과의 대결 가능
+//파일처리를 이용한 랭킹 등록 가능
+#define _CRT_SECURE_NO_WARNINGS
 #include<iostream>
 #include<string>
 #include<ctime>
